@@ -45,11 +45,11 @@ public sealed class SimpleMvpTests
     {
         var vm=Create();try{Configure(vm);vm.Catalog.DeathTime=text;vm.Catalog.RegisterDeathCommand.Execute(null);Assert.Empty(vm.Engine.Mvps);}finally{Dispose(vm);}
     }
-    [Fact] public void MissingRespawnAsksOnlyOnceAndFixedValueCanOmitMaximum()
+    [Fact] public void AutomaticRespawnNeedsNoSetupAndAdvancedOverrideCanOmitMaximum()
     {
         var vm=Create();try
         {
-            var c=vm.Catalog;c.SelectedEntry=c.Entries.First();c.DeathTime="10:32";c.RegisterDeathCommand.Execute(null);Assert.True(c.NeedsRespawn);Assert.Empty(vm.Engine.Mvps);
+            var c=vm.Catalog;c.SelectedEntry=c.Entries.First();c.DeathTime="10:32";c.RegisterDeathCommand.Execute(null);Assert.False(c.NeedsRespawn);Assert.True(Assert.Single(vm.Engine.Mvps).HasRespawn);
             c.RespawnMin=120;c.RespawnMax=null;c.SaveRequiredRespawnCommand.Execute(null);Assert.False(c.NeedsRespawn);Assert.Equal(120,Assert.Single(vm.Engine.Mvps).MaxMinutes);
             c.DeathTime="11:00";c.RegisterDeathCommand.Execute(null);Assert.Single(vm.Engine.Mvps);Assert.Equal(11,vm.Engine.Mvps[0].DeathUtc!.Value.ToLocalTime().Hour);
         }finally{Dispose(vm);}

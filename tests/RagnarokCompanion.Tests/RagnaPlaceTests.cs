@@ -146,7 +146,7 @@ public sealed class RagnaPlaceTests
         var root = Path.Combine(Path.GetTempPath(), "rc-catalog-" + Guid.NewGuid());
         try
         {
-            var store = new PersistenceService(root); var s = new MvpCatalogService(store); Assert.Equal(16, s.Entries.Count);
+            var store = new PersistenceService(root); var s = new MvpCatalogService(store); Assert.True(s.Entries.Count>=65);
             var e = s.Entries[0]; e.Favorite = true; e.CustomMin = 123; e.CustomMax = 150; e.FarmlandConfirmed = true; s.SaveChoices();
             var reloaded = new MvpCatalogService(store); var f = Assert.Single(reloaded.Entries, e => e.Favorite); Assert.Equal(123, f.CustomMin);
             reloaded.Merge(new[] { new CatalogEntry { Key = f.Key, MonsterId = f.MonsterId, Name = f.Name, MinMinutes = 10, MaxMinutes = 10 } });
@@ -190,8 +190,8 @@ public sealed class RagnaPlaceTests
             var catalog = new MvpCatalogService(new PersistenceService(root)); var local = catalog.Entries.First();
             local.CustomMin = 120; local.CustomMax = 180; local.FarmlandConfirmed = true;
             string key = "api:iro:" + local.MonsterId;
-            catalog.Entries.Add(new CatalogEntry { Key = key, MonsterId = local.MonsterId, Name = local.Name, Favorite = true });
-            catalog.Merge(new[] { new CatalogEntry { Key = key, MonsterId = local.MonsterId, Name = local.Name, MinMinutes = 30, MaxMinutes = 30 } });
+            catalog.Entries.Add(new CatalogEntry { Key = key, MonsterId = local.MonsterId, Name = local.Name, Map=local.Map, Favorite = true });
+            catalog.Merge(new[] { new CatalogEntry { Key = key, MonsterId = local.MonsterId, Name = local.Name, Map=local.Map, MinMinutes = 30, MaxMinutes = 30 } });
             var merged = catalog.Entries.Single(e => e.Key == key); Assert.True(merged.Favorite); Assert.Equal(120, merged.CustomMin);
         }
         finally { Directory.Delete(root, true); }

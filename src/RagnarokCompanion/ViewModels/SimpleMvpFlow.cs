@@ -14,10 +14,13 @@ public sealed class FavoriteTimerRow : Observable
     public FavoriteTimerRow(CatalogEntry entry,MainViewModel owner){Entry=entry;this.owner=owner;}
     Mvp? Timer=>owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==Entry.Key && m.DeathUtc!=null);
     public string Name=>Entry.DisplayName;
-    public string Countdown=>Timer is {} timer?new MvpRow(timer,owner.Engine).CompactCountdown:"—";
+    public string Countdown=>Timer is {} timer?owner.Settings.CompactMvpAbsoluteTime?Absolute(timer):new MvpRow(timer,owner.Engine).CompactCountdown:"—";
+    static string Absolute(Mvp timer)=>timer.StartUtc is {} start?(timer.EndUtc==start?start.ToLocalTime().ToString("HH:mm"):start.ToLocalTime().ToString("HH:mm")+"–"+timer.EndUtc!.Value.ToLocalTime().ToString("HH:mm")):"—";
+    public double ClockFont=>owner.Settings.CompactMvpAbsoluteTime?12:20;
+    public string TimeTooltip=>Timer is {} timer?new MvpRow(timer,owner.Engine).Window+"\n"+timer.Origin:"Sem horário";
     public string Status=>Timer is {} timer?new MvpRow(timer,owner.Engine).Status:"Sem horário";
     public string Color=>Timer is {} timer?new MvpRow(timer,owner.Engine).StatusColor:"#9AA6BF";
-    public void Refresh(){Changed(nameof(Name));Changed(nameof(Countdown));Changed(nameof(Status));Changed(nameof(Color));}
+    public void Refresh(){Changed(nameof(Name));Changed(nameof(Countdown));Changed(nameof(Status));Changed(nameof(Color));Changed(nameof(ClockFont));Changed(nameof(TimeTooltip));}
 }
 public sealed class CompactFavoriteChoice : Observable
 {
@@ -32,6 +35,10 @@ public sealed partial class CatalogViewModel
     public ObservableCollection<FavoriteTimerRow> CompactFavorites {get;}=new();
     public ObservableCollection<CompactFavoriteChoice> CompactChoices {get;}=new();
     public bool NoCompactFavorites=>CompactFavorites.Count==0;
+    public bool ShowAbsoluteTimes {get=>owner.Settings.CompactMvpAbsoluteTime;set{owner.Settings.CompactMvpAbsoluteTime=value;owner.Store.Save("settings.json",owner.Settings);Changed();RefreshFavoriteTimers();}}
+    Mvp? SelectedTimer=>owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==SelectedEntry?.Key&&m.DeathUtc!=null);
+    public string SelectedRespawnSummary=>SelectedTimer is {} timer?$"Morte: {timer.DeathUtc!.Value.ToLocalTime():dd/MM HH:mm}\n"+(timer.HasRespawn?$"Próximo nascimento previsto: {new MvpRow(timer,owner.Engine).Window}\n{new MvpRow(timer,owner.Engine).Countdown} • {owner.Engine.Status(timer,DateTimeOffset.UtcNow)}":"Respawn não encontrado. A morte foi preservada."):"";
+    public string SelectedRespawnSource=>SelectedTimer?.Origin??(SelectedEntry is {} entry?respawns.Resolve(entry,false)?.Origin??"Respawn desconhecido":"");
     public string DeathTitle=>SelectedEntry==null?"Selecione um MVP":"Morte de "+SelectedEntry.DisplayName;
     public string DeathTime {get;set;}="";
     public bool PreviousDay {get;set;}
@@ -43,6 +50,7 @@ public sealed partial class CatalogViewModel
     public ICommand SaveRequiredRespawnCommand {get;private set;}=null!;
     public ICommand ClearTimersCommand {get;private set;}=null!;
     public ICommand AdvancedCommand {get;private set;}=null!;
+    public ICommand ImportRespawnsCommand {get;private set;}=null!;
     public void PrepareSimpleView(){MapFilter="";FavoritesOnly=false;Status="";}
     void InitializeSimpleFlow(Func<DateTimeOffset>? clock,Func<string,bool>? confirm)
     {
@@ -54,6 +62,7 @@ public sealed partial class CatalogViewModel
         SaveRequiredRespawnCommand=Command(()=>{if(SelectedEntry==null||RespawnMin==null||!MvpRespawnService.Valid(RespawnMin.Value,RespawnMax??RespawnMin.Value)){Status="Informe um respawn válido em minutos.";return;}SelectedEntry.CustomMin=RespawnMin;SelectedEntry.CustomMax=RespawnMax??RespawnMin;SelectedEntry.FarmlandConfirmed=ConfirmFarmland;catalog.SaveChoices();RegisterShortDeath();});
         ClearTimersCommand=Command(()=>{if(confirmSimple("Deseja limpar todos os timers ativos dos MVPs?"))ClearTimers();});
         AdvancedCommand=Command(()=>{owner.Page=3;owner.PanelCommand.Execute(null);});
+        ImportRespawnsCommand=Command(()=>{var dialog=new Microsoft.Win32.OpenFileDialog{Filter="Catálogo JSON|*.json",Title="Importar catálogo de respawns com origem e versão"};if(dialog.ShowDialog()!=true)return;respawns.Catalog.Import(dialog.FileName);ReconcileRespawns();Status="Catálogo atualizado. Ajustes personalizados e mortes foram preservados.";});
     }
     void ToggleFavorite(CatalogEntry? entry)
     {
@@ -76,11 +85,10 @@ public sealed partial class CatalogViewModel
         if(entry.IsSearchCandidate){Status="Aguarde a confirmação de MVP no RagnaPlace antes de registrar a morte.";return;}
         if(!MvpDeathTimeService.TryResolve(DeathTime,PreviousDay,simpleClock(),TimeZoneInfo.Local,out var death,out string error)){Status=error;return;}
         var previous=owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==entry.Key);
-        var resolved=respawns.Resolve(entry,AcceptGateway);
-        if(resolved==null&&previous!=null&&MvpRespawnService.Valid(previous.MinMinutes,previous.MaxMinutes))resolved=(previous.MinMinutes,previous.MaxMinutes,previous.Origin);
-        if(resolved==null){NeedsRespawn=true;RespawnMin=null;RespawnMax=null;Changed(nameof(RespawnMin));Changed(nameof(RespawnMax));Status="Falta apenas configurar o tempo de respawn deste MVP.";return;}
+        var resolved=ResolveRegistration(entry,previous);
+        if(resolved==null&&previous is {HasRespawn:true}&&MvpRespawnService.Valid(previous.MinMinutes,previous.MaxMinutes))resolved=(previous.MinMinutes,previous.MaxMinutes,previous.Origin);
         if(previous?.DeathUtc>death&&!confirmSimple("Já existe uma morte mais recente para este ponto de spawn. Deseja substituí-la pelo horário informado?"))return;
-        owner.RegisterCatalogDeath(entry,resolved.Value.Min,resolved.Value.Max,resolved.Value.Origin,death);NeedsRespawn=false;RefreshFavoriteTimers();Status="Morte registrada. Próximo respawn calculado.";
+        entry.Retained=true;catalog.SaveChoices();owner.RegisterCatalogDeath(entry,resolved?.Min??0,resolved?.Max??0,resolved?.Origin??"Respawn desconhecido",death,resolved!=null);NeedsRespawn=false;RefreshFavoriteTimers();Status=resolved==null?"Morte salva. Respawn não encontrado para este ponto; favoritos e histórico foram preservados.":"Morte registrada. Próximo respawn calculado.";
     }
     public void ClearTimers()
     {
@@ -100,7 +108,10 @@ public sealed partial class CatalogViewModel
     }
     public void UpdateManualConfiguration(Mvp timer)
     {
-        if(!string.IsNullOrEmpty(timer.CatalogKey)&&!timer.CatalogKey.StartsWith("manual:",StringComparison.Ordinal))return;
+        if(!string.IsNullOrEmpty(timer.CatalogKey)&&!timer.CatalogKey.StartsWith("manual:",StringComparison.Ordinal)){
+            var point=catalog.Entries.FirstOrDefault(e=>e.Key==timer.CatalogKey);
+            if(point!=null&&point.Map==timer.Map){point.CustomMin=timer.MinMinutes;point.CustomMax=timer.MaxMinutes;point.FarmlandConfirmed=false;catalog.SaveChoices();RefreshEntries();}return;
+        }
         RefreshManualEntries();var entry=catalog.Entries.First(e=>e.Key==timer.CatalogKey);
         entry.Name=timer.Name;entry.Map=timer.Map;entry.CustomMin=timer.MinMinutes;entry.CustomMax=timer.MaxMinutes;catalog.SaveChoices();RefreshEntries();
     }
@@ -115,6 +126,19 @@ public sealed partial class CatalogViewModel
             CompactFavorites[i].Refresh();
         }
         while(CompactFavorites.Count>entries.Count)CompactFavorites.RemoveAt(CompactFavorites.Count-1);
-        Changed(nameof(NoCompactFavorites));
+        Changed(nameof(NoCompactFavorites));Changed(nameof(SelectedRespawnSummary));Changed(nameof(SelectedRespawnSource));
+    }
+    public void ReconcileRespawns(){
+        bool changed=false;
+        foreach(var timer in owner.Engine.Mvps.Where(m=>!m.HasRespawn&&m.DeathUtc!=null)){
+            var entry=catalog.Entries.FirstOrDefault(e=>e.Key==timer.CatalogKey);if(entry==null)continue;
+            if(respawns.Resolve(entry,false) is not {} found)continue;
+            timer.MinMinutes=found.Min;timer.MaxMinutes=found.Max;timer.Origin=found.Origin;timer.HasRespawn=true;changed=true;
+        }
+        if(changed)owner.Store.Save("mvps.json",owner.Engine.Mvps);RefreshFavoriteTimers();
+    }
+    (double Min,double Max,string Origin)? ResolveRegistration(CatalogEntry entry,Mvp? previous){
+        if(entry.CustomMin==null&&previous is {HasRespawn:true}&&previous.Origin.StartsWith("Personalizado",StringComparison.OrdinalIgnoreCase)&&MvpRespawnService.Valid(previous.MinMinutes,previous.MaxMinutes)){entry.CustomMin=previous.MinMinutes;entry.CustomMax=previous.MaxMinutes;}
+        return respawns.Resolve(entry,AcceptGateway);
     }
 }

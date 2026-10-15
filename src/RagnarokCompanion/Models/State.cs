@@ -21,6 +21,7 @@ public sealed class Settings : INotifyPropertyChanged
     public CompactTab CompactTab { get => compactTab; set => Set(ref compactTab, value); }
     public bool ChooseCompactFavorites { get; set; }
     public List<string> CompactFavoriteKeys { get; set; } = new();
+    public bool CompactMvpAbsoluteTime {get;set;}
     public double MiningMinutes { get => miningMinutes; set => Set(ref miningMinutes, value); }
     public double CooldownMinutes { get => cooldownMinutes; set => Set(ref cooldownMinutes, value); }
     public bool Sounds { get => sounds; set => Set(ref sounds, value); }
@@ -46,6 +47,7 @@ public sealed class MiningState
 public sealed class Mvp
 {
     public string CatalogKey { get; set; } = "";
+    public bool HasRespawn {get;set;}=true;
     public string Origin { get; set; } = "Personalizado pelo usuário";
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Name { get; set; } = "";
@@ -55,8 +57,8 @@ public sealed class Mvp
     public string Notes { get; set; } = "";
     public DateTimeOffset? DeathUtc { get; set; }
     public HashSet<string> Alerts { get; set; } = new();
-    [JsonIgnore] public DateTimeOffset? StartUtc => DeathUtc?.AddMinutes(MinMinutes);
-    [JsonIgnore] public DateTimeOffset? EndUtc => DeathUtc?.AddMinutes(MaxMinutes);
+    [JsonIgnore] public DateTimeOffset? StartUtc => HasRespawn?DeathUtc?.AddMinutes(MinMinutes):null;
+    [JsonIgnore] public DateTimeOffset? EndUtc => HasRespawn?DeathUtc?.AddMinutes(MaxMinutes):null;
 }
 public sealed class HistoryEntry
 {

@@ -69,7 +69,7 @@ public sealed partial class CatalogViewModel
             catalog.Merge(details);onlineEntries.RemoveAll(e=>e.MonsterId==entry.MonsterId&&e.Gateway==entry.Gateway);onlineEntries.AddRange(details);
             catalog.SaveChoices();RefreshEntries();SelectedEntry=chosen;
             if(favorite)ToggleFavorite(chosen);
-            Success("MVP confirmado por exp.mvp; escolha o horário da morte. Os tempos do Farmland continuam personalizados.");OnlineStatus="MVP confirmado e salvo para uso offline.";
+            Success("MVP confirmado por exp.mvp. Informe apenas a hora da morte; o respawn será associado por ID e mapa.");OnlineStatus="MVP confirmado e salvo para uso offline.";
         }
         catch(Exception) when(source.IsCancellationRequested){}
         catch(RagnaPlaceException ex){OnlineStatus=ex.Message;SetAuthFailure(ex);}

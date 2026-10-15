@@ -25,7 +25,10 @@ public static class RagnaPlaceDiagnostics
             if (results.Count == 0) return "FAIL: A busca por nome não retornou resultados neste gateway. Nenhum dado local foi alterado.";
             var details = await new RagnaPlaceCatalogProvider(api).DetailsAsync(settings.Gateway, results.First().MonsterId);
             if (details.Count == 0) return "FAIL: A consulta de detalhes não retornou dados para verificação.";
-            return "PASS: Gateway Renewal, autenticação, busca integrada por nome parcial Detard e detalhes de MVP fora do catálogo inicial por ID confirmados. Três consultas limitadas; chave não exibida; timers e preferências não alterados.";
+            var ifrit=await new RagnaPlaceCatalogProvider(api).DetailsAsync(settings.Gateway,1832);
+            var point=ifrit.FirstOrDefault(e=>e.Map=="thor_v03");
+            if(point==null||new MvpRespawnService().Resolve(point,false)==null)return "FAIL: Não foi possível associar automaticamente o respawn de Ifrit em thor_v03 neste gateway.";
+            return "PASS: Gateway Renewal, autenticação, busca por nome parcial e detalhes confirmados; Ifrit/1832/thor_v03 associado automaticamente ao respawn sem campos manuais. Quatro consultas limitadas; chave não exibida; timers e preferências não alterados.";
         }
         catch (RagnaPlaceException ex) { return "FAIL: " + ex.Message; }
         catch { return "FAIL: Não foi possível validar a integração. Nenhuma credencial foi exibida ou alterada."; }

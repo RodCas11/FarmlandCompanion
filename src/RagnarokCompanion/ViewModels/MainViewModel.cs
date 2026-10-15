@@ -39,9 +39,10 @@ public sealed class MvpRow : Observable
     public string Origin => Model.Origin;
     public string Status => Model.StartUtc > DateTimeOffset.UtcNow && Model.StartUtc <= DateTimeOffset.UtcNow.AddMinutes(10) ? "Próximo de nascer" : engine.Status(Model, DateTimeOffset.UtcNow);
     public string StatusColor => Model.StartUtc <= DateTimeOffset.UtcNow ? "#FF8797" : Model.StartUtc <= DateTimeOffset.UtcNow.AddMinutes(10) ? "#FFBD70" : "#9AA6BF";
-    public string Countdown => Model.StartUtc == null ? "—" : DateTimeOffset.UtcNow < Model.StartUtc ? TimerService.Format(Model.StartUtc.Value - DateTimeOffset.UtcNow) : DateTimeOffset.UtcNow < Model.EndUtc ? "Janela • " + TimerService.Format(Model.EndUtc.Value - DateTimeOffset.UtcNow) : "Disponível?";
-    public string CompactCountdown => Model.StartUtc == null ? "—" : TimerService.Format((DateTimeOffset.UtcNow < Model.StartUtc ? Model.StartUtc.Value : Model.EndUtc!.Value) - DateTimeOffset.UtcNow);
-    public string Window => Model.StartUtc == null ? "Registre uma morte para monitorar" : Model.StartUtc == Model.EndUtc ? Local(Model.StartUtc) : Local(Model.StartUtc) + " → " + Local(Model.EndUtc);
+    public string Countdown => Model.StartUtc == null ? "—" : DateTimeOffset.UtcNow < Model.StartUtc ? FormatRespawn(Model.StartUtc.Value - DateTimeOffset.UtcNow) : DateTimeOffset.UtcNow < Model.EndUtc ? "Janela • " + FormatRespawn(Model.EndUtc.Value - DateTimeOffset.UtcNow) : "Janela encerrada";
+    public string CompactCountdown => Model.StartUtc == null ? "—" : FormatRespawn((DateTimeOffset.UtcNow < Model.StartUtc ? Model.StartUtc.Value : Model.EndUtc!.Value) - DateTimeOffset.UtcNow);
+    public string Window => Model.StartUtc == null ? Model.DeathUtc!=null?"Morte salva • respawn desconhecido":"Registre uma morte para monitorar" : Model.StartUtc == Model.EndUtc ? Local(Model.StartUtc) : Local(Model.StartUtc) + " → " + Local(Model.EndUtc);
+    static string FormatRespawn(TimeSpan remaining){var t=TimeSpan.FromSeconds(Math.Ceiling(Math.Max(0,remaining.TotalSeconds)));return t.TotalHours>=1?$"{(int)t.TotalHours:00}:{t.Minutes:00}:{t.Seconds:00}":TimerService.Format(t);}
     public string LastDeath => Local(Model.DeathUtc);
     public static string Local(DateTimeOffset? date) => date?.ToLocalTime().ToString("dd/MM HH:mm:ss") ?? "—";
     public void Refresh() { foreach (var n in new[] { nameof(Name), nameof(Map), nameof(Notes), nameof(Origin), nameof(Status), nameof(StatusColor), nameof(Countdown), nameof(CompactCountdown), nameof(Window), nameof(LastDeath) }) Changed(n); }
@@ -172,7 +173,7 @@ public sealed partial class MainViewModel : Observable
         var candidate = new Mvp { Name = EditName.Trim(), Map = EditMap.Trim(), MinMinutes = EditMin, MaxMinutes = EditMax, Notes = EditNotes.Trim() };
         if (!PersistenceService.Valid(candidate)) { Tell("Preencha nome e mapa. Respawn: 0 < mínimo ≤ máximo ≤ 10080 minutos."); return; }
         var m = editing ?? new Mvp();
-        m.Name = candidate.Name; m.Map = candidate.Map; m.MinMinutes = candidate.MinMinutes; m.MaxMinutes = candidate.MaxMinutes; m.Notes = candidate.Notes;
+        m.Name = candidate.Name; m.Map = candidate.Map; m.MinMinutes = candidate.MinMinutes; m.MaxMinutes = candidate.MaxMinutes; m.Notes = candidate.Notes;m.HasRespawn=true;
         m.Origin = "Personalizado pelo usuário";
         // Recalculate corrected configurations, keeping already emitted notification keys.
         if (editing == null) Engine.Mvps.Add(m);
@@ -188,7 +189,7 @@ public sealed partial class MainViewModel : Observable
     }
     private void AutoCompact() { if (Settings.CompactOnTimer) OpenCompact?.Invoke(); }
     private void Commit() { Engine.Evaluate(DateTimeOffset.UtcNow); Save(); Refresh(); }
-    public void RegisterCatalogDeath(CatalogEntry entry, double min, double max, string origin, DateTimeOffset death)
+    public void RegisterCatalogDeath(CatalogEntry entry, double min, double max, string origin, DateTimeOffset death,bool hasRespawn=true)
     {
         var m = Engine.Mvps.FirstOrDefault(x => x.CatalogKey == entry.Key);
         if (m == null)
@@ -196,7 +197,7 @@ public sealed partial class MainViewModel : Observable
             m = new Mvp { Name = entry.Name, Map = string.IsNullOrWhiteSpace(entry.Map) ? "Mapa não informado" : entry.Map, CatalogKey = entry.Key };
             Engine.Mvps.Add(m);
         }
-        m.MinMinutes = min; m.MaxMinutes = max; m.Origin = origin;
+        m.MinMinutes = min; m.MaxMinutes = max; m.Origin = origin;m.HasRespawn=hasRespawn;
         Engine.Kill(m, death); Commit(); AutoCompact();
     }
     public void Save()

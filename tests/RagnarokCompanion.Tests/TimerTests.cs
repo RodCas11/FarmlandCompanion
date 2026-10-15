@@ -35,8 +35,8 @@ public class TimerTests
         var e = Engine(); var m = new Mvp { Name = "Freeoni", Map = "map", MinMinutes = min, MaxMinutes = max }; e.Mvps.Add(m);
         e.Kill(m, Start); Assert.Equal(Start.AddMinutes(min), m.StartUtc); Assert.Equal(Start.AddMinutes(max), m.EndUtc);
         Assert.Equal("Aguardando", e.Status(m, Start));
-        Assert.Equal(min == max ? "Respawn possível" : "Janela aberta", e.Status(m, Start.AddMinutes(min)));
-        Assert.Equal("Respawn possível", e.Status(m, Start.AddMinutes(max)));
+        Assert.Equal("Pode nascer", e.Status(m, Start.AddMinutes(min)));
+        Assert.Equal("Janela prevista encerrada", e.Status(m, Start.AddMinutes(max).AddSeconds(1)));
     }
     [Fact] public void MultipleMvpsAndSimultaneousEventsDoNotCollide()
     {

@@ -27,6 +27,8 @@ public sealed class RagnaPlaceCatalogProvider : IRagnaPlaceCatalogProvider
         {
             Key = $"api:{gateway}:{id}:{s.Map?.Id ?? "unknown"}", MonsterId = id, Name = mob.Name!, Map = s.Map?.Id ?? "", Gateway = gateway,
             Origin = "RagnaPlace — " + (mob.GatewayId ?? gateway),
+            IsSpecialEncounter=(s.Map?.Id?.Contains('@')??false)||(mob.Categories??new()).Concat(mob.Subcategories??new()).Any(tag=>tag!=null&&(tag.Contains("instance",StringComparison.OrdinalIgnoreCase)||tag.Contains("event",StringComparison.OrdinalIgnoreCase))),
+            AmbiguousSpawn=maps.Where(other=>other.Map?.Id==s.Map?.Id).Select(other=>other.RespawnSeconds).Distinct().Count()>1,
             MinMinutes = s.RespawnSeconds is > 0 and <= 604800 ? s.RespawnSeconds.Value / 60d : null,
             MaxMinutes = s.RespawnSeconds is > 0 and <= 604800 ? s.RespawnSeconds.Value / 60d : null,
             SourceUrl = mob.Url ?? "https://ragnaplace.com", SyncedUtc = DateTimeOffset.UtcNow,

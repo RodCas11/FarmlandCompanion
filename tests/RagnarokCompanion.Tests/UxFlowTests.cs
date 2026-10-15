@@ -30,11 +30,11 @@ public sealed class UxFlowTests
             vm.Catalog.Query = favorite.Name; Assert.All(vm.Catalog.Entries, e => Assert.Contains(favorite.Name, e.Name));
         });
     }
-    [Fact] public void MissingRespawnOpensOnlyRequiredSetupWithoutCreatingFakeTimer()
+    [Fact] public void AutomaticRespawnDoesNotOpenSetupAndAdvancedOverrideRemainsAvailable()
     {
         WithVm(vm =>
         {
-            vm.Catalog.QuickDeathCommand.Execute(vm.Catalog.Entries[0]); Assert.Equal(1, vm.Page); Assert.True(vm.Catalog.RespawnExpanded); Assert.Empty(vm.Engine.Mvps);
+            vm.Catalog.QuickDeathCommand.Execute(vm.Catalog.Entries[0]); Assert.False(vm.Catalog.RespawnExpanded); Assert.True(Assert.Single(vm.Engine.Mvps).HasRespawn);
             vm.Catalog.RespawnMin = 60; vm.Catalog.RespawnMax = 90; vm.Catalog.SaveAndDeathCommand.Execute(null); Assert.Single(vm.Engine.Mvps);
         });
     }
@@ -68,7 +68,7 @@ public sealed class UxFlowTests
     {
         var engine = new TimerService(new(), new(), new(), new());
         var m = new Mvp { Name = "MVP", MinMinutes = 60, MaxMinutes = 90, DeathUtc = DateTimeOffset.UtcNow.AddMinutes(-65) };
-        var row = new MvpRow(m, engine); Assert.Equal("Janela aberta", row.Status); Assert.Equal("#FF8797", row.StatusColor); Assert.Matches("^[0-9]+:[0-9]{2}$", row.CompactCountdown);
+        var row = new MvpRow(m, engine); Assert.Equal("Pode nascer", row.Status); Assert.Equal("#FF8797", row.StatusColor); Assert.Matches("^[0-9]+:[0-9]{2}$", row.CompactCountdown);
         m.DeathUtc = DateTimeOffset.UtcNow.AddMinutes(-55); Assert.Equal("Próximo de nascer", row.Status); Assert.Equal("#FFBD70", row.StatusColor);
     }
 }

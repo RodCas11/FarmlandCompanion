@@ -57,5 +57,5 @@ public sealed class PersistenceService
         if (s.CompactMode is not ("Ambos" or "Mineração" or "MVPs")) s.CompactMode = "Ambos";
         s.AdvanceMinutes ??= "10,5,1";
     }
-    public static bool Valid(Mvp m) => m != null && !string.IsNullOrWhiteSpace(m.Name) && !string.IsNullOrWhiteSpace(m.Map) && double.IsFinite(m.MinMinutes) && double.IsFinite(m.MaxMinutes) && m.MinMinutes > 0 && m.MaxMinutes >= m.MinMinutes && m.MaxMinutes <= 10080 && m.Alerts != null && (m.DeathUtc == null || m.DeathUtc <= DateTimeOffset.UtcNow);
+    public static bool Valid(Mvp m) => m != null && !string.IsNullOrWhiteSpace(m.Name) && !string.IsNullOrWhiteSpace(m.Map) && double.IsFinite(m.MinMinutes) && double.IsFinite(m.MaxMinutes) && (!m.HasRespawn || (m.MinMinutes > 0 && m.MaxMinutes >= m.MinMinutes && m.MaxMinutes <= 10080)) && m.Alerts != null && (m.DeathUtc == null || m.DeathUtc <= DateTimeOffset.UtcNow);
 }

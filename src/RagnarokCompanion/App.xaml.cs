@@ -130,13 +130,12 @@ public partial class App : Application
                 Capture(windows.Panel, Path.Combine(smokeOutput, $"smoke-page-{p}.png"));
                 if(p==4)SpotlightVisualDiagnostics.Verify(windows.Panel,smokeOutput);
             }
-            vm.Catalog.SelectedEntry = vm.Catalog.Entries.First();
-            vm.Catalog.RespawnMin = 60; vm.Catalog.RespawnMax = 90; vm.Catalog.ConfirmFarmland = true;
-            vm.Catalog.SaveRespawnCommand.Execute(null); vm.Catalog.FavoriteCommand.Execute(null);
+            vm.Catalog.SelectedEntry = vm.Catalog.Entries.Single(e=>e.MonsterId==1832&&e.Map=="thor_v03");
+            vm.Catalog.FavoriteCommand.Execute(null);
             if (vm.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito não salvo");
             vm.Catalog.DeathTime = DateTime.Now.ToString("HH:mm");
             vm.Catalog.RegisterDeathCommand.Execute(null);
-            if (vm.Engine.Mvps.Count != 3 || !vm.Engine.Mvps.Last().Origin.Contains("Farmland")) throw new Exception("Registro rápido de favorito offline falhou");
+            if (vm.Engine.Mvps.Count != 3 || vm.Engine.Mvps.Last().MinMinutes!=660 || vm.Engine.Mvps.Last().MaxMinutes!=670) throw new Exception("Registro automático de Ifrit offline falhou");
             foreach(var timer in vm.Engine.Mvps) { var entry=vm.Catalog.Entries.First(e=>e.Key==timer.CatalogKey);if(!entry.Favorite)vm.Catalog.ToggleFavoriteCommand.Execute(entry); }
             foreach(var entry in vm.Catalog.Entries.Where(e=>!e.Favorite).Take(2).ToArray())vm.Catalog.ToggleFavoriteCommand.Execute(entry);
             if(vm.Catalog.FavoriteEntries.Count!=5 || vm.Engine.Mvps.Count!=3)throw new Exception("Favoritar iniciou um timer");
@@ -180,7 +179,7 @@ public partial class App : Application
             restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
             int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
             if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
-            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }

@@ -10,10 +10,16 @@ public sealed class CatalogEntry
     public int MonsterId { get; set; }
     public string Name { get; set; } = "";
     public string Map { get; set; } = "";
+    public string SpawnIdentifier {get;set;}="";
+    public bool IsSpecialEncounter {get;set;}
+    public bool AmbiguousSpawn {get;set;}
     public string Gateway { get; set; } = "";
     public string Origin { get; set; } = "Informação não verificada";
     public double? MinMinutes { get; set; }
     public double? MaxMinutes { get; set; }
+    public double? SavedReferenceMin {get;set;}
+    public double? SavedReferenceMax {get;set;}
+    public string SavedReferenceOrigin {get;set;}="";
     public double? CustomMin { get; set; }
     public double? CustomMax { get; set; }
     public bool FarmlandConfirmed { get; set; }

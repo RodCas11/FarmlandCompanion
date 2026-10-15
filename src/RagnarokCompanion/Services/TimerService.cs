@@ -44,7 +44,7 @@ public sealed class TimerService
         mvp.DeathUtc = death.ToUniversalTime(); mvp.Alerts.Clear();
         Record("Morte", $"{mvp.Name} • {mvp.Map}", death);
     }
-    public string Status(Mvp mvp, DateTimeOffset now) => mvp.DeathUtc == null ? "Sem registro" : now < mvp.StartUtc ? "Aguardando" : now < mvp.EndUtc ? "Janela aberta" : "Respawn possível";
+    public string Status(Mvp mvp, DateTimeOffset now) => mvp.DeathUtc == null ? "Sem registro" : !mvp.HasRespawn?"Respawn desconhecido":now < mvp.StartUtc ? "Aguardando" : now<=mvp.EndUtc ? "Pode nascer" : "Janela prevista encerrada";
     public DateTimeOffset Next(Mvp m, DateTimeOffset now) => m.StartUtc ?? DateTimeOffset.MaxValue;
     public IEnumerable<Mvp> Ordered(DateTimeOffset now) => Mvps.OrderBy(m => Next(m, now)).ThenBy(m => m.Name);
     public bool Evaluate(DateTimeOffset now)
@@ -62,7 +62,7 @@ public sealed class TimerService
             if (now >= Mining.ExitUtc) Emit(Mining.Alerts, "exit", "Mineração concluída • cooldown iniciado", Settings.MiningAlerts);
             if (now >= Mining.ReadyUtc) Emit(Mining.Alerts, "ready", "Mina disponível para uma nova entrada", Settings.MiningAlerts);
         }
-        foreach (var m in Mvps.Where(x => x.DeathUtc != null))
+        foreach (var m in Mvps.Where(x => x.DeathUtc != null&&x.HasRespawn))
         {
             var due = Advances(Settings.AdvanceMinutes).Where(minutes => now >= m.StartUtc!.Value.AddMinutes(-minutes)).OrderBy(minutes => minutes).ToList();
             foreach (var minutes in due)

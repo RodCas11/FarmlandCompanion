@@ -34,7 +34,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     private readonly IRagnaPlaceCatalogProvider provider;
     private readonly IRagnaPlaceAuthService auth;
     private readonly IMvpCatalogService catalog;
-    private readonly IMvpRespawnService respawns = new MvpRespawnService();
+    private readonly MvpRespawnService respawns;
     public IntegrationSettings Integration { get; }
     public ObservableCollection<CatalogEntry> Entries { get; } = new();
     public ObservableCollection<CatalogEntry> FavoriteEntries { get; } = new();
@@ -91,6 +91,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     public CatalogViewModel(MainViewModel owner, IRagnaPlaceApiClient? api = null, ICredentialStorageService? credentials = null, Func<DateTimeOffset>? clock = null, Func<string,bool>? confirm = null)
     {
         this.owner = owner;
+        respawns=new(new MvpRespawnCatalog(owner.Store));
         InitializeSimpleFlow(clock,confirm);
         this.credentials = credentials ?? new CredentialStorageService(owner.Store.Root);
         this.api = api ?? new RagnaPlaceApiClient(new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(15) }, this.credentials, new LocalCacheService());
@@ -129,7 +130,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
         FavoriteDeathCommand = Command(() => Register(SelectedFavorite, DateTimeOffset.UtcNow));
         QuickDeathCommand = new RelayCommand(p => { if (p is CatalogEntry e) { SelectedEntry = e; DeathNowCommand.Execute(null); } });
         BrowseCommand = Command(() => { owner.Page = 1; owner.PanelCommand.Execute(null); });
-        RefreshManualEntries();RefreshEntries();
+        RefreshManualEntries();RefreshEntries();ReconcileRespawns();
     }
     public void StoreKey(string key)
     {
@@ -166,15 +167,15 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     private void Register(CatalogEntry? entry, DateTimeOffset death)
     {
         if (entry == null) { Status = "Selecione um MVP do catálogo ou dos favoritos."; return; }
-        var resolved = respawns.Resolve(entry, AcceptGateway);
+        var previous = owner.Engine.Mvps.FirstOrDefault(m => m.CatalogKey == entry.Key);
+        var resolved = ResolveRegistration(entry,previous);
         // A previously adopted operational timer configuration is an explicit user choice,
         // and remains usable from favorites without retaining any raw API response.
-        var previous = owner.Engine.Mvps.FirstOrDefault(m => m.CatalogKey == entry.Key);
-        if (resolved == null && previous != null && MvpRespawnService.Valid(previous.MinMinutes, previous.MaxMinutes)) resolved = (previous.MinMinutes, previous.MaxMinutes, previous.Origin);
-        if (resolved == null) { SelectedEntry = entry; RespawnExpanded = true; NeedsRespawn=true; owner.Page = 1; owner.PanelCommand.Execute(null); Status = "Falta só o tempo de respawn. Preencha e salve abaixo; nome e mapa já estão selecionados."; return; }
-        owner.RegisterCatalogDeath(entry, resolved.Value.Min, resolved.Value.Max, resolved.Value.Origin, death);
+        if (resolved == null && previous is {HasRespawn:true} && MvpRespawnService.Valid(previous.MinMinutes, previous.MaxMinutes)) resolved = (previous.MinMinutes, previous.MaxMinutes, previous.Origin);
+        entry.Retained=true;catalog.SaveChoices();
+        owner.RegisterCatalogDeath(entry, resolved?.Min??0, resolved?.Max??0, resolved?.Origin??"Respawn desconhecido", death,resolved!=null);
         NeedsRespawn=false;
-        Status = "Morte registrada. O timer funciona sem novas consultas à API.";
+        Status = resolved==null?"Morte salva. Respawn não encontrado para este ponto; favoritos e histórico continuam disponíveis.":"Morte registrada. O timer funciona sem novas consultas à API.";
     }
     private void RefreshEntries()
     {

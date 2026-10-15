@@ -33,7 +33,7 @@ public sealed class IntegratedSearchTests
             var c=vm.Catalog;c.Query="Online";await c.SearchIntegratedAsync(false);
             var row=Assert.Single(c.Entries);Assert.True(row.IsSearchCandidate);Assert.Equal(9999,row.MonsterId);Assert.Empty(c.FavoriteEntries);
             await c.SelectOnlineAsync(row,true);var saved=Assert.Single(c.FavoriteEntries);Assert.False(saved.IsSearchCandidate);Assert.Equal("iro",saved.Gateway);Assert.Single(c.CompactFavorites);Assert.Empty(vm.Engine.Mvps);
-            c.SelectedEntry=saved;c.DeathTime="10:32";c.RegisterDeathCommand.Execute(null);Assert.True(c.NeedsRespawn);Assert.Empty(vm.Engine.Mvps);
+            c.SelectedEntry=saved;c.DeathTime="10:32";c.RegisterDeathCommand.Execute(null);Assert.False(c.NeedsRespawn);Assert.Equal(60,Assert.Single(vm.Engine.Mvps).MinMinutes);
             c.RespawnMin=90;c.RespawnMax=120;c.SaveRequiredRespawnCommand.Execute(null);Assert.Equal(90,Assert.Single(vm.Engine.Mvps).MinMinutes);Assert.Single(c.CompactFavorites);
             var keys=new Keys();keys.Delete();var restart=Create(new(),keys,vm.Store.Root);try{var f=Assert.Single(restart.Catalog.FavoriteEntries);Assert.Equal(9999,f.MonsterId);Assert.Contains("RagnaPlace",f.Origin);Assert.Equal(90,f.CustomMin);Assert.Single(restart.Catalog.CompactFavorites);Assert.NotNull(Assert.Single(restart.Engine.Mvps).DeathUtc);}finally{Dispose(restart);}
         }finally{Dispose(vm);}
