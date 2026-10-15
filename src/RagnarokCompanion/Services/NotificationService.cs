@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Media;
+using System.Linq;
 using System.Windows.Forms;
 using RagnarokCompanion.Models;
 using RagnarokCompanion.ViewModels;
@@ -15,11 +16,14 @@ public sealed class NotificationService : IDisposable
     private readonly NotifyIcon tray;
     private readonly MainViewModel vm;
     private readonly ToolStripMenuItem mine = new("Mina"), next = new("Próximo MVP");
-    private readonly ToolStripMenuItem pin = new("Sempre no topo"), sounds = new("Sons");
-    private readonly Queue<HistoryEntry> pending = new();
+    private readonly ToolStripMenuItem pin = new("Sempre no topo"), sounds = new("Sons da mina e MVPs");
+    private sealed record Notification(string Title, string Message, DateTimeOffset? Expires, string? EventId = null);
+    private readonly Queue<Notification> pending = new();
+    private readonly Icon appIcon;
     private readonly System.Windows.Threading.DispatcherTimer delivery = new() { Interval = TimeSpan.FromSeconds(7) };
     private bool disposed;
     public int DeliveredCount { get; private set; }
+    public int PendingCount => pending.Count;
     public NotificationService(MainViewModel viewModel, Action panel, Action compact, Action exit)
     {
         vm = viewModel;
@@ -32,9 +36,12 @@ public sealed class NotificationService : IDisposable
         sounds.Click += (_, _) => { vm.Settings.Sounds = !vm.Settings.Sounds; vm.Save(); Refresh(); };
         menu.Items.Add(sounds); menu.Items.Add(new ToolStripSeparator()); menu.Items.Add("Sair", null, (_, _) => exit());
         menu.Opening += (_, _) => Refresh();
-        tray = new NotifyIcon { Text = "Farmland Companion", Icon = SystemIcons.Information, ContextMenuStrip = menu, Visible = true };
+        using (var stream = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Assets/AppIcon.ico")).Stream)
+        using (var source = new Icon(stream)) appIcon = (Icon)source.Clone();
+        tray = new NotifyIcon { Text = "Farmland Companion", Icon = appIcon, ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => panel(); tray.BalloonTipClicked += (_, _) => panel();
         vm.Engine.Alert += Notify;
+        vm.Events.Schedule.Alert += NotifyEvent;
         delivery.Tick += (_, _) => Deliver();
     }
     public void Refresh()
@@ -47,16 +54,32 @@ public sealed class NotificationService : IDisposable
     }
     private void Notify(HistoryEntry entry)
     {
-        pending.Enqueue(entry);
+        pending.Enqueue(new("Farmland Companion", entry.Message, null));
+        if (!delivery.IsEnabled) { Deliver(); delivery.Start(); }
+    }
+    private void NotifyEvent(EventAlert alert)
+    {
+        pending.Enqueue(new(alert.Title, alert.Message, alert.ExpiresUtc, alert.EventId));
         if (!delivery.IsEnabled) { Deliver(); delivery.Start(); }
     }
     private void Deliver()
     {
         if (pending.Count == 0) { delivery.Stop(); return; }
         var entry = pending.Dequeue();
-        tray.ShowBalloonTip(6000, "Farmland Companion", entry.Message, ToolTipIcon.None);
+        while (entry.Expires <= DateTimeOffset.UtcNow || (entry.EventId != null && (!vm.Events.Enabled || !vm.Events.Repository.Events.Any(e => e.Id == entry.EventId && e.Enabled && e.AlertsEnabled))))
+        {
+            if (pending.Count == 0) { delivery.Stop(); return; }
+            entry = pending.Dequeue();
+        }
+        string message = entry.Message;
+        if (entry.Expires is { } expires)
+        {
+            var remaining = expires - DateTimeOffset.UtcNow;
+            message = System.Text.RegularExpressions.Regex.Replace(message, @"Faltam \d+:\d+", $"Faltam {(int)remaining.TotalMinutes:00}:{remaining.Seconds:00}");
+        }
+        tray.ShowBalloonTip(6000, entry.Title, message, ToolTipIcon.None);
         DeliveredCount++;
-        if (vm.Settings.Sounds) SystemSounds.Asterisk.Play();
+        if (entry.EventId == null ? vm.Settings.Sounds : vm.Events.Sounds) SystemSounds.Asterisk.Play();
     }
-    public void Dispose() { if (disposed) return; disposed = true; delivery.Stop(); vm.Engine.Alert -= Notify; tray.Visible = false; tray.Dispose(); }
+    public void Dispose() { if (disposed) return; disposed = true; delivery.Stop(); vm.Engine.Alert -= Notify; vm.Events.Schedule.Alert -= NotifyEvent; tray.Visible = false; tray.Dispose(); appIcon.Dispose(); }
 }

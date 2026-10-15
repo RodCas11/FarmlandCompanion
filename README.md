@@ -22,6 +22,27 @@ Em **SpotLight**, selecione o grupo informado no jogo para ver todos os mapas. P
 
 O catálogo vem da [wiki oficial Farmland](https://farmland.net.br/wiki/index.php/SpotLight), é salvo localmente após a primeira consulta e funciona offline. A distribuição não inclui uma cópia do catálogo completo, pois a fonte não declara licença de redistribuição. Consulte [docs/SPOTLIGHT.md](docs/SPOTLIGHT.md) para origem, contagens e limitações.
 
+## Eventos e notificações
+
+A tela **Eventos** mostra o próximo evento, contagem regressiva, agenda do dia em ordem cronológica e controles de alertas. Os horários iniciais foram fornecidos pela administração no pedido de implementação; o aplicativo não consulta o servidor para confirmar atividade ou alterações.
+
+| Evento | Horários diários | Avisos padrão |
+|---|---|---|
+| 👻 Fantasminhas Dudu | 00:30, 05:30, 10:30, 15:30, 20:30, 22:30 | 00:25, 05:25, 10:25, 15:25, 20:25, 22:25 |
+| ⚔ KVM: Batalha de Midgard | Aberturas às 20:00 e 22:00 | 19:55 e 21:55 |
+
+O Dudu acontece em mapa sorteado pelo servidor no momento do evento; o aplicativo não prevê o mapa. O KVM informa a **abertura**, sem presumir o início do combate: times Vermelho e Azul, taxa de 50.000z e acesso pelo botão Batalhas Campais. Os detalhes de cada evento aparecem ao passar o mouse na agenda e no editor.
+
+O fuso inicial é **America/Sao_Paulo**, configurável em **Configurações → Notificações de eventos** ou na própria tela Eventos. Ative/desative todos os avisos, Dudu e KVM individualmente, sons e a exibição no compacto. Escolha uma ou mais antecedências: **1, 5, 10, 15 ou 30 minutos**; o padrão é 5. Em **Gerenciar eventos**, edite horários, nome, descrição, ícone e antecedências próprias, desative eventos oficiais ou cadastre eventos personalizados. Os oficiais são identificados separadamente e não podem ser excluídos. Atualizações futuras dos padrões locais preservam preferências e horários que você personalizou.
+
+O agendador usa o tick central do aplicativo e recalcula ocorrências pela data e pelo fuso do servidor. Funciona com a janela visível, compacta, minimizada ou na bandeja. Abrir ou retomar o app durante uma janela de aviso permite um único alerta com o tempo restante; antecedências ultrapassadas não são disparadas em sequência. Eventos já iniciados são ignorados. Cada ocorrência e antecedência é registrada antes do envio para evitar repetição após reinício ou mudança do relógio. O histórico mantém ocorrências recentes e é limpo gradualmente após 30 dias.
+
+Os avisos usam a **notificação nativa do Windows**, com o ícone do aplicativo, símbolo e nome do evento, horário e tempo restante. Podem ser dispensados pelos controles do Windows e compartilham a fila dos alertas de mina/MVPs. A aparência, o fechamento e a exibição seguem o sistema operacional; não há uma janela WPF sobre o jogo nem um botão próprio “Entendi”. Sons dos eventos têm controle separado. Foco/Não incomodar e tela cheia exclusiva podem ocultar os avisos. O app não instala serviço ou tarefa agendada: **encerrado completamente, não emite alertas**.
+
+Os arquivos `events.json`, `event-settings.json` e `event-notification-history.json` ficam em **`%APPDATA%\FarmlandCompanion\`**, com escrita atômica e backup. Os dados anteriores de mineração/MVPs/Spotlight e a chave DPAPI permanecem em `%APPDATA%\RagnarokCompanion\`, sem migração destrutiva. O histórico registra encaminhamento à fila do Windows, não comprova que o usuário viu o aviso. Nenhum desses dados pessoais é incluído no ZIP ou no Git.
+
+O ícone original do Companion é incorporado no executável, na janela/barra de tarefas e na bandeja. A arte vetorial fica em `src/RagnarokCompanion/Assets/AppIcon.xaml`; `build/Generate-AppIcon.ps1` regenera o ICO nas resoluções 16–256 px. Não usa imagens do jogo.
+
 ## RagnaPlace e catálogo
 
 Ainda não tem uma chave? Veja o [guia para criar sua conta, solicitar a API key e configurá-la no aplicativo](docs/RAGNAPLACE_API.md#como-obter-e-configurar-sua-chave-api).
@@ -103,13 +124,13 @@ Start-Process ./dist/latest/FarmlandCompanion.exe -ArgumentList '--smoke-test' -
 Get-Content "$env:TEMP/RagnarokCompanion-validation/smoke-test.txt"
 ```
 
-Gera relatório e PNGs fora da distribuição, em `%TEMP%\RagnarokCompanion-validation` (ou no diretório passado em `--smoke-output=CAMINHO`). Exercita cinco páginas, Spotlight, modos da mesma janela, timers, bandeja, recuperação de posição, favoritos, configuração Farmland, persistência e envio de notificação nativa. Os testes HTTP usam mocks e não consomem a API real.
+Gera relatório e PNGs fora da distribuição, em `%TEMP%\RagnarokCompanion-validation` (ou no diretório passado em `--smoke-output=CAMINHO`). Exercita seis páginas, Eventos, Spotlight, modos da mesma janela, timers, bandeja, recuperação de posição, favoritos, configuração Farmland, persistência e envio de notificação nativa. Os testes HTTP usam mocks e não consomem a API real.
 
 A integração é coberta por testes HTTP simulados. Para confirmar a conta sem alterar timers ou preferências, use Configurações → Conexão com o RagnaPlace → Testar conexão autenticada, ou execute o aplicativo com --check-ragnaplace. O diagnóstico usa a chave DPAPI já armazenada, valida o gateway Renewal, faz uma busca e consulta detalhes de um MVP, com até três requisições limitadas e sem exibir credenciais. O resultado fica em %TEMP%\RagnarokCompanion-validation\ragnaplace-check.txt, ou no arquivo passado em --check-output=CAMINHO. O teste de publicação nunca usa a API real.
 
 ## Interface simplificada
 
-A navegação tem Início, MVPs, Histórico, Configurações e SpotLight. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura ao número de timers e restaura o tamanho anterior ao expandir.
+A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Eventos. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura ao número de timers e restaura o tamanho anterior ao expandir.
 
 ## Publicação: somente latest
 

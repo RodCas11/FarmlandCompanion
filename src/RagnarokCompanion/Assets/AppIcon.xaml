@@ -1,0 +1,12 @@
+<DrawingImage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+ <DrawingImage.Drawing><DrawingGroup>
+  <GeometryDrawing Brush="#121725" Geometry="M 52,4 L 204,4 Q 252,4 252,52 L 252,204 Q 252,252 204,252 L 52,252 Q 4,252 4,204 L 4,52 Q 4,4 52,4 Z"/>
+  <GeometryDrawing Brush="#A58AEF"><GeometryDrawing.Geometry><EllipseGeometry Center="184,70" RadiusX="25" RadiusY="25"/></GeometryDrawing.Geometry></GeometryDrawing>
+  <GeometryDrawing Brush="#466E66" Geometry="M 26,196 L 98,91 L 170,196 Z"/>
+  <GeometryDrawing Brush="#71B69A" Geometry="M 88,196 L 152,117 L 226,196 Z"/>
+  <GeometryDrawing Brush="#E8D9AA" Geometry="M 98,91 L 74,126 L 98,117 L 116,127 Z"/>
+  <GeometryDrawing Brush="#E5B96E" Geometry="M 73,207 L 63,197 L 162,84 L 173,94 Z"/>
+  <GeometryDrawing Brush="#EDF0FA" Geometry="M 115,80 Q 166,48 213,107 L 195,100 Q 166,77 128,92 Z"/>
+  <GeometryDrawing Brush="#A58AEF" Geometry="M 28,218 L 228,218 L 228,227 L 28,227 Z"/>
+ </DrawingGroup></DrawingImage.Drawing>
+</DrawingImage>

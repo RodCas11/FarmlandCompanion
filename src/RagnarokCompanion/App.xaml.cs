@@ -60,7 +60,9 @@ public partial class App : Application
         {
             var store = new PersistenceService(smoke ? Path.Combine(Path.GetTempPath(), "RagnarokCompanion-Smoke-" + Guid.NewGuid()) : null);
             if (smoke) store.Save("spotlight-catalog.json", SpotlightDiagnostics.Synthetic());
-            vm = new(store); windows = new(vm, Quit); MainWindow = windows.Panel;
+            vm = new(store);
+            if (smoke) vm.Events.Enabled = false;
+            windows = new(vm, Quit); MainWindow = windows.Panel;
             notifications = new(vm, windows.ShowPanel, windows.ShowCompact, Quit);
             settingsSave.Tick += (_, _) =>
             {
@@ -87,7 +89,8 @@ public partial class App : Application
         string report = Path.Combine(smokeOutput, "smoke-test.txt");
         try
         {
-            vm!.Settings.CompactOnTimer = false;
+            vm!.Events.Enabled = false;
+            vm.Settings.CompactOnTimer = false;
             vm.Settings.Sounds = false;
             vm.EditName = "Freeoni"; vm.EditMap = "moc_fild17"; vm.EditMin = 60; vm.EditMax = 90; vm.SaveMvpCommand.Execute(null);
             vm.KillCommand.Execute(vm.Rows[0]);
@@ -116,10 +119,12 @@ public partial class App : Application
             vm.Catalog.Gateways.Add(new Models.Gateway { Slug = "iro", Groups = new[] { "renewal" } }); vm.Catalog.GatewaySlug = "iro";
             vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.Last();
             SpotlightDiagnostics.Verify(SpotlightDiagnostics.Synthetic());
-            for (int p = 0; p < 5; p++)
+            for (int p = 0; p < 6; p++)
             {
                 vm.Page = p; windows.Panel.UpdateLayout();
                 Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); windows.Panel.UpdateLayout();
+                if ((p == 0 || p == 5) && !VisualTexts(windows.Panel).Contains(vm.Events.NextName)) throw new Exception("Card de eventos ausente");
+                if (windows.Panel.Icon == null) throw new Exception("Ícone do aplicativo ausente");
                 if (p == 4 && VisualElements<DataGrid>(windows.Panel).Single().Columns.Any(c => c.ActualWidth < 50)) throw new Exception("Colunas Spotlight ilegíveis");
                 Capture(windows.Panel, Path.Combine(smokeOutput, $"smoke-page-{p}.png"));
             }
@@ -143,11 +148,24 @@ public partial class App : Application
             vm.Engine.StartMining(DateTimeOffset.UtcNow.AddMinutes(-31));
             vm.Tick();
             if (notifications!.DeliveredCount != 1) throw new Exception("Notificação nativa não foi despachada");
+            windows.Panel.Hide();
+            vm.Events.Repository.Settings.Enabled = true;
+            var nextEvent = vm.Events.Schedule.Upcoming(DateTimeOffset.UtcNow).First();
+            var alertTime = nextEvent.StartUtc.AddMinutes(-5);
+            vm.Events.Schedule.Evaluate(alertTime);
+            windows.Panel.Show(); windows.Panel.WindowState = WindowState.Minimized;
+            vm.Events.Schedule.Evaluate(alertTime);
+            if (notifications.PendingCount != 1) throw new Exception("Alerta de evento oculto duplicado ou ausente");
+            windows.Panel.WindowState = WindowState.Normal;
+            vm.Events.Repository.Settings.Enabled = false;
+            windows.ShowCompact(); windows.FitCompact();
+            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextName)) throw new Exception("Próximo evento ausente no compacto");
+            if (Windows.Count != 1) throw new Exception("Eventos criou segunda janela");
             var restarted = new MainViewModel(new PersistenceService(vm.Store.Root));
             if (restarted.MiningStatus != "Cooldown" || restarted.Engine.Mvps.Count != 3) throw new Exception("Persistência de reinício divergiu");
             if (restarted.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito offline não restaurado");
             restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
-            File.WriteAllText(report, "PASS: WPF startup; five navigation pages; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render five pages; compact auto height; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; hidden-window event notification queued once; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }

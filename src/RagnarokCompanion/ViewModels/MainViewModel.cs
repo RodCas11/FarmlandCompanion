@@ -50,6 +50,7 @@ public sealed class MainViewModel : Observable
 {
     public CatalogViewModel Catalog { get; }
     public SpotlightViewModel Spotlight { get; }
+    public EventViewModel Events { get; }
     public TimerService Engine { get; }
     public PersistenceService Store { get; }
     public Settings Settings => Engine.Settings;
@@ -135,6 +136,7 @@ public sealed class MainViewModel : Observable
         Engine = new(settings, mining, mvps, history);
         Catalog = new CatalogViewModel(this);
         Spotlight = new SpotlightViewModel(store);
+        Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");
         StartMiningCommand = Cmd(_ => { if (Engine.Phase(DateTimeOffset.UtcNow) != MiningPhase.Available) { Tell("A mina está em um ciclo. Use corrigir ou reiniciar."); return; } Engine.StartMining(DateTimeOffset.UtcNow); Commit(); AutoCompact(); });
         ResetMiningCommand = Cmd(_ => { Engine.ResetMining(DateTimeOffset.UtcNow); Commit(); });
@@ -177,6 +179,7 @@ public sealed class MainViewModel : Observable
     }
     public void Tick()
     {
+        Events.Tick();
         Spotlight.Tick();
         if (Engine.Evaluate(DateTimeOffset.UtcNow)) Save();
         Refresh();

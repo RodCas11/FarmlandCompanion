@@ -1,0 +1,40 @@
+<UserControl x:Class="RagnarokCompanion.Views.EventsView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:RagnarokCompanion.Views">
+ <ScrollViewer VerticalScrollBarVisibility="Auto"><StackPanel>
+  <TextBlock Text="Eventos" Style="{StaticResource Title}"/>
+  <Border Style="{StaticResource Card}" Margin="0,0,0,16"><StackPanel>
+   <TextBlock Text="PRÓXIMO EVENTO" FontSize="11" Foreground="#A58AEF"/>
+   <TextBlock Text="{Binding NextName}" FontSize="24" FontWeight="SemiBold" Margin="0,8" TextWrapping="Wrap"/>
+   <TextBlock Text="{Binding NextTiming}"/><TextBlock Text="{Binding Countdown}" FontFamily="Consolas" FontSize="36" Foreground="#71C8F4" Margin="0,4"/>
+   <TextBlock Text="{Binding AlertStatus}" Style="{StaticResource Muted}"/>
+   <Button Content="{Binding ToggleLabel}" Command="{Binding ToggleCommand}" HorizontalAlignment="Left"/>
+  </StackPanel></Border>
+  <TextBlock Text="EVENTOS DO DIA" FontSize="13" FontWeight="SemiBold"/>
+  <TextBlock Text="{Binding ZoneLabel}" Style="{StaticResource Muted}"/>
+  <TextBlock Text="Nenhum evento habilitado para hoje." Style="{StaticResource Muted}" Visibility="{Binding NoToday, Converter={StaticResource BoolVisibility}}"/><ItemsControl ItemsSource="{Binding Today}"><ItemsControl.ItemTemplate><DataTemplate>
+   <Border Background="#181D2C" CornerRadius="7" Padding="12,8" Margin="0,0,0,5" ToolTip="{Binding Event.Description}"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="65"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+    <TextBlock Text="{Binding Time}" FontFamily="Consolas" Foreground="#BEA7FF"/>
+    <StackPanel Grid.Column="1"><TextBlock Text="{Binding Title}" FontWeight="SemiBold"/><TextBlock Text="{Binding Timing}" Foreground="#9AA6BF" FontSize="11"/></StackPanel>
+    <TextBlock Grid.Column="2" Text="{Binding State}" FontSize="11" Foreground="#9AA6BF"/>
+   </Grid></Border>
+  </DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
+  <Expander Header="Alertas e fuso do servidor" Margin="0,14"><Border Style="{StaticResource Card}" Margin="0"><views:EventSettingsView/></Border></Expander>
+  <Expander Header="Gerenciar eventos" Margin="0,10"><StackPanel>
+   <TextBlock Text="Eventos oficiais e personalizados" FontSize="18"/>
+   <TextBlock Text="Os oficiais podem ser editados e desativados. Novos padrões do aplicativo preservam seus horários personalizados e preferências." Style="{StaticResource Muted}"/>
+   <ListBox ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEvent}" MaxHeight="170"><ListBox.ItemTemplate><DataTemplate><StackPanel><TextBlock Text="{Binding Name}"/><TextBlock FontSize="10" Foreground="#9AA6BF" Text="{Binding Origin}"/></StackPanel></DataTemplate></ListBox.ItemTemplate></ListBox>
+   <WrapPanel><Button Content="Novo evento" Command="{Binding NewCommand}"/><Button Content="Editar selecionado" Command="{Binding EditCommand}"/><Button Content="Excluir personalizado" Command="{Binding DeleteCommand}"/></WrapPanel>
+   <Expander Header="Cadastro e edição" IsExpanded="{Binding EditorExpanded}"><StackPanel>
+    <TextBlock Text="Nome"/><TextBox Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}" MaxLength="120"/>
+    <TextBlock Text="Descrição"/><TextBox Text="{Binding EditDescription, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" Height="90" MaxLength="4000" VerticalScrollBarVisibility="Auto"/>
+    <TextBlock Text="Horários diários • HH:mm separados por vírgulas"/><TextBox Text="{Binding EditTimes, UpdateSourceTrigger=PropertyChanged}"/>
+    <TextBlock Text="Ícone"/><ComboBox ItemsSource="{Binding Icons}" SelectedItem="{Binding EditIcon}"/>
+    <WrapPanel><CheckBox Content="Evento habilitado" IsChecked="{Binding EditEnabled}"/><CheckBox Content="Alertas deste evento" IsChecked="{Binding EditAlerts}"/><CheckBox Content="Horário de abertura (inscrições)" IsChecked="{Binding EditOpening}"/></WrapPanel>
+    <CheckBox Content="Usar antecedências gerais" IsChecked="{Binding EditGlobalAdvances}"/>
+    <TextBlock Text="Antecedências próprias • 1, 5, 10, 15 ou 30 minutos, separados por vírgulas" Style="{StaticResource Muted}"/>
+    <TextBox Text="{Binding EditAdvances, UpdateSourceTrigger=PropertyChanged}"/>
+    <Button Content="Salvar evento" Command="{Binding SaveEventCommand}" Style="{StaticResource Primary}" HorizontalAlignment="Left"/>
+   </StackPanel></Expander>
+  </StackPanel></Expander>
+  <TextBlock Text="{Binding Message}" Style="{StaticResource Muted}" TextWrapping="Wrap"/>
+ </StackPanel></ScrollViewer>
+</UserControl>

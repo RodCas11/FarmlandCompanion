@@ -9,10 +9,12 @@ namespace RagnarokCompanion.Services;
 public sealed class PersistenceService
 {
     public string Root { get; }
+    public bool IsDefaultLocation { get; }
     public List<string> Warnings { get; } = new();
     private static readonly JsonSerializerOptions Json = new() { WriteIndented = true };
     public PersistenceService(string? root = null)
     {
+        IsDefaultLocation = root == null;
         Root = root ?? Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "RagnarokCompanion");
         Directory.CreateDirectory(Root);
     }

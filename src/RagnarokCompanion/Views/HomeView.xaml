@@ -15,7 +15,8 @@
     <TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" FontSize="11" Margin="0,8,0,0"/>
    </StackPanel></Border>
   </Grid>
-  <TextBlock Text="Próximos eventos" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,12"/>
+  <Button Command="{Binding NavigateCommand}" CommandParameter="5" Background="#181D2C" HorizontalContentAlignment="Stretch" Margin="0,0,0,16" ToolTip="Abrir eventos"><StackPanel DataContext="{Binding Events}" HorizontalAlignment="Left"><TextBlock Text="PRÓXIMO EVENTO DO SERVIDOR ↗" FontSize="10" Foreground="#A58AEF"/><TextBlock Text="{Binding NextName}" FontSize="19" FontWeight="SemiBold"/><WrapPanel><TextBlock Text="{Binding NextTiming}" Margin="0,0,20,0"/><TextBlock Text="{Binding Countdown}" FontFamily="Consolas" Foreground="#71C8F4"/></WrapPanel><TextBlock Text="{Binding AlertStatus}" FontSize="11" Foreground="#9AA6BF"/></StackPanel></Button>
+  <TextBlock Text="Próximos timers" FontSize="20" FontWeight="SemiBold" Margin="0,4,0,12"/>
   <TextBlock Text="Nenhum evento agendado. Inicie a mina ou registre uma morte." Style="{StaticResource Muted}" Visibility="{Binding NoEvents, Converter={StaticResource BoolVisibility}}"/>
   <ItemsControl ItemsSource="{Binding UpcomingEvents}"><ItemsControl.ItemTemplate><DataTemplate><Border Background="#181D2C" Padding="14,10" CornerRadius="8" Margin="0,0,0,6"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="56"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding Time}" Foreground="{Binding Color}" FontFamily="Consolas"/><StackPanel Grid.Column="1"><TextBlock Text="{Binding Title}" FontWeight="SemiBold"/><TextBlock Text="{Binding Status}" Foreground="#9AA6BF" FontSize="11"/></StackPanel><TextBlock Grid.Column="2" Text="{Binding Remaining}" Foreground="{Binding Color}" FontFamily="Consolas" FontSize="19"/></Grid></Border></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
  </StackPanel></ScrollViewer>

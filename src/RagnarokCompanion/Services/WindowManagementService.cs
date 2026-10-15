@@ -30,6 +30,7 @@ public sealed class WindowManagementService
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.ExpandedEvent, new RoutedEventHandler((_, _) => QueueFit()));
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.CollapsedEvent, new RoutedEventHandler((_, _) => QueueFit()));
         vm.Spotlight.PropertyChanged += (_, e) => { if (e.PropertyName is "ShowCompact" or "Summary") QueueFit(); };
+        vm.Events.PropertyChanged += (_, e) => { if (e.PropertyName is "ShowCompact" or "NextName") QueueFit(); };
         vm.CompactRows.CollectionChanged += (_, _) => QueueFit();
         vm.PropertyChanged += (_, e) => { if (e.PropertyName is nameof(vm.ShowMining) or nameof(vm.MiningAvailable)) QueueFit(); };
         Panel.Loaded += (_, _) => EnsureVisible(Panel);
