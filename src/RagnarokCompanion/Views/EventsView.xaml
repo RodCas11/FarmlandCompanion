@@ -28,7 +28,7 @@
     <TextBlock Text="Descrição"/><TextBox Text="{Binding EditDescription, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" TextWrapping="Wrap" Height="90" MaxLength="4000" VerticalScrollBarVisibility="Auto"/>
     <TextBlock Text="Horários diários • HH:mm separados por vírgulas"/><TextBox Text="{Binding EditTimes, UpdateSourceTrigger=PropertyChanged}"/>
     <TextBlock Text="Ícone"/><ComboBox ItemsSource="{Binding Icons}" SelectedItem="{Binding EditIcon}"/>
-    <WrapPanel><CheckBox Content="Evento habilitado" IsChecked="{Binding EditEnabled}"/><CheckBox Content="Alertas deste evento" IsChecked="{Binding EditAlerts}"/><CheckBox Content="Horário de abertura (inscrições)" IsChecked="{Binding EditOpening}"/></WrapPanel>
+    <WrapPanel><CheckBox Content="Evento habilitado" IsChecked="{Binding EditEnabled}"/><CheckBox Content="Alertas deste evento" IsChecked="{Binding EditAlerts}"/><CheckBox Content="Som deste evento" IsChecked="{Binding EditSounds}"/><CheckBox Content="Horário de abertura (inscrições)" IsChecked="{Binding EditOpening}"/></WrapPanel>
     <CheckBox Content="Usar antecedências gerais" IsChecked="{Binding EditGlobalAdvances}"/>
     <TextBlock Text="Antecedências próprias • 1, 5, 10, 15 ou 30 minutos, separados por vírgulas" Style="{StaticResource Muted}"/>
     <TextBox Text="{Binding EditAdvances, UpdateSourceTrigger=PropertyChanged}"/>

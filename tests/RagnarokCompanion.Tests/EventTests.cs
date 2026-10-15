@@ -6,7 +6,12 @@ namespace RagnarokCompanion.Tests;
 
 public sealed class EventTests
 {
-    static EventRepository Repo() => new(Path.Combine(Path.GetTempPath(), "Farmland-events-tests-" + Guid.NewGuid()));
+    // Keep these legacy scenarios focused on Dudu/KVM. Mare/grouping has its own suite.
+    static EventRepository Repo(string? root=null)
+    {
+        var repository=new EventRepository(root??Path.Combine(Path.GetTempPath(), "Farmland-events-tests-" + Guid.NewGuid()));
+        repository.Events.RemoveAll(e=>e.OfficialId=="mare-infernal");return repository;
+    }
     static DateTimeOffset Server(int hour, int minute, int day=15, int second=0) => new(2026,10,day,hour,minute,second,TimeSpan.FromHours(-3));
     [Theory]
     [InlineData(0,30)] [InlineData(5,30)] [InlineData(10,30)] [InlineData(15,30)] [InlineData(20,30)] [InlineData(22,30)]
@@ -34,7 +39,7 @@ public sealed class EventTests
     {
         var repo=Repo();var engine=new EventScheduleService(repo);var alerts=new List<EventAlert>();engine.Alert+=alerts.Add;
         engine.Evaluate(Server(10,27,second:12));Assert.Contains("Faltam 02:48",Assert.Single(alerts).Message);
-        var reload=new EventScheduleService(new EventRepository(repo.Store.Root));reload.Alert+=alerts.Add;reload.Evaluate(Server(10,28));Assert.Single(alerts);
+        var reload=new EventScheduleService(Repo(repo.Store.Root));reload.Alert+=alerts.Add;reload.Evaluate(Server(10,28));Assert.Single(alerts);
         engine.Evaluate(Server(10,30));Assert.Single(alerts);
     }
     [Fact] public void SuspensionSkipsPastEventsAndCatchesUpOnlyClosestThreshold()
@@ -64,7 +69,7 @@ public sealed class EventTests
     {
         var repo=Repo();repo.Settings.TimeZoneId="UTC";
         repo.Events.Add(new(){Id="custom",Name="Teste",Times=new(){"12:00"},UseGlobalAdvances=false,AdvanceMinutes=new(){1}});repo.Save();
-        var restored=new EventRepository(repo.Store.Root);var engine=new EventScheduleService(restored);var alerts=new List<EventAlert>();engine.Alert+=alerts.Add;
+        var restored=Repo(repo.Store.Root);var engine=new EventScheduleService(restored);var alerts=new List<EventAlert>();engine.Alert+=alerts.Add;
         var utc=new DateTimeOffset(2026,10,15,11,55,0,TimeSpan.Zero);engine.Evaluate(utc);Assert.Empty(alerts);engine.Evaluate(utc.AddMinutes(4));Assert.Contains("Teste",Assert.Single(alerts).Title);
         Assert.Equal("UTC",restored.Settings.TimeZoneId);Assert.True(EventScheduleService.TryZone("America/Sao_Paulo",out _));Assert.False(EventScheduleService.TryZone("Not/AZone",out _));
     }
@@ -81,13 +86,13 @@ public sealed class EventTests
         vm.NewCommand.Execute(null);vm.EditName="Customizado";vm.EditTimes="19:56, 23:15";vm.EditDescription="Descrição";vm.EditIcon="★";vm.SaveEventCommand.Execute(null);
         Assert.Contains("Customizado",vm.NextName);Assert.Equal(10,vm.Today.Count);vm.ShowCompact=false;vm.DuduAlerts=false;vm.Sounds=false;
         vm.AdvanceOptions.Single(a=>a.Minutes==10).Selected=true;vm.TimeZoneInput="UTC";vm.SaveZoneCommand.Execute(null);
-        var reload=new EventRepository(repo.Store.Root);Assert.False(reload.Settings.ShowCompact);Assert.False(reload.Settings.Sounds);Assert.False(reload.Events.Single(e=>e.OfficialId=="dudu").AlertsEnabled);Assert.Contains(10,reload.Settings.AdvanceMinutes);Assert.Contains(reload.Events,e=>e.Name=="Customizado");
+        var reload=Repo(repo.Store.Root);Assert.False(reload.Settings.ShowCompact);Assert.False(reload.Settings.Sounds);Assert.False(reload.Events.Single(e=>e.OfficialId=="dudu").AlertsEnabled);Assert.Contains(10,reload.Settings.AdvanceMinutes);Assert.Contains(reload.Events,e=>e.Name=="Customizado");
         var count=repo.Events.Count;vm.EditTimes="25:00";vm.SaveEventCommand.Execute(null);Assert.Equal(count,repo.Events.Count);Assert.Contains("válidos",vm.Message);
     }
     [Fact] public void CorruptEventsRecoverBackupAndDoNotDuplicateOfficialRecords()
     {
         var repo=Repo();repo.Settings.Enabled=false;repo.Save();File.WriteAllText(Path.Combine(repo.Store.Root,"events.json"),"broken");
-        var reload=new EventRepository(repo.Store.Root);Assert.Equal(2,reload.Events.Count);Assert.False(reload.Settings.Enabled);Assert.NotEmpty(reload.Store.Warnings);
+        var reload=Repo(repo.Store.Root);Assert.Equal(2,reload.Events.Count);Assert.False(reload.Settings.Enabled);Assert.NotEmpty(reload.Store.Warnings);
     }
     [Fact] public void NotificationHistoryRemovesOnlyOldOccurrencesWhenSaving()
     {

@@ -11,6 +11,7 @@ public sealed class EventScheduleService
 {
     private readonly EventRepository repository;
     public event Action<EventAlert>? Alert;
+    public event Action<IReadOnlyList<EventAlert>>? AlertBatch;
     public EventScheduleService(EventRepository repository) => this.repository = repository;
     public static bool TryZone(string? id, out TimeZoneInfo zone)
     {
@@ -54,14 +55,14 @@ public sealed class EventScheduleService
                 string key = occurrence.Event.Id + ":" + occurrence.StartUtc.UtcTicks + ":" + lead;
                 if (!records.Add(key)) continue;
                 bool send = lead == closest;
-                repository.History.Add(new() { Key=key, OccurrenceUtc=occurrence.StartUtc, RecordedUtc=now, Status=send ? "Encaminhado ao Windows" : "Antecedência ultrapassada" });
+                repository.History.Add(new() { Key=key, EventId=occurrence.Event.Id, EventName=occurrence.Event.Name, AdvanceMinutes=lead, OccurrenceUtc=occurrence.StartUtc, RecordedUtc=now, Status=send ? "Encaminhado ao Windows" : "Antecedência ultrapassada" });
                 changed = true;
                 if (send)
                 {
                     var remaining = occurrence.StartUtc - now;
                     string action = occurrence.Event.IsOpening ? "abre" : "começa";
                     string message = $"{occurrence.Event.Name} {action} às {occurrence.Time} (fuso {repository.Settings.TimeZoneId}). Faltam {(int)remaining.TotalMinutes:00}:{remaining.Seconds:00}. Prepare-se para o evento.";
-                    alerts.Add(new(key, occurrence.Event.Id, occurrence.Title, message, repository.Settings.Sounds, occurrence.StartUtc));
+                    alerts.Add(new(key, occurrence.Event.Id, occurrence.Title, message, repository.Settings.Sounds && occurrence.Event.SoundsEnabled, occurrence.StartUtc));
                 }
             }
         }
@@ -70,5 +71,6 @@ public sealed class EventScheduleService
         // Persist before handing off; restart/clock rollback cannot replay an occurrence.
         repository.SaveHistory();
         foreach (var alert in alerts) Alert?.Invoke(alert);
+        foreach (var group in alerts.GroupBy(a => a.ExpiresUtc)) AlertBatch?.Invoke(group.ToArray());
     }
 }

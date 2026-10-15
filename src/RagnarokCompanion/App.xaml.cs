@@ -152,24 +152,28 @@ public partial class App : Application
             if (notifications!.DeliveredCount != 1) throw new Exception("Notificação nativa não foi despachada");
             windows.Panel.Hide();
             vm.Events.Repository.Settings.Enabled = true;
-            var nextEvent = vm.Events.Schedule.Upcoming(DateTimeOffset.UtcNow).First();
+            var nextEvent = vm.Events.Schedule.Upcoming(DateTimeOffset.UtcNow).First(e=>e.Event.OfficialId=="mare-infernal" && e.ServerTime.Hour is 0 or 10 or 20 or 22);
             var alertTime = nextEvent.StartUtc.AddMinutes(-5);
+            int groupedMembers=0;
+            void ObserveGroup(IReadOnlyList<Models.EventAlert> alerts) => groupedMembers=alerts.Count;
+            vm.Events.Schedule.AlertBatch += ObserveGroup;
             vm.Events.Schedule.Evaluate(alertTime);
             windows.Panel.Show(); windows.Panel.WindowState = WindowState.Minimized;
             vm.Events.Schedule.Evaluate(alertTime);
-            if (notifications.PendingCount != 1) throw new Exception("Alerta de evento oculto duplicado ou ausente");
+            if (notifications.PendingCount != 1 || groupedMembers != 2) throw new Exception("Aviso simultâneo minimizado não foi agrupado em um único popup");
+            vm.Events.Schedule.AlertBatch -= ObserveGroup;
             windows.Panel.WindowState = WindowState.Normal;
             vm.Events.Repository.Settings.Enabled = false;
             vm.ActiveCompactTab = Models.CompactTab.Events;
             windows.ShowCompact(); windows.FitCompact();
-            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextDudu!.Timing) || !VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextKvm!.Timing)) throw new Exception("Horários dos eventos ausentes no compacto");
+            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.CompactUpcoming[0].Occurrence.Title) || !vm.Events.CompactUpcoming.Any(r=>r.Occurrence.Event.OfficialId=="mare-infernal")) throw new Exception("Eventos cronológicos ou Maré Infernal ausentes no compacto");
             if (Windows.Count != 1) throw new Exception("Eventos criou segunda janela");
             var restarted = new MainViewModel(new PersistenceService(vm.Store.Root));
             if (restarted.MiningStatus != "Cooldown" || restarted.Engine.Mvps.Count != 3) throw new Exception("Persistência de reinício divergiu");
             if (restarted.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito offline não restaurado");
             if (restarted.ActiveCompactTab != Models.CompactTab.Events) throw new Exception("Aba compacta não restaurada");
             restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
-            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; hidden-window event notification queued once; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; scroll all MVPs; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; scroll all MVPs; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -192,7 +196,7 @@ public partial class App : Application
                 if(bounds.Left < -1 || bounds.Right > panel.CompactContent.ActualWidth+1 || bounds.Bottom > panel.CompactContent.ActualHeight+1)throw new Exception("Abas cortadas");
             }
             var texts=VisualTexts(panel.CompactContent).ToList();
-            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains("👻 Fantasminhas Dudu")!=(tab==Models.CompactTab.Events) || texts.Contains("Freeoni")!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
+            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains(model.Events.CompactUpcoming[0].Occurrence.Title)!=(tab==Models.CompactTab.Events) || texts.Contains("Freeoni")!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
             if(tab==Models.CompactTab.Mvps)
             {
                 var scroller=VisualElements<ScrollViewer>(panel.CompactContent).Single(s=>s.Name=="MvpScroller");

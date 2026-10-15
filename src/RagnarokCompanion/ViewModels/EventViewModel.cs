@@ -23,6 +23,7 @@ public sealed class EventViewModel : Observable
     public ObservableCollection<EventOccurrence> Today { get; } = new();
     public ObservableCollection<ScheduledEvent> Entries { get; } = new();
     public ObservableCollection<EventAdvanceOption> AdvanceOptions { get; } = new();
+    public ObservableCollection<CompactEventRow> CompactUpcoming { get; } = new();
     public EventOccurrence? Next { get; private set; }
     public EventOccurrence? Following { get; private set; }
     public EventOccurrence? NextDudu { get; private set; }
@@ -40,9 +41,10 @@ public sealed class EventViewModel : Observable
     public bool ShowCompact { get => Repository.Settings.ShowCompact; set { Repository.Settings.ShowCompact=value;SavePreferences();Changed(); } }
     public bool DuduAlerts { get => Repository.Events.First(e=>e.OfficialId=="dudu").AlertsEnabled; set { Repository.Events.First(e=>e.OfficialId=="dudu").AlertsEnabled=value;Repository.SaveEvents();Changed();Refresh(); } }
     public bool KvmAlerts { get => Repository.Events.First(e=>e.OfficialId=="kvm").AlertsEnabled; set { Repository.Events.First(e=>e.OfficialId=="kvm").AlertsEnabled=value;Repository.SaveEvents();Changed();Refresh(); } }
+    public bool MareAlerts { get => Repository.Events.First(e=>e.OfficialId=="mare-infernal").AlertsEnabled; set { Repository.Events.First(e=>e.OfficialId=="mare-infernal").AlertsEnabled=value;Repository.SaveEvents();Changed();Refresh(); } }
     public string TimeZoneInput { get; set; }
     public string Message { get; private set; } = "Horários fornecidos pela administração. Não confirmam que o evento está ativo no servidor.";
-    public string[] Icons { get; } = { "🔔", "👻", "⚔", "🎉", "★", "⛏" };
+    public string[] Icons { get; } = { "🔔", "👻", "⚔", "🔥", "🎉", "★", "⛏" };
     ScheduledEvent? selected;
     public ScheduledEvent? SelectedEvent { get => selected; set { selected=value;LoadEditor();Changed(); } }
     public string EditName { get; set; } = "";
@@ -52,6 +54,7 @@ public sealed class EventViewModel : Observable
     public string EditAdvances { get; set; } = "5";
     public bool EditEnabled { get; set; } = true;
     public bool EditAlerts { get; set; } = true;
+    public bool EditSounds { get; set; } = true;
     public bool EditOpening { get; set; }
     public bool EditGlobalAdvances { get; set; } = true;
     bool editorExpanded;
@@ -82,6 +85,7 @@ public sealed class EventViewModel : Observable
     void LoadEditor()
     {
         EditName=selected?.Name??"";EditDescription=selected?.Description??"";EditTimes=string.Join(", ",selected?.Times??new());EditIcon=selected?.Icon??"🔔";EditEnabled=selected?.Enabled??true;EditAlerts=selected?.AlertsEnabled??true;EditOpening=selected?.IsOpening??false;EditGlobalAdvances=selected?.UseGlobalAdvances??true;EditAdvances=string.Join(",",selected?.AdvanceMinutes??new(){5});
+        EditSounds=selected?.SoundsEnabled??true;Changed(nameof(EditSounds));
         foreach(var name in new[]{nameof(EditName),nameof(EditDescription),nameof(EditTimes),nameof(EditIcon),nameof(EditEnabled),nameof(EditAlerts),nameof(EditOpening),nameof(EditGlobalAdvances),nameof(EditAdvances)})Changed(name);
     }
     void SaveEditor()
@@ -94,15 +98,36 @@ public sealed class EventViewModel : Observable
         var item=selected??new ScheduledEvent();
         if(!item.Times.SequenceEqual(times))item.TimesCustomized=true;
         item.Name=candidate.Name;item.Description=candidate.Description;item.Times=times;item.Icon=candidate.Icon;item.Enabled=EditEnabled;item.AlertsEnabled=EditAlerts;item.IsOpening=EditOpening;item.UseGlobalAdvances=EditGlobalAdvances;item.AdvanceMinutes=parts.Select(int.Parse).Distinct().ToList();
+        item.SoundsEnabled=EditSounds;
         if(selected==null)Repository.Events.Add(item);
-        Repository.SaveEvents();ReloadEntries();SelectedEvent=item;Refresh();Changed(nameof(DuduAlerts));Changed(nameof(KvmAlerts));Tell("Evento salvo. Alterações valem para as próximas ocorrências; avisos já registrados não são repetidos.");
+        Repository.SaveEvents();ReloadEntries();SelectedEvent=item;Refresh();Changed(nameof(DuduAlerts));Changed(nameof(KvmAlerts));Changed(nameof(MareAlerts));Tell("Evento salvo. Alterações valem para as próximas ocorrências; avisos já registrados não são repetidos.");
     }
     public void Tick(){Schedule.Evaluate(clock());Refresh();}
     public void Refresh()
     {
         var now=clock();var upcoming=Schedule.Upcoming(now);Next=upcoming.FirstOrDefault();Following=upcoming.Skip(1).FirstOrDefault();
+        var compact=upcoming.Take(8).ToList();
+        for(int i=0;i<compact.Count;i++)
+        {
+            string key=CompactEventRow.KeyOf(compact[i]);
+            if(i>=CompactUpcoming.Count || CompactUpcoming[i].Key!=key)
+            {
+                var existing=CompactUpcoming.FirstOrDefault(r=>r.Key==key);
+                if(existing==null)CompactUpcoming.Insert(i,new CompactEventRow(compact[i]));else CompactUpcoming.Move(CompactUpcoming.IndexOf(existing),i);
+            }
+            CompactUpcoming[i].Update(compact[i]);
+        }
+        while(CompactUpcoming.Count>compact.Count)CompactUpcoming.RemoveAt(CompactUpcoming.Count-1);
         NextDudu=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="dudu");NextKvm=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="kvm");Changed(nameof(NextDudu));Changed(nameof(NextKvm));
         Today.Clear();foreach(var o in Schedule.Occurrences(now,true))Today.Add(o);
         foreach(var name in new[]{nameof(Next),nameof(Following),nameof(NextName),nameof(NextTiming),nameof(Countdown),nameof(FollowingSummary),nameof(AlertStatus),nameof(ToggleLabel),nameof(ZoneLabel),nameof(NoToday)})Changed(name);
     }
+}
+public sealed class CompactEventRow : Observable
+{
+    public EventOccurrence Occurrence { get; private set; }
+    public string Key => KeyOf(Occurrence);
+    public static string KeyOf(EventOccurrence occurrence) => occurrence.Event.Id+":"+occurrence.StartUtc.UtcTicks;
+    public CompactEventRow(EventOccurrence occurrence) => Occurrence=occurrence;
+    public void Update(EventOccurrence occurrence){Occurrence=occurrence;Changed(nameof(Occurrence));}
 }

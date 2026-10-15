@@ -12,6 +12,7 @@ public sealed class ScheduledEvent
     public bool IsOpening { get; set; }
     public bool Enabled { get; set; } = true;
     public bool AlertsEnabled { get; set; } = true;
+    public bool SoundsEnabled { get; set; } = true;
     public bool UseGlobalAdvances { get; set; } = true;
     public List<int> AdvanceMinutes { get; set; } = new() { 5 };
     public List<string> Times { get; set; } = new();
@@ -30,6 +31,9 @@ public sealed class EventSettings
 public sealed class EventNotificationRecord
 {
     public string Key { get; set; } = "";
+    public string EventId { get; set; } = "";
+    public string EventName { get; set; } = "";
+    public int AdvanceMinutes { get; set; }
     public DateTimeOffset OccurrenceUtc { get; set; }
     public DateTimeOffset RecordedUtc { get; set; }
     public string Status { get; set; } = "";

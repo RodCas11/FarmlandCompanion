@@ -46,8 +46,11 @@ try {
     $report = Join-Path $reportDir 'smoke-test.txt'
     if (Test-Path -LiteralPath $report) { Remove-Item -LiteralPath $report }
     $smoke = Start-Process -FilePath "$package/FarmlandCompanion.exe" -ArgumentList @('--smoke-test', ('--smoke-output="{0}"' -f $reportDir)) -PassThru -WindowStyle Hidden
-    if (!$smoke.WaitForExit(30000)) { Stop-Process -Id $smoke.Id; throw 'O smoke test da nova build não concluiu; distribuição anterior preservada.' }
-    if ($smoke.ExitCode -ne 0 -or !(Test-Path -LiteralPath $report) -or (Get-Content -LiteralPath $report -Raw) -notmatch '^PASS:') { throw "Falha no smoke test. Consulte $report. A distribuição anterior foi preservada." }
+    try {
+        if (!$smoke.WaitForExit(30000)) { Stop-Process -Id $smoke.Id; $null = $smoke.WaitForExit(10000); throw 'O smoke test da nova build não concluiu; distribuição anterior preservada.' }
+        $smokeExitCode = $smoke.ExitCode
+    } finally { $smoke.Dispose() }
+    if ($smokeExitCode -ne 0 -or !(Test-Path -LiteralPath $report) -or (Get-Content -LiteralPath $report -Raw) -notmatch '^PASS:') { throw "Falha no smoke test. Consulte $report. A distribuição anterior foi preservada." }
     $null = Test-BuildPackage $package
 
     # Recognize only the exact legacy artifacts produced by this project, by SHA256.
