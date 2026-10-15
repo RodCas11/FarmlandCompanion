@@ -1,0 +1,37 @@
+{
+    "Application":  "RagnarokCompanion",
+    "Files":  [
+                  {
+                      "Sha256":  "08D3A1B4CE11708CED96773C839EBEA41083ECD876A2A60BC61E6BE35EDC28DB",
+                      "Path":  "RagnarokCompanion.exe"
+                  },
+                  {
+                      "Sha256":  "BF5ABEF532AC638328B83C09DD6969BF659B2A2B748947ED7DE83EB231EA1A7C",
+                      "Path":  "RagnarokCompanion-v2.exe"
+                  },
+                  {
+                      "Sha256":  "C3E60CB654DAF2A837525EEF8346DB9C8B89090934E886E198137E1412B2A060",
+                      "Path":  "README.md"
+                  },
+                  {
+                      "Sha256":  "9EF1F8E4C42262380504E283263FB86F3E774C4DE0B2AC337BCE3CE52BAF2168",
+                      "Path":  "Data/mvp-seed.json"
+                  },
+                  {
+                      "Sha256":  "0B675D534A8A844C3EB7996ED39DB294E2CD11BF0C236C6D7E4E3F713E35E3DD",
+                      "Path":  "docs/RAGNAPLACE_API.md"
+                  },
+                  {
+                      "Sha256":  "11D62DEAC0A3D97FE4F7DDFED0988C24FC45E029EB5932065B14246F3AA8235B",
+                      "Path":  "docs/VALIDATION.md"
+                  },
+                  {
+                      "Sha256":  "8CEB4B9EE5ADEDDE47B31E975C1D90C73AD27B6B165A1DCD80C7C545EB65B903",
+                      "Path":  "licenses/rathena-GPL-3.0.txt"
+                  },
+                  {
+                      "Sha256":  "A989724D0E36767E7BFB4F2A97A7BD4918574674ED6BE1A75179F085D2EE309B",
+                      "Path":  "licenses/THIRD-PARTY-NOTICES.md"
+                  }
+              ]
+}

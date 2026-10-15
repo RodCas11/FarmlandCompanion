@@ -1,0 +1,130 @@
+[
+    {
+        "MonsterId":  1038,
+        "Name":  "Osiris",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1038",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1039,
+        "Name":  "Baphomet",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1039",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1046,
+        "Name":  "Doppelganger",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1046",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1059,
+        "Name":  "Mistress",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1059",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1086,
+        "Name":  "Golden Thief Bug",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1086",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1087,
+        "Name":  "Orc Hero",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1087",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1112,
+        "Name":  "Drake",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1112",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1115,
+        "Name":  "Eddga",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1115",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1147,
+        "Name":  "Maya",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1147",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1150,
+        "Name":  "Moonlight Flower",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1150",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1157,
+        "Name":  "Pharaoh",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1157",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1159,
+        "Name":  "Phreeoni",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1159",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1190,
+        "Name":  "Orc Lord",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1190",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1251,
+        "Name":  "Stormy Knight",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1251",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1272,
+        "Name":  "Dark Lord",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1272",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    },
+    {
+        "MonsterId":  1312,
+        "Name":  "Turtle General",
+        "Notes":  "Identidade MVP verificada no rAthena Renewal; mapa e respawn do Farmland não verificados.",
+        "Key":  "local:1312",
+        "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
+        "Origin":  "Informação não verificada"
+    }
+]

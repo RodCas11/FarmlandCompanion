@@ -1,0 +1,13 @@
+.tools/
+**/bin/
+**/obj/
+dist/
+TestResults/
+artifacts/
+.vs/
+*.user
+*.suo
+*.dpapi
+.env
+.env.*
+!.env.example
