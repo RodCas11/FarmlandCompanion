@@ -75,11 +75,12 @@ function Move-StagedBuildPackage([string]$Source, [string]$Destination, [string]
     if (Test-Path -LiteralPath $Destination) { throw 'Destino da publicação já existe; preservado.' }
     # The smoke process has exited. Windows may still briefly retain its image/directory.
     # Only the new, verified staging package is retried, never the old distribution.
-    for ($attempt = 0; $attempt -lt 6; $attempt++) {
+    for ($attempt = 0; $attempt -lt 21; $attempt++) {
         try { [IO.Directory]::Move($Source, $Destination); return }
         catch {
-            if ($attempt -eq 5 -or $_.Exception.InnerException -isnot [IO.IOException]) { throw }
-            Start-Sleep -Milliseconds 200
+            $cause = $_.Exception.GetBaseException()
+            if ($attempt -eq 20 -or ($cause -isnot [IO.IOException] -and $cause -isnot [UnauthorizedAccessException])) { throw }
+            Start-Sleep -Milliseconds 500
         }
     }
 }

@@ -59,5 +59,14 @@ $results | Write-Output
 
 # All files below belong to this unique fixture, created by this test. No user dirs.
 $null = Assert-BuildPath $fixture $scope
-foreach ($file in @(Get-SafeBuildFiles $fixture)) { $null = Assert-BuildPath $file.FullName $fixture; Remove-Item -LiteralPath $file.FullName -Force }
+foreach ($file in @(Get-SafeBuildFiles $fixture)) {
+    $null = Assert-BuildPath $file.FullName $fixture
+    for ($attempt = 0; $attempt -lt 21; $attempt++) {
+        try { Remove-Item -LiteralPath $file.FullName -Force; break }
+        catch {
+            if ($attempt -eq 20) { throw }
+            Start-Sleep -Milliseconds 500
+        }
+    }
+}
 Remove-EmptyBuildDirectories $fixture $scope
