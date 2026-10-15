@@ -68,6 +68,21 @@ function Assert-BuildFileUnlocked([string]$Path) {
     try { $stream = [IO.File]::Open($Path, [IO.FileMode]::Open, [IO.FileAccess]::ReadWrite, [IO.FileShare]::None); $stream.Dispose() }
     catch { throw "Publicação interrompida: arquivo em uso ou sem acesso: $Path. Use Sair na bandeja e tente novamente. A distribuição existente foi preservada." }
 }
+function Move-StagedBuildPackage([string]$Source, [string]$Destination, [string]$StagingRoot, [string]$DistRoot) {
+    $null = Assert-BuildPath $Source $StagingRoot
+    $null = Assert-BuildPath $Destination $DistRoot
+    $null = Test-BuildPackage $Source
+    if (Test-Path -LiteralPath $Destination) { throw 'Destino da publicação já existe; preservado.' }
+    # The smoke process has exited. Windows may still briefly retain its image/directory.
+    # Only the new, verified staging package is retried, never the old distribution.
+    for ($attempt = 0; $attempt -lt 6; $attempt++) {
+        try { [IO.Directory]::Move($Source, $Destination); return }
+        catch {
+            if ($attempt -eq 5 -or $_.Exception.InnerException -isnot [IO.IOException]) { throw }
+            Start-Sleep -Milliseconds 200
+        }
+    }
+}
 function Remove-EmptyBuildDirectories([string]$Root, [string]$Scope) {
     $null = Assert-BuildPath $Root $Scope
     if (!(Test-Path -LiteralPath $Root)) { return }

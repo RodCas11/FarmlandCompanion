@@ -53,7 +53,7 @@ public partial class App : Application
         DispatcherUnhandledException += (_, args) =>
         {
             args.Handled = true; vm?.Tell("Falha: " + args.Exception.Message);
-            if (smoke) { File.WriteAllText(Path.Combine(smokeOutput, "smoke-test.txt"), "FAIL: " + args.Exception); Quit(1); }
+            if (smoke) { File.AppendAllText(Path.Combine(smokeOutput, "smoke-errors.txt"), args.Exception + Environment.NewLine); File.WriteAllText(Path.Combine(smokeOutput, "smoke-test.txt"), "FAIL: " + args.Exception); Quit(1); }
             else MessageBox.Show(args.Exception.Message, "Farmland Companion");
         };
         try
@@ -135,6 +135,7 @@ public partial class App : Application
             vm.Catalog.FavoriteDeathCommand.Execute(null);
             if (vm.Engine.Mvps.Count != 3 || !vm.Engine.Mvps.Last().Origin.Contains("Farmland")) throw new Exception("Registro rápido de favorito offline falhou");
             windows.ShowCompact();
+            vm.ActiveCompactTab = Models.CompactTab.Mvps;
             vm.Settings.CompactCount = 1; vm.Refresh(); windows.FitCompact(); double oneHeight = windows.Panel.Height;
             vm.Settings.CompactCount = 3; vm.Refresh(); windows.FitCompact();
             if (windows.Panel.Height <= oneHeight) throw new Exception($"Altura do compacto não acompanhou a quantidade de timers: 1={oneHeight}, 3={windows.Panel.Height}, desired={windows.Panel.CompactContent.DesiredSize.Height}");
@@ -143,6 +144,7 @@ public partial class App : Application
             favorites.IsExpanded = true; windows.FitCompact(); windows.Panel.UpdateLayout();
             if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Catalog.SelectedFavorite!.Summary)) throw new Exception("Nome do favorito não foi exibido no seletor");
             Capture(windows.Panel, Path.Combine(smokeOutput, "smoke-compact-favorites.png")); favorites.IsExpanded = false;
+            ValidateCompactTabs();
             if (!ReferenceEquals(originalWindow, windows.Panel) || Windows.Count != 1) throw new Exception("Identidade da janela alterada");
             vm.Save();
             vm.Engine.StartMining(DateTimeOffset.UtcNow.AddMinutes(-31));
@@ -158,23 +160,54 @@ public partial class App : Application
             if (notifications.PendingCount != 1) throw new Exception("Alerta de evento oculto duplicado ou ausente");
             windows.Panel.WindowState = WindowState.Normal;
             vm.Events.Repository.Settings.Enabled = false;
+            vm.ActiveCompactTab = Models.CompactTab.Events;
             windows.ShowCompact(); windows.FitCompact();
-            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextName)) throw new Exception("Próximo evento ausente no compacto");
+            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextDudu!.Timing) || !VisualTexts(windows.Panel.CompactContent).Contains(vm.Events.NextKvm!.Timing)) throw new Exception("Horários dos eventos ausentes no compacto");
             if (Windows.Count != 1) throw new Exception("Eventos criou segunda janela");
             var restarted = new MainViewModel(new PersistenceService(vm.Store.Root));
             if (restarted.MiningStatus != "Cooldown" || restarted.Engine.Mvps.Count != 3) throw new Exception("Persistência de reinício divergiu");
             if (restarted.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito offline não restaurado");
+            if (restarted.ActiveCompactTab != Models.CompactTab.Events) throw new Exception("Aba compacta não restaurada");
             restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
-            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; hidden-window event notification queued once; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; hidden-window event notification queued once; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; scroll all MVPs; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
         catch (Exception ex) { File.WriteAllText(report, "FAIL: " + ex); Quit(1); }
     }
-    private static void Capture(Window window, string file)
+    private void ValidateCompactTabs()
+    {
+        var panel=windows!.Panel;var model=vm!;var engine=model.Engine;var entered=engine.Mining.EnteredUtc;
+        var deaths=engine.Mvps.Select(m=>m.DeathUtc).ToArray();
+        var extra=new Models.Mvp{Name="Teste de rolagem",Map="test",DeathUtc=DateTimeOffset.UtcNow,MinMinutes=180,MaxMinutes=180};
+        engine.Mvps.Add(extra);model.Refresh();
+        foreach(var tab in Enum.GetValues<Models.CompactTab>())
+        {
+            model.ActiveCompactTab=tab;windows.FitCompact();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);windows.FitCompact();
+            var buttons=VisualElements<RadioButton>(panel.CompactContent).Where(b=>b.GroupName=="CompactTabs").ToList();
+            if(buttons.Count!=4 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
+            foreach(var button in buttons)
+            {
+                var bounds=button.TransformToAncestor(panel.CompactContent).TransformBounds(new Rect(button.RenderSize));
+                if(bounds.Left < -1 || bounds.Right > panel.CompactContent.ActualWidth+1 || bounds.Bottom > panel.CompactContent.ActualHeight+1)throw new Exception("Abas cortadas");
+            }
+            var texts=VisualTexts(panel.CompactContent).ToList();
+            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains("👻 Fantasminhas Dudu")!=(tab==Models.CompactTab.Events) || texts.Contains("Freeoni")!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
+            if(tab==Models.CompactTab.Mvps)
+            {
+                var scroller=VisualElements<ScrollViewer>(panel.CompactContent).Single(s=>s.Name=="MvpScroller");
+                if(model.CompactAllRows.Count!=4 || scroller.ScrollableHeight<=0)throw new Exception("MVPs adicionais não disponíveis por rolagem");
+            }
+            foreach(double dpi in new[]{96d,120d,144d,192d})Capture(panel,Path.Combine(smokeOutput,$"compact-{tab}-{dpi}.png"),dpi);
+            windows.ShowPanel();windows.ShowCompact();
+            if(model.ActiveCompactTab!=tab || !ReferenceEquals(engine,model.Engine) || engine.Mining.EnteredUtc!=entered || !engine.Mvps.Take(3).Select(m=>m.DeathUtc).SequenceEqual(deaths) || Windows.Count!=1)throw new Exception("Troca de aba ou modo alterou timers/janela");
+        }
+        engine.Mvps.Remove(extra);model.Refresh();model.ActiveCompactTab=Models.CompactTab.Mvps;windows.FitCompact();
+    }
+    private static void Capture(Window window, string file, double dpi=96)
     {
         window.UpdateLayout();
-        var bitmap = new RenderTargetBitmap((int)window.ActualWidth, (int)window.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        var bitmap = new RenderTargetBitmap((int)Math.Ceiling(window.ActualWidth*dpi/96), (int)Math.Ceiling(window.ActualHeight*dpi/96), dpi, dpi, PixelFormats.Pbgra32);
         bitmap.Render(window);
         var png = new PngBitmapEncoder(); png.Frames.Add(BitmapFrame.Create(bitmap));
         using var stream = File.Create(file); png.Save(stream);

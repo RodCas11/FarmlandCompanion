@@ -7,6 +7,7 @@ using System.Text.Json.Serialization;
 namespace RagnarokCompanion.Models;
 
 public enum MiningPhase { Available, Mining, Cooldown }
+public enum CompactTab { Mining, Mvps, Events, Spotlight }
 public sealed class Settings : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -16,6 +17,8 @@ public sealed class Settings : INotifyPropertyChanged
     private bool sounds = true, miningAlerts = true, mvpAlerts = true, closeToTray = true, compactOnStartup, compactOnTimer = true, topmost = true;
     private string advanceMinutes = "10,5,1", compactMode = "Ambos";
     private int compactCount = 3;
+    private CompactTab compactTab = CompactTab.Mining;
+    public CompactTab CompactTab { get => compactTab; set => Set(ref compactTab, value); }
     public double MiningMinutes { get => miningMinutes; set => Set(ref miningMinutes, value); }
     public double CooldownMinutes { get => cooldownMinutes; set => Set(ref cooldownMinutes, value); }
     public bool Sounds { get => sounds; set => Set(ref sounds, value); }

@@ -5,7 +5,7 @@
   <WrapPanel><CheckBox Content="Fantasminhas Dudu" IsChecked="{Binding DuduAlerts}"/><CheckBox Content="KVM" IsChecked="{Binding KvmAlerts}"/></WrapPanel>
   <TextBlock Text="Antecedências (selecione uma ou mais)" Style="{StaticResource Muted}"/>
   <ItemsControl ItemsSource="{Binding AdvanceOptions}"><ItemsControl.ItemsPanel><ItemsPanelTemplate><WrapPanel/></ItemsPanelTemplate></ItemsControl.ItemsPanel><ItemsControl.ItemTemplate><DataTemplate><CheckBox Content="{Binding Label}" IsChecked="{Binding Selected}"/></DataTemplate></ItemsControl.ItemTemplate></ItemsControl>
-  <CheckBox Content="Mostrar próximo evento no compacto" IsChecked="{Binding ShowCompact}"/>
+
   <TextBlock Text="Fuso do servidor" Style="{StaticResource Muted}"/>
   <DockPanel><Button DockPanel.Dock="Right" Content="Salvar fuso" Command="{Binding SaveZoneCommand}"/><TextBox Text="{Binding TimeZoneInput, UpdateSourceTrigger=PropertyChanged}" ToolTip="Exemplos: America/Sao_Paulo, UTC, America/Manaus"/></DockPanel>
   <TextBlock Text="Alertas continuam na bandeja enquanto o aplicativo estiver aberto. O Windows pode silenciá-los; não há garantia sobre jogos em tela cheia exclusiva." Style="{StaticResource Muted}" FontSize="11"/>

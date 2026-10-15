@@ -29,11 +29,11 @@ public sealed class WindowManagementService
         Panel.LocationChanged += (_, _) => Remember(); Panel.SizeChanged += (_, e) => { Remember(); if (e.WidthChanged) QueueFit(); };
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.ExpandedEvent, new RoutedEventHandler((_, _) => QueueFit()));
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.CollapsedEvent, new RoutedEventHandler((_, _) => QueueFit()));
-        vm.Spotlight.PropertyChanged += (_, e) => { if (e.PropertyName is "ShowCompact" or "Summary") QueueFit(); };
-        vm.Events.PropertyChanged += (_, e) => { if (e.PropertyName is "ShowCompact" or "NextName") QueueFit(); };
-        vm.CompactRows.CollectionChanged += (_, _) => QueueFit();
-        vm.PropertyChanged += (_, e) => { if (e.PropertyName is nameof(vm.ShowMining) or nameof(vm.MiningAvailable)) QueueFit(); };
+        vm.Spotlight.PropertyChanged += (_, e) => { if (vm.ActiveCompactTab == Models.CompactTab.Spotlight && e.PropertyName is "Summary" or "Status") QueueFit(); };
+        vm.CompactAllRows.CollectionChanged += (_, _) => { if (vm.ActiveCompactTab == Models.CompactTab.Mvps) QueueFit(); };
+        vm.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(vm.ActiveCompactTab) || (vm.ActiveCompactTab == Models.CompactTab.Mining && e.PropertyName == nameof(vm.MiningAvailable))) QueueFit(); };
         Panel.Loaded += (_, _) => EnsureVisible(Panel);
+        Panel.DpiChanged += (_, _) => { EnsureVisible(Panel); QueueFit(); };
         vm.OpenPanel += ShowPanel; vm.OpenCompact += ShowCompact; vm.SettingsChanged += ApplySettings;
         saveDebounce.Tick += (_, _) => { saveDebounce.Stop(); try { vm.SaveLayout(); } catch (Exception ex) { vm.Tell("Erro ao salvar posição: " + ex.Message); } };
         Microsoft.Win32.SystemEvents.DisplaySettingsChanged += DisplaysChanged;
@@ -63,12 +63,13 @@ public sealed class WindowManagementService
             if (Panel.WindowState == WindowState.Normal) fullBounds = new(Panel.Left, Panel.Top, Panel.Width, Panel.Height);
             changing = true; Panel.WindowState = WindowState.Normal; IsCompact = true;
             Panel.FullView.Visibility = Visibility.Collapsed; Panel.CompactContent.Visibility = Visibility.Visible;
-            Panel.MinWidth = 280; Panel.MinHeight = 120;
-            Panel.Width = Finite(vm.Layout.Width, 280, 1200, 320); Panel.Height = Finite(vm.Layout.Height, 160, 1400, 330);
+            Panel.MinWidth = 300; Panel.MinHeight = 220;
+            Panel.Width = Finite(vm.Layout.Width, 300, 1200, 320); Panel.Height = Finite(vm.Layout.Height, 220, 1400, 220);
             Panel.Left = Finite(vm.Layout.Left, -100000, 100000, 80); Panel.Top = Finite(vm.Layout.Top, -100000, 100000, 80);
             changing = false;
         }
         ApplySettings(); Panel.Show(); FitCompact(); EnsureVisible(Panel); Panel.WindowState = WindowState.Normal; Panel.Activate();
+        if (vm.ActiveCompactTab == Models.CompactTab.Spotlight) _ = vm.Spotlight.LoadAsync();
     }
     private static double Finite(double x, double min, double max, double fallback) => double.IsFinite(x) ? Math.Clamp(x, min, max) : fallback;
     public void ApplySettings()

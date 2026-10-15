@@ -46,7 +46,7 @@ public sealed class MvpRow : Observable
     public static string Local(DateTimeOffset? date) => date?.ToLocalTime().ToString("dd/MM HH:mm:ss") ?? "—";
     public void Refresh() { foreach (var n in new[] { nameof(Name), nameof(Map), nameof(Notes), nameof(Origin), nameof(Status), nameof(StatusColor), nameof(Countdown), nameof(CompactCountdown), nameof(Window), nameof(LastDeath) }) Changed(n); }
 }
-public sealed class MainViewModel : Observable
+public sealed partial class MainViewModel : Observable
 {
     public CatalogViewModel Catalog { get; }
     public SpotlightViewModel Spotlight { get; }
@@ -138,6 +138,7 @@ public sealed class MainViewModel : Observable
         Spotlight = new SpotlightViewModel(store);
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");
+        InitializeCompactTabs();
         StartMiningCommand = Cmd(_ => { if (Engine.Phase(DateTimeOffset.UtcNow) != MiningPhase.Available) { Tell("A mina está em um ciclo. Use corrigir ou reiniciar."); return; } Engine.StartMining(DateTimeOffset.UtcNow); Commit(); AutoCompact(); });
         ResetMiningCommand = Cmd(_ => { Engine.ResetMining(DateTimeOffset.UtcNow); Commit(); });
         CorrectMiningCommand = Cmd(_ => { if (TryLocal(MiningEntry, out var t)) { Engine.StartMining(t); Commit(); } });
@@ -206,6 +207,7 @@ public sealed class MainViewModel : Observable
     {
         foreach (var n in new[] { nameof(MiningStatus), nameof(MiningCountdown), nameof(MiningSummary), nameof(MiningProgress), nameof(Entered), nameof(Exit), nameof(Ready), nameof(Count), nameof(ShowMining), nameof(PinLabel), nameof(MiningAvailable), nameof(MiningColor), nameof(MiningNext) }) Changed(n);
         RefreshLists();
+        RefreshCompactTabs();
         var events = UpcomingEventsService.Get(Engine, DateTimeOffset.UtcNow);
         UpcomingEvents.Clear(); foreach (var e in events) UpcomingEvents.Add(e); Changed(nameof(NoEvents));
         if (lastHistoryCount != Engine.History.Count || (History.Count > 0 && !ReferenceEquals(History[0], Engine.History.FirstOrDefault())))
@@ -220,6 +222,7 @@ public sealed class MainViewModel : Observable
         var all = Engine.Ordered(DateTimeOffset.UtcNow).ToList();
         Sync(Rows, all.Where(m => m.Name.Contains(search, StringComparison.OrdinalIgnoreCase) && m.Map.Contains(mapFilter, StringComparison.OrdinalIgnoreCase)));
         Sync(NextRows, all.Where(m => m.DeathUtc != null).Take(5));
+        Sync(CompactAllRows, all.Where(m => m.DeathUtc != null));
         Sync(CompactRows, Settings.CompactMode == "Mineração" ? Array.Empty<Mvp>() : all.Where(m => m.DeathUtc != null).Take(expanded ? int.MaxValue : Settings.CompactCount));
         Changed(nameof(CompactEmpty));
         Changed(nameof(NoCompactMvps));

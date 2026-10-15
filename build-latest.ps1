@@ -89,7 +89,7 @@ try {
         $moved.Add(@{Source=$source;Backup=$backup;Hash=$record.Sha256}); $removed.Add($record.Path)
     }
     Write-Verbose "Installing: $package -> $latest"
-    [IO.Directory]::Move($package, $latest)
+    Move-StagedBuildPackage $package $latest $work $dist
     $newInstalled = $true
     $null = Test-BuildPackage $latest
     $committed = $true

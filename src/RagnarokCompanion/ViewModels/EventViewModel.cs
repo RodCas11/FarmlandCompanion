@@ -25,6 +25,8 @@ public sealed class EventViewModel : Observable
     public ObservableCollection<EventAdvanceOption> AdvanceOptions { get; } = new();
     public EventOccurrence? Next { get; private set; }
     public EventOccurrence? Following { get; private set; }
+    public EventOccurrence? NextDudu { get; private set; }
+    public EventOccurrence? NextKvm { get; private set; }
     public bool NoToday => Today.Count == 0;
     public string NextName => Next?.Title ?? "Nenhum evento programado";
     public string NextTiming => Next?.Timing ?? "Ative ou cadastre um evento";
@@ -99,6 +101,7 @@ public sealed class EventViewModel : Observable
     public void Refresh()
     {
         var now=clock();var upcoming=Schedule.Upcoming(now);Next=upcoming.FirstOrDefault();Following=upcoming.Skip(1).FirstOrDefault();
+        NextDudu=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="dudu");NextKvm=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="kvm");Changed(nameof(NextDudu));Changed(nameof(NextKvm));
         Today.Clear();foreach(var o in Schedule.Occurrences(now,true))Today.Add(o);
         foreach(var name in new[]{nameof(Next),nameof(Following),nameof(NextName),nameof(NextTiming),nameof(Countdown),nameof(FollowingSummary),nameof(AlertStatus),nameof(ToggleLabel),nameof(ZoneLabel),nameof(NoToday)})Changed(name);
     }

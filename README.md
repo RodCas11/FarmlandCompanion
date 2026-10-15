@@ -33,7 +33,7 @@ A tela **Eventos** mostra o próximo evento, contagem regressiva, agenda do dia 
 
 O Dudu acontece em mapa sorteado pelo servidor no momento do evento; o aplicativo não prevê o mapa. O KVM informa a **abertura**, sem presumir o início do combate: times Vermelho e Azul, taxa de 50.000z e acesso pelo botão Batalhas Campais. Os detalhes de cada evento aparecem ao passar o mouse na agenda e no editor.
 
-O fuso inicial é **America/Sao_Paulo**, configurável em **Configurações → Notificações de eventos** ou na própria tela Eventos. Ative/desative todos os avisos, Dudu e KVM individualmente, sons e a exibição no compacto. Escolha uma ou mais antecedências: **1, 5, 10, 15 ou 30 minutos**; o padrão é 5. Em **Gerenciar eventos**, edite horários, nome, descrição, ícone e antecedências próprias, desative eventos oficiais ou cadastre eventos personalizados. Os oficiais são identificados separadamente e não podem ser excluídos. Atualizações futuras dos padrões locais preservam preferências e horários que você personalizou.
+O fuso inicial é **America/Sao_Paulo**, configurável em **Configurações → Notificações de eventos** ou na própria tela Eventos. Ative/desative todos os avisos, Dudu e KVM individualmente, e sons. Escolha uma ou mais antecedências: **1, 5, 10, 15 ou 30 minutos**; o padrão é 5. Em **Gerenciar eventos**, edite horários, nome, descrição, ícone e antecedências próprias, desative eventos oficiais ou cadastre eventos personalizados. Os oficiais são identificados separadamente e não podem ser excluídos. Atualizações futuras dos padrões locais preservam preferências e horários que você personalizou.
 
 O agendador usa o tick central do aplicativo e recalcula ocorrências pela data e pelo fuso do servidor. Funciona com a janela visível, compacta, minimizada ou na bandeja. Abrir ou retomar o app durante uma janela de aviso permite um único alerta com o tempo restante; antecedências ultrapassadas não são disparadas em sequência. Eventos já iniciados são ignorados. Cada ocorrência e antecedência é registrada antes do envio para evitar repetição após reinício ou mudança do relógio. O histórico mantém ocorrências recentes e é limpo gradualmente após 30 dias.
 
@@ -71,9 +71,18 @@ Use **Favoritar / desfavoritar** para salvar seleções. Favoritos e tempos pers
 
 ## Painel e compacto na mesma janela
 
-**Ativar modo compacto** reduz a própria `MainWindow`; **Painel ↗** a expande. Nenhuma segunda janela de timers é criada. As trocas de modo e consultas assíncronas preservam estado e timestamps.
+**Modo compacto ↗** reduz a própria `MainWindow`; **Expandir ↗** a expande. Nenhuma segunda janela de timers é criada. As trocas de modo e consultas assíncronas preservam estado e timestamps.
 
-Arraste pelo título, redimensione pelo canto/bordas e use os botões de minimizar/fechar. No compacto, acompanhe mina/cooldown e próximos MVPs, registre mortes e selecione favoritos. A fixação usa exclusivamente `Topmost` do WPF. Nas Configurações ajuste fonte, opacidade de 50% a 100%, exibição de mina/MVPs/ambos, limite 1/3/5 e abertura automática ao iniciar app/timer. Posição/tamanho são salvos; coordenadas fora dos monitores são recuperadas.
+O compacto tem quatro abas fixas: **⛏ Mina**, **☠ MVPs**, **🔔 Eventos** e **☀ Spot** (SpotLight). Somente o módulo selecionado é exibido. A última aba fica salva em `settings.json` e é preservada ao expandir, compactar e reiniciar. Trocar de aba não reinicia cronômetros, não muda a seleção automaticamente e não interrompe notificações.
+
+- **Mina:** status, cronômetro grande, progresso, próxima entrada e botão de entrada quando disponível. Mantém os ciclos de 30 + 60 minutos e durações já configuradas.
+- **MVPs:** todos os monitorados em ordem de respawn, três linhas visíveis por padrão e rolagem para os demais. O botão Morreu e o seletor expansível de favoritos registram mortes na mesma janela. A preferência anterior de 1/3/5 define a altura da lista, sem ocultar os demais MVPs.
+- **Eventos:** próximo Dudu e próxima abertura do KVM, cada um com horário e contador; usa os horários cadastrados e o fuso configurado. Eventos personalizados permanecem na tela completa.
+- **SpotLight:** seleção atual, quantidade de mapas, próxima rotação, seletor e confirmação. A tabela completa permanece no painel; a primeira consulta à wiki também pode ser feita ao abrir essa aba.
+
+Pontos âmbar nas abas indicam mineração recém-concluída (cinco minutos) ou mina novamente disponível, MVP com respawn possível/em até cinco minutos, evento em até cinco minutos ou SpotLight pendente. São indicadores de estado; não mudam a aba nem roubam foco. Os alertas continuam usando os mesmos serviços do painel.
+
+Arraste pelo título, redimensione pelo canto/bordas e use os botões de minimizar/fechar. A largura padrão é 320 e a altura parte de 220 unidades WPF, adaptando-se à aba; a largura mínima é 300. A barra de abas e o botão Expandir ficam fora da área rolável. Fonte, opacidade (50%–100%), Topmost e abertura automática ao iniciar app/timer continuam configuráveis. Posição/tamanho são salvos e coordenadas fora dos monitores são recuperadas. Os antigos valores de exibição conjunta são mantidos nos arquivos para compatibilidade; a navegação por abas substitui o layout misto e as antigas opções de esconder módulos.
 
 Por padrão, fechar oculta a janela na bandeja, mantendo os timers ativos. Pelo ícone, abra painel/compacto, consulte mina/próximo MVP, alterne fixação/sons ou use **Sair** para encerrar realmente. Desative **Continuar na bandeja** para encerrar ao fechar a janela.
 
@@ -130,7 +139,9 @@ A integração é coberta por testes HTTP simulados. Para confirmar a conta sem 
 
 ## Interface simplificada
 
-A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Eventos. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura ao número de timers e restaura o tamanho anterior ao expandir.
+O smoke WPF alterna as quatro abas compactas, verifica que cada uma mostra apenas seu módulo, testa rolagem de MVPs, preservação de serviços/timestamps, notificações em aba inativa e restauração da aba após reinício. Também gera PNGs em 96, 120, 144 e 192 DPI (100%, 125%, 150% e 200%). Essas renderizações não substituem um teste físico de troca entre monitores com escalas diferentes. O manifesto declara [PerMonitorV2 conforme a documentação do Windows](https://learn.microsoft.com/en-us/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process); mudanças de DPI solicitam novo ajuste do compacto.
+
+A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Eventos. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura à aba e à quantidade de linhas visíveis, e restaura o tamanho anterior ao expandir.
 
 ## Publicação: somente latest
 

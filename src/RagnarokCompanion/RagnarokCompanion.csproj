@@ -7,8 +7,11 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- WPF owns process DPI via the manifest. WinForms supplies NotifyIcon only;
+         its ApplicationConfiguration.Initialize/Application.Run entry point is not used. -->
+    <NoWarn>$(NoWarn);WFAC010</NoWarn>
     <AssemblyName>FarmlandCompanion</AssemblyName><RootNamespace>RagnarokCompanion</RootNamespace>
-    <Version>4.1.0</Version>
+    <Version>4.2.0</Version>
     <ApplicationIcon>Assets/AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup><PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0"/></ItemGroup>
