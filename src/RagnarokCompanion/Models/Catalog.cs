@@ -20,6 +20,8 @@ public sealed class CatalogEntry
     public bool Favorite { get; set; }
     public string SourceUrl { get; set; } = "";
     public string Notes { get; set; } = "";
+    [JsonIgnore] public bool DisambiguateMap { get; set; }
+    [JsonIgnore] public string DisplayName => Name + (DisambiguateMap && !string.IsNullOrWhiteSpace(Map) ? " • " + Map : "");
     public DateTimeOffset? SyncedUtc { get; set; }
     [JsonIgnore] public string DisplayOrigin => CustomMin != null ? FarmlandConfirmed ? "Farmland — confirmado pelo usuário" : "Personalizado pelo usuário" : Origin;
     [JsonIgnore] public string DisplayMap => string.IsNullOrWhiteSpace(Map) ? "Mapa não informado" : Map;

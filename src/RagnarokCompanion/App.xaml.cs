@@ -132,18 +132,21 @@ public partial class App : Application
             vm.Catalog.RespawnMin = 60; vm.Catalog.RespawnMax = 90; vm.Catalog.ConfirmFarmland = true;
             vm.Catalog.SaveRespawnCommand.Execute(null); vm.Catalog.FavoriteCommand.Execute(null);
             if (vm.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito não salvo");
-            vm.Catalog.FavoriteDeathCommand.Execute(null);
+            vm.Catalog.DeathTime = DateTime.Now.ToString("HH:mm");
+            vm.Catalog.RegisterDeathCommand.Execute(null);
             if (vm.Engine.Mvps.Count != 3 || !vm.Engine.Mvps.Last().Origin.Contains("Farmland")) throw new Exception("Registro rápido de favorito offline falhou");
+            foreach(var timer in vm.Engine.Mvps) { var entry=vm.Catalog.Entries.First(e=>e.Key==timer.CatalogKey);if(!entry.Favorite)vm.Catalog.ToggleFavoriteCommand.Execute(entry); }
+            foreach(var entry in vm.Catalog.Entries.Where(e=>!e.Favorite).Take(2).ToArray())vm.Catalog.ToggleFavoriteCommand.Execute(entry);
+            if(vm.Catalog.FavoriteEntries.Count!=5 || vm.Engine.Mvps.Count!=3)throw new Exception("Favoritar iniciou um timer");
+            vm.Page=1;windows.Panel.UpdateLayout();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);Capture(windows.Panel,Path.Combine(smokeOutput,"smoke-page-1.png"));
             windows.ShowCompact();
             vm.ActiveCompactTab = Models.CompactTab.Mvps;
-            vm.Settings.CompactCount = 1; vm.Refresh(); windows.FitCompact(); double oneHeight = windows.Panel.Height;
-            vm.Settings.CompactCount = 3; vm.Refresh(); windows.FitCompact();
-            if (windows.Panel.Height <= oneHeight) throw new Exception($"Altura do compacto não acompanhou a quantidade de timers: 1={oneHeight}, 3={windows.Panel.Height}, desired={windows.Panel.CompactContent.DesiredSize.Height}");
+            vm.Catalog.CustomCompactSelection=true;var fiveKeys=vm.Settings.CompactFavoriteKeys.ToArray();
+            vm.Settings.CompactFavoriteKeys=fiveKeys.Take(1).ToList();vm.Catalog.RefreshFavoriteTimers();windows.FitCompact();double oneHeight=windows.Panel.Height;
+            vm.Settings.CompactFavoriteKeys=fiveKeys.ToList();vm.Catalog.RefreshFavoriteTimers();windows.FitCompact();
+            if(windows.Panel.Height<=oneHeight || vm.Catalog.CompactFavorites.Count!=5)throw new Exception("Altura/limite dos cinco favoritos incorreto");
             Capture(windows.Panel, Path.Combine(smokeOutput, "smoke-compact.png"));
-            var favorites = VisualElements<Expander>(windows.Panel.CompactContent).Single(e => e.Header?.ToString() == "Registrar favorito");
-            favorites.IsExpanded = true; windows.FitCompact(); windows.Panel.UpdateLayout();
-            if (!VisualTexts(windows.Panel.CompactContent).Contains(vm.Catalog.SelectedFavorite!.Summary)) throw new Exception("Nome do favorito não foi exibido no seletor");
-            Capture(windows.Panel, Path.Combine(smokeOutput, "smoke-compact-favorites.png")); favorites.IsExpanded = false;
+            if(!VisualTexts(windows.Panel.CompactContent).Contains("Sem horário"))throw new Exception("Favorito sem morte não foi exibido");
             ValidateCompactTabs();
             if (!ReferenceEquals(originalWindow, windows.Panel) || Windows.Count != 1) throw new Exception("Identidade da janela alterada");
             vm.Save();
@@ -170,10 +173,12 @@ public partial class App : Application
             if (Windows.Count != 1) throw new Exception("Eventos criou segunda janela");
             var restarted = new MainViewModel(new PersistenceService(vm.Store.Root));
             if (restarted.MiningStatus != "Cooldown" || restarted.Engine.Mvps.Count != 3) throw new Exception("Persistência de reinício divergiu");
-            if (restarted.Catalog.FavoriteEntries.Count != 1) throw new Exception("Favorito offline não restaurado");
+            if (restarted.Catalog.FavoriteEntries.Count != 5) throw new Exception("Favoritos offline não restaurados");
             if (restarted.ActiveCompactTab != Models.CompactTab.Events) throw new Exception("Aba compacta não restaurada");
             restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
-            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; scroll all MVPs; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
+            if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
+            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; Farmland respawn configuration; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -196,11 +201,10 @@ public partial class App : Application
                 if(bounds.Left < -1 || bounds.Right > panel.CompactContent.ActualWidth+1 || bounds.Bottom > panel.CompactContent.ActualHeight+1)throw new Exception("Abas cortadas");
             }
             var texts=VisualTexts(panel.CompactContent).ToList();
-            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains(model.Events.CompactUpcoming[0].Occurrence.Title)!=(tab==Models.CompactTab.Events) || texts.Contains("Freeoni")!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
+            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains(model.Events.CompactUpcoming[0].Occurrence.Title)!=(tab==Models.CompactTab.Events) || texts.Contains(model.Catalog.CompactFavorites[0].Name)!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
             if(tab==Models.CompactTab.Mvps)
             {
-                var scroller=VisualElements<ScrollViewer>(panel.CompactContent).Single(s=>s.Name=="MvpScroller");
-                if(model.CompactAllRows.Count!=4 || scroller.ScrollableHeight<=0)throw new Exception("MVPs adicionais não disponíveis por rolagem");
+                if(model.Catalog.CompactFavorites.Count!=5 || VisualElements<Button>(panel.CompactContent).Any(b=>b.Content?.ToString()=="Morreu"))throw new Exception("Compacto de favoritos contém controles extras");
             }
             foreach(double dpi in new[]{96d,120d,144d,192d})Capture(panel,Path.Combine(smokeOutput,$"compact-{tab}-{dpi}.png"),dpi);
             windows.ShowPanel();windows.ShowCompact();

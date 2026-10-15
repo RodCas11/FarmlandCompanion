@@ -119,7 +119,7 @@ public sealed partial class MainViewModel : Observable
     public string PinLabel => Settings.Topmost ? "● Fixado" : "○ Fixar";
     public string Feedback { get; private set; } = "Pronto para acompanhar sua próxima caçada.";
     private int lastHistoryCount = -1;
-    public MainViewModel(PersistenceService store)
+    public MainViewModel(PersistenceService store, Func<DateTimeOffset>? mvpClock=null, Func<string,bool>? confirmMvp=null)
     {
         Store = store;
         var settings = store.Load<Settings>("settings.json"); PersistenceService.Validate(settings);
@@ -134,7 +134,7 @@ public sealed partial class MainViewModel : Observable
         var history = store.Load<List<HistoryEntry>>("history.json");
         history.RemoveAll(h => h == null || h.Message == null || h.Kind == null);
         Engine = new(settings, mining, mvps, history);
-        Catalog = new CatalogViewModel(this);
+        Catalog = new CatalogViewModel(this,clock:mvpClock,confirm:confirmMvp);
         Spotlight = new SpotlightViewModel(store);
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");
@@ -176,6 +176,7 @@ public sealed partial class MainViewModel : Observable
         m.Origin = "Personalizado pelo usuário";
         // Recalculate corrected configurations, keeping already emitted notification keys.
         if (editing == null) Engine.Mvps.Add(m);
+        Catalog.UpdateManualConfiguration(m);
         editing = m; Commit(); Tell("MVP salvo. Os tempos são definidos por você conforme o servidor.");
     }
     public void Tick()
@@ -223,6 +224,7 @@ public sealed partial class MainViewModel : Observable
         Sync(Rows, all.Where(m => m.Name.Contains(search, StringComparison.OrdinalIgnoreCase) && m.Map.Contains(mapFilter, StringComparison.OrdinalIgnoreCase)));
         Sync(NextRows, all.Where(m => m.DeathUtc != null).Take(5));
         Sync(CompactAllRows, all.Where(m => m.DeathUtc != null));
+        Catalog?.RefreshManualEntries();Catalog?.RefreshFavoriteTimers();
         Sync(CompactRows, Settings.CompactMode == "Mineração" ? Array.Empty<Mvp>() : all.Where(m => m.DeathUtc != null).Take(expanded ? int.MaxValue : Settings.CompactCount));
         Changed(nameof(CompactEmpty));
         Changed(nameof(NoCompactMvps));

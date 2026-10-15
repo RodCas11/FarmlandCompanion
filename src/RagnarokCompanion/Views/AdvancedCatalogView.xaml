@@ -1,0 +1,29 @@
+<UserControl x:Class="RagnarokCompanion.Views.AdvancedCatalogView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+ <StackPanel>
+  <Grid><Grid.ColumnDefinitions><ColumnDefinition/><ColumnDefinition Width="220"/></Grid.ColumnDefinitions><StackPanel><TextBlock Text="Buscar por nome"/><TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" MaxLength="100"/></StackPanel><StackPanel Grid.Column="1"><TextBlock Text="Mapa"/><TextBox Text="{Binding MapFilter, UpdateSourceTrigger=PropertyChanged}"/></StackPanel></Grid>
+  <CheckBox Content="Mostrar só favoritos" IsChecked="{Binding FavoritesOnly}"/>
+  <ListBox ItemsSource="{Binding Entries}" SelectedItem="{Binding SelectedEntry}" MaxHeight="210"><ListBox.ItemTemplate><DataTemplate><Border Background="#181D2C" CornerRadius="7" Padding="10,7"><Grid><Grid.ColumnDefinitions><ColumnDefinition Width="25"/><ColumnDefinition/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions><TextBlock Text="{Binding FavoriteMark}" Foreground="#BEA7FF"/><StackPanel Grid.Column="1"><TextBlock Text="{Binding Summary}" FontWeight="SemiBold"/><TextBlock Text="{Binding DisplayOrigin}" Foreground="#9AA6BF" FontSize="11"/></StackPanel><Button Grid.Column="2" Content="Morreu agora" Command="{Binding DataContext.QuickDeathCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding}" Padding="10,6" Margin="12,0,0,0"/></Grid></Border></DataTemplate></ListBox.ItemTemplate></ListBox>
+  <StackPanel Visibility="{Binding HasSelection, Converter={StaticResource BoolVisibility}}">
+   <WrapPanel Margin="0,8"><Button Content="{Binding SelectedEntry.FavoriteLabel}" Command="{Binding FavoriteCommand}"/><TextBlock Text="{Binding SelectedEntry.RespawnLabel}" Foreground="#9AA6BF" FontSize="12"/></WrapPanel>
+   <Expander Header="Horário manual" Margin="0,4"><StackPanel><TextBlock Text="dd/MM/aaaa HH:mm:ss • hora local" Style="{StaticResource Muted}"/><TextBox Text="{Binding ManualDeath}"/><Button Content="Registrar horário" Command="{Binding ManualDeathCommand}" HorizontalAlignment="Left"/></StackPanel></Expander>
+   <Expander Header="Tempo de respawn e detalhes" IsExpanded="{Binding RespawnExpanded}" Margin="0,4"><Border Style="{StaticResource Card}" Margin="0,8,0,0"><StackPanel>
+    <TextBlock Text="{Binding SelectedEntry.Name}" FontSize="19" FontWeight="SemiBold"/><TextBlock Text="{Binding SelectedEntry.DisplayOrigin}" Foreground="#70C7FF" Margin="0,4"/>
+    <UniformGrid Columns="2"><StackPanel><TextBlock Text="Mínimo (min)"/><TextBox Text="{Binding RespawnMin, ValidatesOnExceptions=True}"/></StackPanel><StackPanel><TextBlock Text="Máximo (min)"/><TextBox Text="{Binding RespawnMax, ValidatesOnExceptions=True}"/></StackPanel></UniformGrid>
+    <TextBlock Text="Mapa (opcional)"/><TextBox Text="{Binding OverrideMap}"/>
+    <CheckBox Content="Tempos confirmados por mim no Farmland" IsChecked="{Binding ConfirmFarmland}"/>
+    <WrapPanel><Button Content="Salvar tempos" Command="{Binding SaveRespawnCommand}"/><Button Content="Salvar e registrar morte" Command="{Binding SaveAndDeathCommand}" Style="{StaticResource Primary}"/></WrapPanel>
+    <CheckBox Content="Usar referência do gateway para o timer (não confirmada no Farmland)" IsChecked="{Binding AcceptGateway}"/>
+    <Button Content="Atualizar dados deste MVP" Command="{Binding RefreshDetailsCommand}" HorizontalAlignment="Left"/>
+    <TextBlock Text="{Binding SelectedEntry.Notes}" Style="{StaticResource Muted}" FontSize="11"/>
+   </StackPanel></Border></Expander>
+  </StackPanel>
+  <TextBlock Text="{Binding Status}" Style="{StaticResource Muted}" FontSize="12" Margin="0,8"/>
+  <Expander Header="Consultar RagnaPlace" Margin="0,8"><StackPanel>
+   <TextBlock Text="Use o nome acima para buscar online. As consultas não alteram os timers." Style="{StaticResource Muted}"/>
+   <Button Content="Buscar online" Command="{Binding SearchCommand}" HorizontalAlignment="Left"/><ProgressBar IsIndeterminate="True" Visibility="{Binding IsBusy, Converter={StaticResource BoolVisibility}}" Height="3"/>
+   <ListBox ItemsSource="{Binding RemoteResults}" SelectedItem="{Binding SelectedRemote}" DisplayMemberPath="Name" MaxHeight="160"/>
+   <WrapPanel><Button Content="Consultar selecionado" Command="{Binding DetailsCommand}"/><Button Content="←" ToolTip="Página anterior" Command="{Binding PreviousCommand}"/><TextBlock Text="{Binding PageLabel}" FontSize="11"/><Button Content="→" ToolTip="Próxima página" Command="{Binding NextCommand}" Margin="8,4"/></WrapPanel>
+   <TextBlock><Hyperlink NavigateUri="https://ragnaplace.com" RequestNavigate="OpenAttribution">Dados fornecidos por RagnaPlace</Hyperlink></TextBlock>
+  </StackPanel></Expander>
+ </StackPanel>
+</UserControl>

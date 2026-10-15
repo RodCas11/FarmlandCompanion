@@ -29,7 +29,7 @@ public sealed class MvpCatalogService : IMvpCatalogService
             if (e == null) Entries.Add(choice); else CopyChoices(choice, e);
         }
     }
-    private static bool ValidChoice(CatalogEntry? c) => c != null && !string.IsNullOrWhiteSpace(c.Key) && !string.IsNullOrWhiteSpace(c.Name) && c.MonsterId > 0 && (c.CustomMin == null || MvpRespawnService.Valid(c.CustomMin.Value, c.CustomMax ?? -1));
+    private static bool ValidChoice(CatalogEntry? c) => c != null && !string.IsNullOrWhiteSpace(c.Key) && !string.IsNullOrWhiteSpace(c.Name) && (c.MonsterId > 0 || c.Key.StartsWith("manual:",StringComparison.Ordinal)) && (c.CustomMin == null || MvpRespawnService.Valid(c.CustomMin.Value, c.CustomMax ?? -1));
     private static void CopyChoices(CatalogEntry from, CatalogEntry to)
     { to.Favorite = from.Favorite; to.CustomMin = from.CustomMin; to.CustomMax = from.CustomMax; to.FarmlandConfirmed = from.FarmlandConfirmed; if (!string.IsNullOrWhiteSpace(from.Map)) to.Map = from.Map; }
     public void Merge(IEnumerable<CatalogEntry> entries)

@@ -54,9 +54,9 @@ Ainda não tem uma chave? Veja o [guia para criar sua conta, solicitar a API key
 
 1. Em **Configurações → Integração RagnaPlace**, informe a API Key no campo mascarado e clique **Proteger e salvar chave**. O campo é limpo após salvar.
 2. Clique **Atualizar gateways**, selecione um Renewal ativo e clique **Testar conexão autenticada**.
-3. Em **Catálogo de MVPs**, digite um nome e clique **Pesquisar no RagnaPlace**. A navegação entre páginas é manual.
-4. Selecione um resultado e clique **Detalhes do resultado selecionado**. A busca pode trazer monstros comuns; os detalhes confirmam MVP por `exp.mvp` positivo e mostram entradas separadas por mapa.
-5. Selecione o MVP e clique **Morreu agora**, ou informe uma morte antiga em `dd/MM/aaaa HH:mm:ss` (hora local, sem data futura).
+3. Em **MVPs**, pesquise no catálogo local, selecione o nome e clique na estrela para favoritar, se desejar.
+4. Informe a morte em **HH:mm** e clique **Registrar morte**. A data padrão é hoje; use **Dia anterior** quando necessário. Horários futuros são recusados.
+5. Para ampliar o catálogo, abra **Configurações → MVPs: respawn, consulta online e seleção do compacto**, use **Buscar online** e **Consultar selecionado**. A paginação é manual.
 
 A chave fica apenas no arquivo `ragnaplace-key.dpapi`, protegida por **DPAPI CurrentUser**, nunca em JSON, URL, exportação ou código. Não é transferível entre usuários/computadores. **Apagar chave** remove a credencial e invalida o cache. Gateways é uma rota pública e não prova autenticação; o teste usa uma consulta autenticada pequena.
 
@@ -68,11 +68,11 @@ O catálogo inicial fornece 16 identidades MVP verificadas no rAthena Renewal, s
 
 O **Farmland é Renewal sem terceiras classes**. Um gateway oficial não representa seus tempos ou configurações. A interface diferencia dados RagnaPlace/gateway, informação não verificada, personalizado e Farmland confirmado **pelo usuário**.
 
-Quando faltar respawn confiável, configure somente os tempos no cartão de detalhes. O mapa é opcional se desconhecido. Use mínimo igual ao máximo para respawn fixo, ou dois limites para uma janela variável. Os valores são minutos, acima de zero e até 10080. Marque a confirmação Farmland somente quando tiver verificado esses tempos. As configurações locais têm prioridade sobre valores genéricos do mesmo monstro/mapa recebidos da API.
+Quando faltar respawn confiável, o registro pede somente mínimo e máximo opcional; deixar o máximo vazio define um tempo fixo. Depois, os próximos registros reutilizam essa configuração. Ajustes detalhados ficam em Configurações. O mapa é opcional se desconhecido. Use mínimo igual ao máximo para respawn fixo, ou dois limites para uma janela variável. Os valores são minutos, acima de zero e até 10080. Marque a confirmação Farmland somente quando tiver verificado esses tempos. As configurações locais têm prioridade sobre valores genéricos do mesmo monstro/mapa recebidos da API.
 
 O contrato fornece um único respawn em segundos por mapa, sem máximo variável. O app converte a unidade e exige aceitação explícita para usar essa referência no timer; não inventa um máximo ou presume que ela vale no Farmland. As previsões não confirmam que o monstro está vivo.
 
-Use **Favoritar / desfavoritar** para salvar seleções. Favoritos e tempos personalizados funcionam offline, inclusive no seletor do modo compacto. Um favorito previamente usado pode reutilizar a configuração de seu timer sem nova consulta. O **MVP Tracker** preserva cadastro/edição/exclusão manual, múltiplos timers, busca, filtro por mapa e correção da última morte. O histórico registra mortes, ciclos, correções e alertas.
+Clique na estrela ao lado do nome para favoritar ou desfavoritar sem iniciar um timer. A busca é imediata e mostra favoritos primeiro. Favoritos e tempos personalizados funcionam offline. Um novo horário substitui a morte do mesmo ponto; corrigir para uma morte mais antiga pede confirmação. Cadastro manual, edição, filtros avançados, respawn e consulta RagnaPlace ficam em Configurações. O histórico mantém mortes, correções e alertas.
 
 ## Painel e compacto na mesma janela
 
@@ -81,7 +81,7 @@ Use **Favoritar / desfavoritar** para salvar seleções. Favoritos e tempos pers
 O compacto tem quatro abas fixas: **⛏ Mina**, **☠ MVPs**, **🔔 Eventos** e **☀ Spot** (SpotLight). Somente o módulo selecionado é exibido. A última aba fica salva em `settings.json` e é preservada ao expandir, compactar e reiniciar. Trocar de aba não reinicia cronômetros, não muda a seleção automaticamente e não interrompe notificações.
 
 - **Mina:** status, cronômetro grande, progresso, próxima entrada e botão de entrada quando disponível. Mantém os ciclos de 30 + 60 minutos e durações já configuradas.
-- **MVPs:** todos os monitorados em ordem de respawn, três linhas visíveis por padrão e rolagem para os demais. O botão Morreu e o seletor expansível de favoritos registram mortes na mesma janela. A preferência anterior de 1/3/5 define a altura da lista, sem ocultar os demais MVPs.
+- **MVPs:** até cinco favoritos, com timers ativos primeiro em ordem do próximo respawn; os demais mostram “Sem horário”. Se houver mais de cinco favoritos, escolha quais exibir em Configurações. **Limpar MVPs** pede confirmação e limpa todos os timers de MVP, preservando favoritos, catálogo, tempos configurados e histórico.
 - **Eventos:** próximas ocorrências de qualquer tipo (Dudu, KVM, Maré Infernal e personalizados), ordenadas por horário, com nome, horário e contador. Três linhas visíveis e rolagem para até oito próximas ocorrências. Eventos simultâneos aparecem em linhas separadas. Usa os horários cadastrados e o fuso configurado.
 - **SpotLight:** seleção atual, quantidade de mapas, próxima rotação, seletor e confirmação. A tabela completa permanece no painel; a primeira consulta à wiki também pode ser feita ao abrir essa aba.
 
@@ -144,9 +144,9 @@ A integração é coberta por testes HTTP simulados. Para confirmar a conta sem 
 
 ## Interface simplificada
 
-O smoke WPF alterna as quatro abas compactas, verifica que cada uma mostra apenas seu módulo, testa rolagem de MVPs, preservação de serviços/timestamps, notificações em aba inativa e restauração da aba após reinício. Também gera PNGs em 96, 120, 144 e 192 DPI (100%, 125%, 150% e 200%). Essas renderizações não substituem um teste físico de troca entre monitores com escalas diferentes. O manifesto declara [PerMonitorV2 conforme a documentação do Windows](https://learn.microsoft.com/en-us/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process); mudanças de DPI solicitam novo ajuste do compacto.
+O smoke WPF alterna as quatro abas compactas, verifica que cada uma mostra apenas seu módulo, testa o limite de cinco favoritos, registro em HH:mm e limpeza dos timers com preservação de dados, preservação de serviços/timestamps, notificações em aba inativa e restauração da aba após reinício. Também gera PNGs em 96, 120, 144 e 192 DPI (100%, 125%, 150% e 200%). Essas renderizações não substituem um teste físico de troca entre monitores com escalas diferentes. O manifesto declara [PerMonitorV2 conforme a documentação do Windows](https://learn.microsoft.com/en-us/windows/win32/hidpi/setting-the-default-dpi-awareness-for-a-process); mudanças de DPI solicitam novo ajuste do compacto.
 
-A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Eventos. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura à aba e à quantidade de linhas visíveis, e restaura o tamanho anterior ao expandir.
+A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Eventos. Em MVPs, o fluxo é buscar, selecionar, favoritar se desejar e registrar a morte em HH:mm. A tela contém uma lista e um único formulário; os controles avançados ficam em Configurações. O Início oferece acesso direto à pesquisa de MVPs. O compacto adapta a altura à aba e às linhas exibidas e restaura o tamanho anterior ao expandir.
 
 ## Publicação: somente latest
 

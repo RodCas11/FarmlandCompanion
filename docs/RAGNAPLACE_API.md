@@ -31,7 +31,7 @@ O gateway identifica a base consultada no RagnaPlace. Ele não confirma os mapas
 
 ### 4. Usar o catálogo
 
-Abra **MVPs**, digite o nome de um monstro e clique em **Pesquisar no RagnaPlace**. Selecione o resultado e clique em **Detalhes do resultado selecionado** para consultar os dados disponíveis.
+Abra **Configurações → MVPs: respawn, consulta online e seleção do compacto**, digite o nome e clique em **Buscar online**. Selecione um resultado e use **Consultar selecionado** para conferir os detalhes. Depois, a tela **MVPs** permite pesquisar localmente, favoritar pela estrela e registrar uma morte em **HH:mm**, sem nova consulta online.
 
 ### Se a conexão não funcionar
 

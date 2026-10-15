@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using RagnarokCompanion.Models;
 
@@ -52,6 +53,7 @@ public sealed class PersistenceService
         s.FontSize = double.IsFinite(s.FontSize) ? Math.Clamp(s.FontSize, 11, 24) : 14;
         if (s.CompactCount is not (1 or 3 or 5)) s.CompactCount = 3;
         if (!Enum.IsDefined(s.CompactTab)) s.CompactTab = CompactTab.Mining;
+        s.CompactFavoriteKeys = (s.CompactFavoriteKeys ?? new()).Where(k => !string.IsNullOrWhiteSpace(k)).Distinct().Take(5).ToList();
         if (s.CompactMode is not ("Ambos" or "Mineração" or "MVPs")) s.CompactMode = "Ambos";
         s.AdvanceMinutes ??= "10,5,1";
     }

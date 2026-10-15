@@ -26,7 +26,7 @@ public sealed class AsyncCommand : ICommand
     }
     public event EventHandler? CanExecuteChanged;
 }
-public sealed class CatalogViewModel : Observable, IDisposable
+public sealed partial class CatalogViewModel : Observable, IDisposable
 {
     private readonly MainViewModel owner;
     private readonly ICredentialStorageService credentials;
@@ -44,11 +44,11 @@ public sealed class CatalogViewModel : Observable, IDisposable
     public bool HasFavorites => FavoriteEntries.Count > 0;
     public ObservableCollection<Gateway> Gateways { get; } = new();
     public ObservableCollection<MobRefDto> RemoteResults { get; } = new();
-    private string query = "", map = "", status = "Consultas online somente quando solicitadas.", authStatus = "Conexão ainda não testada";
+    private string query = "", map = "", status = "Selecione um MVP para registrar o horário da morte.", authStatus = "Conexão ainda não testada";
     private bool favoritesOnly, isBusy;
     public string Query { get => query; set { query = value; owner.Search = value; Changed(); RefreshEntries(); } }
-    public string MapFilter { get => map; set { map = value; owner.MapFilter = value; Changed(); RefreshEntries(); } }
-    public bool FavoritesOnly { get => favoritesOnly; set { favoritesOnly = value; Changed(); RefreshEntries(); } }
+    public string MapFilter { get => map; set { if(map==value)return;map = value; owner.MapFilter = value; Changed(); RefreshEntries(); } }
+    public bool FavoritesOnly { get => favoritesOnly; set { if(favoritesOnly==value)return;favoritesOnly = value; Changed(); RefreshEntries(); } }
     public bool IsBusy { get => isBusy; private set { isBusy = value; Changed(); } }
     public string Status { get => status; private set { status = value; Changed(); } }
     public string AuthStatus { get => authStatus; private set { authStatus = value; Changed(); } }
@@ -59,7 +59,7 @@ public sealed class CatalogViewModel : Observable, IDisposable
     public CatalogEntry? SelectedEntry
     {
         get => selectedEntry;
-        set { selectedEntry = value; Changed(); Changed(nameof(HasSelection)); RespawnMin = value?.CustomMin ?? value?.MinMinutes; RespawnMax = value?.CustomMax ?? value?.MaxMinutes; OverrideMap = value?.Map ?? ""; ConfirmFarmland = value?.FarmlandConfirmed ?? false; Changed(nameof(RespawnMin)); Changed(nameof(RespawnMax)); Changed(nameof(OverrideMap)); Changed(nameof(ConfirmFarmland)); }
+        set { if(ReferenceEquals(selectedEntry,value))return; selectedEntry = value; Changed(); Changed(nameof(HasSelection)); Changed(nameof(DeathTitle)); NeedsRespawn=false; RespawnMin = value?.CustomMin ?? value?.MinMinutes; RespawnMax = value?.CustomMax ?? value?.MaxMinutes; OverrideMap = value?.Map ?? ""; ConfirmFarmland = value?.FarmlandConfirmed ?? false; Changed(nameof(RespawnMin)); Changed(nameof(RespawnMax)); Changed(nameof(OverrideMap)); Changed(nameof(ConfirmFarmland)); }
     }
     public CatalogEntry? SelectedFavorite { get; set; }
     public MobRefDto? SelectedRemote { get; set; }
@@ -88,9 +88,10 @@ public sealed class CatalogViewModel : Observable, IDisposable
     public ICommand QuickDeathCommand { get; }
     public ICommand BrowseCommand { get; }
     public ICommand SaveAndDeathCommand { get; }
-    public CatalogViewModel(MainViewModel owner, IRagnaPlaceApiClient? api = null, ICredentialStorageService? credentials = null)
+    public CatalogViewModel(MainViewModel owner, IRagnaPlaceApiClient? api = null, ICredentialStorageService? credentials = null, Func<DateTimeOffset>? clock = null, Func<string,bool>? confirm = null)
     {
         this.owner = owner;
+        InitializeSimpleFlow(clock,confirm);
         this.credentials = credentials ?? new CredentialStorageService(owner.Store.Root);
         this.api = api ?? new RagnaPlaceApiClient(new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(15) }, this.credentials, new LocalCacheService());
         provider = new RagnaPlaceCatalogProvider(this.api); auth = new RagnaPlaceAuthService(this.api);
@@ -110,7 +111,7 @@ public sealed class CatalogViewModel : Observable, IDisposable
         PreviousCommand = Async(async () => { if (remotePage > 1) await SearchRemote(remotePage - 1, lastQuery, lastGateway); });
         NextCommand = Async(async () => { if (remotePage < pages) await SearchRemote(remotePage + 1, lastQuery, lastGateway); });
         DetailsCommand = Async(async () => await Details(false)); RefreshDetailsCommand = Async(async () => await Details(true));
-        FavoriteCommand = Command(() => { if (SelectedEntry == null) return; SelectedEntry.Favorite = !SelectedEntry.Favorite; catalog.SaveChoices(); RefreshEntries(); });
+        FavoriteCommand = Command(() => ToggleFavorite(SelectedEntry));
         SaveRespawnCommand = Command(() =>
         {
             if (SelectedEntry == null || RespawnMin == null || RespawnMax == null || !MvpRespawnService.Valid(RespawnMin.Value, RespawnMax.Value)) { Status = "Selecione um MVP e informe 0 < mínimo ≤ máximo ≤ 10080 minutos."; return; }
@@ -127,7 +128,7 @@ public sealed class CatalogViewModel : Observable, IDisposable
         FavoriteDeathCommand = Command(() => Register(SelectedFavorite, DateTimeOffset.UtcNow));
         QuickDeathCommand = new RelayCommand(p => { if (p is CatalogEntry e) { SelectedEntry = e; DeathNowCommand.Execute(null); } });
         BrowseCommand = Command(() => { owner.Page = 1; owner.PanelCommand.Execute(null); });
-        RefreshEntries();
+        RefreshManualEntries();RefreshEntries();
     }
     public void StoreKey(string key)
     {
@@ -157,7 +158,7 @@ public sealed class CatalogViewModel : Observable, IDisposable
     private async Task Details(bool refresh)
     {
         EnsureGateway(); int? id = refresh ? SelectedEntry?.MonsterId ?? SelectedRemote?.Id : SelectedRemote?.Id ?? SelectedEntry?.MonsterId;
-        if (id == null) { Status = "Selecione um resultado ou um MVP local."; return; }
+        if (id == null || id <= 0) { Status = "Selecione um resultado RagnaPlace ou um MVP do catálogo online."; return; }
         var entries = await provider.DetailsAsync(GatewaySlug, id.Value, refresh); catalog.Merge(entries); RefreshEntries(); SelectedEntry = entries.FirstOrDefault();
         Success("Detalhes RagnaPlace carregados. Cada mapa é uma entrada independente; confirme os tempos no Farmland.");
     }
@@ -169,18 +170,22 @@ public sealed class CatalogViewModel : Observable, IDisposable
         // and remains usable from favorites without retaining any raw API response.
         var previous = owner.Engine.Mvps.FirstOrDefault(m => m.CatalogKey == entry.Key);
         if (resolved == null && previous != null && MvpRespawnService.Valid(previous.MinMinutes, previous.MaxMinutes)) resolved = (previous.MinMinutes, previous.MaxMinutes, previous.Origin);
-        if (resolved == null) { SelectedEntry = entry; RespawnExpanded = true; owner.Page = 1; owner.PanelCommand.Execute(null); Status = "Falta só o tempo de respawn. Preencha e salve abaixo; nome e mapa já estão selecionados."; return; }
+        if (resolved == null) { SelectedEntry = entry; RespawnExpanded = true; NeedsRespawn=true; owner.Page = 1; owner.PanelCommand.Execute(null); Status = "Falta só o tempo de respawn. Preencha e salve abaixo; nome e mapa já estão selecionados."; return; }
         owner.RegisterCatalogDeath(entry, resolved.Value.Min, resolved.Value.Max, resolved.Value.Origin, death);
+        NeedsRespawn=false;
         Status = "Morte registrada. O timer funciona sem novas consultas à API.";
     }
     private void RefreshEntries()
     {
         string? selectedKey = SelectedEntry?.Key, favoriteKey = SelectedFavorite?.Key;
-        Entries.Clear(); foreach (var e in catalog.Entries.Where(e => e.Name.Contains(query, StringComparison.OrdinalIgnoreCase) && e.Map.Contains(map, StringComparison.OrdinalIgnoreCase) && (!favoritesOnly || e.Favorite)).OrderByDescending(e => e.Favorite).ThenBy(e => e.Name)) Entries.Add(e);
+        foreach(var group in catalog.Entries.GroupBy(e=>e.Name,StringComparer.OrdinalIgnoreCase))foreach(var e in group)e.DisambiguateMap=group.Count()>1;
+        Entries.Clear(); foreach (var e in catalog.Entries.Where(e => CultureInfo.InvariantCulture.CompareInfo.IndexOf(e.Name,query.Trim(),CompareOptions.IgnoreCase|CompareOptions.IgnoreNonSpace)>=0 && e.Map.Contains(map, StringComparison.OrdinalIgnoreCase) && (!favoritesOnly || e.Favorite)).OrderByDescending(e => e.Favorite).ThenBy(e => e.Name)) Entries.Add(e);
         FavoriteEntries.Clear(); foreach (var e in catalog.Entries.Where(e => e.Favorite).OrderBy(e => e.Name)) FavoriteEntries.Add(e);
         SelectedEntry = Entries.FirstOrDefault(e => e.Key == selectedKey);
         SelectedFavorite = FavoriteEntries.FirstOrDefault(e => e.Key == favoriteKey) ?? FavoriteEntries.FirstOrDefault(); Changed(nameof(SelectedFavorite));
         Changed(nameof(HasFavorites));
+        RefreshFavoriteTimers();
+        CompactChoices.Clear();foreach(var e in FavoriteEntries)CompactChoices.Add(new(this,e));
     }
     public void Dispose() { if (api is IDisposable d) d.Dispose(); }
 }

@@ -19,6 +19,8 @@ public sealed class Settings : INotifyPropertyChanged
     private int compactCount = 3;
     private CompactTab compactTab = CompactTab.Mining;
     public CompactTab CompactTab { get => compactTab; set => Set(ref compactTab, value); }
+    public bool ChooseCompactFavorites { get; set; }
+    public List<string> CompactFavoriteKeys { get; set; } = new();
     public double MiningMinutes { get => miningMinutes; set => Set(ref miningMinutes, value); }
     public double CooldownMinutes { get => cooldownMinutes; set => Set(ref cooldownMinutes, value); }
     public bool Sounds { get => sounds; set => Set(ref sounds, value); }

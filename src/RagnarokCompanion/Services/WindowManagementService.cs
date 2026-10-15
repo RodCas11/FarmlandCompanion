@@ -30,7 +30,7 @@ public sealed class WindowManagementService
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.ExpandedEvent, new RoutedEventHandler((_, _) => QueueFit()));
         Panel.CompactContent.AddHandler(System.Windows.Controls.Expander.CollapsedEvent, new RoutedEventHandler((_, _) => QueueFit()));
         vm.Spotlight.PropertyChanged += (_, e) => { if (vm.ActiveCompactTab == Models.CompactTab.Spotlight && e.PropertyName is "Summary" or "Status") QueueFit(); };
-        vm.CompactAllRows.CollectionChanged += (_, _) => { if (vm.ActiveCompactTab == Models.CompactTab.Mvps) QueueFit(); };
+        vm.Catalog.CompactFavorites.CollectionChanged += (_, _) => { if (vm.ActiveCompactTab == Models.CompactTab.Mvps) QueueFit(); };
         vm.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(vm.ActiveCompactTab) || (vm.ActiveCompactTab == Models.CompactTab.Mining && e.PropertyName == nameof(vm.MiningAvailable))) QueueFit(); };
         Panel.Loaded += (_, _) => EnsureVisible(Panel);
         Panel.DpiChanged += (_, _) => { EnsureVisible(Panel); QueueFit(); };
