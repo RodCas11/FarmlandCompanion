@@ -1,0 +1,84 @@
+name: Release Windows
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build, test and package
+    runs-on: windows-2022
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - name: Validate release version
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          [xml]$project = Get-Content src/RagnarokCompanion/RagnarokCompanion.csproj
+          $expected = 'v' + $project.Project.PropertyGroup.Version
+          if ($env:RELEASE_TAG -cne $expected) { throw "A tag deve corresponder à versão do projeto: $expected" }
+      - name: Build user package with tests and offline WPF smoke
+        run: ./build-release.ps1 -SdkPath (Get-Command dotnet).Source
+      - name: Upload user package
+        uses: actions/upload-artifact@v4
+        with:
+          name: FarmlandCompanion-win-x64
+          path: |
+            artifacts/release/FarmlandCompanion-win-x64.zip
+            artifacts/release/FarmlandCompanion-win-x64.sha256
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: FarmlandCompanion-win-x64
+          path: package
+      - name: Publish verified package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd package
+          sha256sum --check FarmlandCompanion-win-x64.sha256
+          cat > release-notes.md <<'NOTES'
+          ## Baixar e executar
+
+          1. Baixe **FarmlandCompanion-win-x64.zip** nos arquivos abaixo.
+          2. Extraia todo o ZIP e abra **FarmlandCompanion.exe**.
+
+          Windows 11 x64. Não precisa instalar .NET. Mantenha as pastas Data, docs e licenses junto do aplicativo.
+
+          Para atualizar, use **Sair** na bandeja da versão anterior antes de abrir a nova. Suas configurações e sua chave API continuam na pasta de dados do Windows; não fazem parte deste pacote.
+
+          O arquivo `.sha256` permite conferir a integridade do download. Os arquivos automáticos **Source code** são destinados a desenvolvedores.
+          NOTES
+          gh release create "$RELEASE_TAG" FarmlandCompanion-win-x64.zip FarmlandCompanion-win-x64.sha256 --verify-tag --title "Farmland Companion $RELEASE_TAG" --notes-file release-notes.md --latest

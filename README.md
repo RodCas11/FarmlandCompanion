@@ -1,5 +1,15 @@
 # Farmland Companion
 
+## Baixar o Companion
+
+**[Baixar Farmland Companion para Windows x64](https://github.com/RodCas11/FarmlandCompanion/releases/latest/download/FarmlandCompanion-win-x64.zip)** · [Todas as versões](https://github.com/RodCas11/FarmlandCompanion/releases)
+
+1. Baixe o arquivo **FarmlandCompanion-win-x64.zip** na release mais recente.
+2. Extraia **todo o ZIP** para uma pasta no seu computador.
+3. Abra **FarmlandCompanion.exe**. Não é necessário instalar .NET ou compilar o projeto.
+
+Requer **Windows 11 x64**. Mantenha as pastas `Data`, `docs` e `licenses` junto do executável. Para atualizar, use **Sair** na bandeja da versão antiga antes de abrir a nova; suas configurações e sua chave API são preservadas. Na página de releases, escolha o ZIP do aplicativo; os downloads **Source code** são para desenvolvedores.
+
 Aplicativo WPF para Windows 11 x64, C#/.NET 8 e MVVM. Mineração, timers MVP, catálogo híbrido com RagnaPlace e uma única janela que alterna entre painel e modo compacto. Executável self-contained: não exige runtime instalado manualmente, administrador, drivers ou serviços.
 
 ## Executar
@@ -93,15 +103,38 @@ Start-Process ./dist/latest/FarmlandCompanion.exe -ArgumentList '--smoke-test' -
 Get-Content "$env:TEMP/RagnarokCompanion-validation/smoke-test.txt"
 ```
 
-Gera relatório e PNGs fora da distribuição, em `%TEMP%\RagnarokCompanion-validation` (ou no diretório passado em `--smoke-output=CAMINHO`). Exercita quatro páginas, modos da mesma janela, timers, bandeja, recuperação de posição, favoritos, configuração Farmland, persistência e envio de notificação nativa. Os testes HTTP usam mocks e não consomem a API real.
+Gera relatório e PNGs fora da distribuição, em `%TEMP%\RagnarokCompanion-validation` (ou no diretório passado em `--smoke-output=CAMINHO`). Exercita cinco páginas, Spotlight, modos da mesma janela, timers, bandeja, recuperação de posição, favoritos, configuração Farmland, persistência e envio de notificação nativa. Os testes HTTP usam mocks e não consomem a API real.
 
 A integração é coberta por testes HTTP simulados. Para confirmar a conta sem alterar timers ou preferências, use Configurações → Conexão com o RagnaPlace → Testar conexão autenticada, ou execute o aplicativo com --check-ragnaplace. O diagnóstico usa a chave DPAPI já armazenada, valida o gateway Renewal, faz uma busca e consulta detalhes de um MVP, com até três requisições limitadas e sem exibir credenciais. O resultado fica em %TEMP%\RagnarokCompanion-validation\ragnaplace-check.txt, ou no arquivo passado em --check-output=CAMINHO. O teste de publicação nunca usa a API real.
 
 ## Interface simplificada
 
-A navegação tem somente Início, MVPs, Histórico e Configurações. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura ao número de timers e restaura o tamanho anterior ao expandir.
+A navegação tem Início, MVPs, Histórico, Configurações e SpotLight. No Início, inicie a mineração quando disponível, pesquise/selecione um MVP e use Morreu agora ou expanda Informar outro horário. Favoritos aparecem primeiro. Os próximos eventos unem mina, cooldown e respawns em ordem cronológica. Em MVPs, cada cartão registra morte com um clique; quando falta respawn, somente essa configuração é aberta, com Salvar e registrar morte. Cadastro manual, correções e configurações avançadas permanecem em seções expansíveis. O compacto adapta a altura ao número de timers e restaura o tamanho anterior ao expandir.
 
 ## Publicação: somente latest
+
+### Releases no GitHub
+
+A Action [Release Windows](https://github.com/RodCas11/FarmlandCompanion/actions/workflows/release.yml) compila no Windows, executa os testes e o smoke WPF offline, gera o ZIP e seu SHA256 e publica uma release quando uma tag `v*` é enviada. A tag deve corresponder à `<Version>` do projeto, por exemplo `v4.0.0` para `4.0.0`.
+
+Para publicar uma nova versão, atualize a versão do projeto, faça commit usando gitmoji e envie uma nova tag:
+
+```powershell
+git tag -a v4.0.1 -m "🚀 Release v4.0.1"
+git push origin v4.0.1
+```
+
+O botão **Run workflow** na Action gera o pacote como artifact para conferência, sem criar uma release quando executado na branch `main`. O workflow usa o token automático do GitHub; não precisa de API key RagnaPlace nem de credenciais pessoais nos secrets.
+
+Para gerar o mesmo pacote localmente:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File build-release.ps1
+```
+
+O resultado fica em `artifacts/release/FarmlandCompanion-win-x64.zip`, com `FarmlandCompanion-win-x64.sha256` ao lado. O ZIP contém o executável self-contained, README, guias, licenças e os dados fonte do catálogo inicial. Código do projeto, SDK, símbolos de depuração, testes, relatórios, caches e credenciais não são incluídos. O SHA256 também é conferido pela Action antes de publicar a release.
+
+### Build local segura
 
 Execute .\build-latest.ps1 (se a política local impedir scripts, use powershell -ExecutionPolicy Bypass -File build-latest.ps1). O fluxo compila Release, executa todos os testes, publica em diretório temporário, verifica o pacote e abre o novo executável em smoke test isolado antes de substituir dist/latest/FarmlandCompanion.exe. build.ps1 é um atalho para o mesmo fluxo; não permite pular testes nem criar executáveis com nomes diferentes.
 
