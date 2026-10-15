@@ -57,6 +57,7 @@ public sealed partial class CatalogViewModel
     }
     void ToggleFavorite(CatalogEntry? entry)
     {
+        if(entry?.IsSearchCandidate==true){_=SelectOnlineAsync(entry,true);return;}
         if(entry==null)return;entry.Favorite=!entry.Favorite;
         if(!entry.Favorite)owner.Settings.CompactFavoriteKeys.Remove(entry.Key);
         catalog.SaveChoices();owner.Store.Save("settings.json",owner.Settings);RefreshEntries();owner.Refresh();
@@ -72,6 +73,7 @@ public sealed partial class CatalogViewModel
     void RegisterShortDeath()
     {
         var entry=SelectedEntry;if(entry==null){Status="Selecione um MVP.";return;}
+        if(entry.IsSearchCandidate){Status="Aguarde a confirmação de MVP no RagnaPlace antes de registrar a morte.";return;}
         if(!MvpDeathTimeService.TryResolve(DeathTime,PreviousDay,simpleClock(),TimeZoneInfo.Local,out var death,out string error)){Status=error;return;}
         var previous=owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==entry.Key);
         var resolved=respawns.Resolve(entry,AcceptGateway);

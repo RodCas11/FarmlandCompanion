@@ -54,13 +54,13 @@ Ainda não tem uma chave? Veja o [guia para criar sua conta, solicitar a API key
 
 1. Em **Configurações → Integração RagnaPlace**, informe a API Key no campo mascarado e clique **Proteger e salvar chave**. O campo é limpo após salvar.
 2. Clique **Atualizar gateways**, selecione um Renewal ativo e clique **Testar conexão autenticada**.
-3. Em **MVPs**, pesquise no catálogo local, selecione o nome e clique na estrela para favoritar, se desejar.
+3. Em **MVPs**, digite um nome, parte dele ou ID. A lista local aparece imediatamente; com chave e gateway configurados, a busca RagnaPlace começa após 400 ms. O botão **Buscar no RagnaPlace** repete a consulta explicitamente.
 4. Informe a morte em **HH:mm** e clique **Registrar morte**. A data padrão é hoje; use **Dia anterior** quando necessário. Horários futuros são recusados.
-5. Para ampliar o catálogo, abra **Configurações → MVPs: respawn, consulta online e seleção do compacto**, use **Buscar online** e **Consultar selecionado**. A paginação é manual.
+5. Resultados externos mostram ID, gateway e “verificar MVP”. Selecione ou clique na estrela: o aplicativo consulta os detalhes e exige `exp.mvp > 0` antes de salvar ou favoritar. Se houver mais de um mapa, escolha o ponto desejado. Não é necessário cadastro manual.
 
 A chave fica apenas no arquivo `ragnaplace-key.dpapi`, protegida por **DPAPI CurrentUser**, nunca em JSON, URL, exportação ou código. Não é transferível entre usuários/computadores. **Apagar chave** remove a credencial e invalida o cache. Gateways é uma rota pública e não prova autenticação; o teste usa uma consulta autenticada pequena.
 
-Dados online fornecidos por **[RagnaPlace](https://ragnaplace.com)**, para uso pessoal e não comercial conforme as [regras da API](https://ragnaplace.com/pt/api). Não há consultas periódicas, paginação automática, extração em massa nem espelhamento do banco. O [OpenAPI oficial](https://api.ragnaplace.com/v1/openapi.json) foi inspecionado antes de implementar a integração. Consulte [docs/RAGNAPLACE_API.md](docs/RAGNAPLACE_API.md) para rotas, campos, limites e decisões.
+Dados online fornecidos por **[RagnaPlace](https://ragnaplace.com)**, para uso pessoal e não comercial conforme as [regras da API](https://ragnaplace.com/pt/api). A busca acompanha a digitação com debounce e cancelamento; não há consultas periódicas em segundo plano, paginação automática, extração em massa nem espelhamento do banco. O [OpenAPI oficial](https://api.ragnaplace.com/v1/openapi.json) foi inspecionado antes de implementar a integração. Consulte [docs/RAGNAPLACE_API.md](docs/RAGNAPLACE_API.md) para rotas, campos, limites e decisões.
 
 O catálogo inicial fornece 16 identidades MVP verificadas no rAthena Renewal, sem presumir mapas ou respawns do Farmland. O recorte de dados em formato fonte e a licença GPL-3.0-or-later acompanham `Data/` e `licenses/`. Esta versão reconhece URLs de imagem no contrato, mas não baixa/distribui sprites do jogo.
 
@@ -110,7 +110,9 @@ Dados em `%APPDATA%\RagnarokCompanion\`:
 
 Preferências são salvas automaticamente; textos são aplicados ao perder foco. JSONs usam arquivo temporário, flush e substituição atômica por arquivo com `.bak`. Arquivos inválidos são preservados como `.invalid-<timestamp>` e recuperados da cópia anterior ou padrões. Não há transação única entre os arquivos: uma interrupção entre gravações pode deixar o histórico uma revisão atrás do timer.
 
-O cache de respostas da API é **somente em memória**, por dois minutos e até 100 entradas. Não foi encontrada permissão explícita para redistribuir/cachear o banco em disco; somente escolhas operacionais são persistidas. Itens consultados e não favoritados/configurados podem precisar de nova consulta em outra sessão. A última consulta bem-sucedida pode ser atendida pelo cache; não significa atualização de todo o catálogo.
+A busca traz até dez resultados por consulta, sem percorrer páginas automaticamente. Refine o nome para limitar resultados. Acentos e caixa são normalizados; aliases locais incluem Freeoni/Phreeoni e alguns nomes em português. Os demais nomes e traduções dependem do que o gateway disponibiliza; o contrato não documenta uma pesquisa específica por nome interno/sprite. O ID consulta diretamente os detalhes. Resultados repetidos no mesmo gateway/ID são reunidos, mantendo mapas e variantes distintos. Falhas mostram uma mensagem explícita e preservam a lista local; resultados vazios têm outra mensagem.
+
+O cache de respostas da API é **somente em memória**, por dois minutos e até 100 entradas. Não foi encontrada permissão explícita para redistribuir/cachear o banco em disco; somente escolhas operacionais são persistidas. Ao selecionar um MVP confirmado, somente seu marcador essencial (ID, nome, mapa, gateway e origem) é salvo; favoritar e configurar o respawn preserva essas escolhas offline. Respostas brutas e respawns genéricos não são gravados em disco. Resultados não selecionados podem precisar de nova consulta em outra sessão. A última consulta bem-sucedida pode ser atendida pelo cache; não significa atualização de todo o catálogo.
 
 Importação/exportação preserva o formato anterior: preferências principais e cadastros/timers MVP, sem chave. Para backup completo, copie também os JSONs de favoritos e gateway. Cadastre novamente a credencial em outro usuário/computador. Importar não apaga o ciclo da mina nem o histórico.
 

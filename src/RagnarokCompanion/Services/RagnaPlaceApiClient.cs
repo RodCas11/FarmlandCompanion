@@ -97,6 +97,7 @@ public sealed class RagnaPlaceApiClient : IRagnaPlaceApiClient, IDisposable
                     { if (blockedUntil <= DateTimeOffset.UtcNow) blockedUntil = DateTimeOffset.UtcNow.AddSeconds(60); throw new RagnaPlaceException("Limite da API atingido. Aguarde antes de consultar novamente.", response.StatusCode); }
                     if (response.StatusCode == HttpStatusCode.Unauthorized) throw new RagnaPlaceException("Chave inválida ou ausente (HTTP 401). Confira a chave nas Configurações.", response.StatusCode);
                     if (response.StatusCode == HttpStatusCode.Forbidden) throw new RagnaPlaceException("Acesso não autorizado (HTTP 403). A chave pode estar pendente de aprovação ou revogada.", response.StatusCode);
+                    if (response.StatusCode == HttpStatusCode.NotFound) throw new RagnaPlaceException("Monstro ou gateway não encontrado (HTTP 404). Confira o ID e o gateway nas Configurações.", response.StatusCode);
                     if (attempt == 0 && response.StatusCode is HttpStatusCode.BadGateway or HttpStatusCode.ServiceUnavailable or HttpStatusCode.GatewayTimeout)
                     { if (blockedUntil > DateTimeOffset.UtcNow) throw new RagnaPlaceException("O servidor pediu uma pausa. Aguarde antes de consultar novamente.", response.StatusCode); await Task.Delay(TimeSpan.FromSeconds(1.5), ct); continue; }
                     if (!response.IsSuccessStatusCode) throw new RagnaPlaceException($"RagnaPlace indisponível para esta consulta (HTTP {(int)response.StatusCode}). Os timers continuam locais.", response.StatusCode);

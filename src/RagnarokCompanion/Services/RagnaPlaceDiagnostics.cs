@@ -21,10 +21,11 @@ public static class RagnaPlaceDiagnostics
             using var api = new RagnaPlaceApiClient(new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }), credentials, new LocalCacheService());
             var gateways = await api.GatewaysAsync();
             if (!gateways.Any(g => g.Slug == settings.Gateway)) return "FAIL: O gateway salvo não consta entre os Renewal ativos.";
-            await new RagnaPlaceAuthService(api).TestAsync(settings.Gateway);
-            var details = await new RagnaPlaceCatalogProvider(api).DetailsAsync(settings.Gateway, 1159);
+            var results = await new RagnaPlaceMonsterSearchService(api).SearchAsync(settings.Gateway, "Detard", 1, false, default);
+            if (results.Count == 0) return "FAIL: A busca por nome não retornou resultados neste gateway. Nenhum dado local foi alterado.";
+            var details = await new RagnaPlaceCatalogProvider(api).DetailsAsync(settings.Gateway, results.First().MonsterId);
             if (details.Count == 0) return "FAIL: A consulta de detalhes não retornou dados para verificação.";
-            return "PASS: Gateway Renewal, autenticação, pesquisa e detalhes de MVP RagnaPlace confirmados. Três consultas limitadas; chave não exibida; timers e preferências não alterados.";
+            return "PASS: Gateway Renewal, autenticação, busca integrada por nome parcial Detard e detalhes de MVP fora do catálogo inicial por ID confirmados. Três consultas limitadas; chave não exibida; timers e preferências não alterados.";
         }
         catch (RagnaPlaceException ex) { return "FAIL: " + ex.Message; }
         catch { return "FAIL: Não foi possível validar a integração. Nenhuma credencial foi exibida ou alterada."; }

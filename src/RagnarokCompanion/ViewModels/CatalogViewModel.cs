@@ -46,7 +46,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     public ObservableCollection<MobRefDto> RemoteResults { get; } = new();
     private string query = "", map = "", status = "Selecione um MVP para registrar o horário da morte.", authStatus = "Conexão ainda não testada";
     private bool favoritesOnly, isBusy;
-    public string Query { get => query; set { query = value; owner.Search = value; Changed(); RefreshEntries(); } }
+    public string Query { get => query; set { if(query==value)return;query = value; owner.Search = value; Changed(); QueryChanged(); } }
     public string MapFilter { get => map; set { if(map==value)return;map = value; owner.MapFilter = value; Changed(); RefreshEntries(); } }
     public bool FavoritesOnly { get => favoritesOnly; set { if(favoritesOnly==value)return;favoritesOnly = value; Changed(); RefreshEntries(); } }
     public bool IsBusy { get => isBusy; private set { isBusy = value; Changed(); } }
@@ -54,12 +54,12 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     public string AuthStatus { get => authStatus; private set { authStatus = value; Changed(); } }
     public string KeyStatus => credentials.HasKey ? "Chave armazenada com DPAPI • conteúdo oculto" : "Nenhuma chave armazenada";
     public string LastSync => Integration.LastSyncUtc?.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss") ?? "Nenhuma sincronização";
-    public string GatewaySlug { get => Integration.Gateway; set { Integration.Gateway = value ?? ""; Changed(); AuthStatus = "Gateway alterado • teste a conexão"; PersistIntegration(); } }
+    public string GatewaySlug { get => Integration.Gateway; set { if(Integration.Gateway==value)return;Integration.Gateway = value ?? ""; Changed(); AuthStatus = "Gateway alterado • teste a conexão"; PersistIntegration(); QueryChanged(); } }
     private CatalogEntry? selectedEntry;
     public CatalogEntry? SelectedEntry
     {
         get => selectedEntry;
-        set { if(ReferenceEquals(selectedEntry,value))return; selectedEntry = value; Changed(); Changed(nameof(HasSelection)); Changed(nameof(DeathTitle)); NeedsRespawn=false; RespawnMin = value?.CustomMin ?? value?.MinMinutes; RespawnMax = value?.CustomMax ?? value?.MaxMinutes; OverrideMap = value?.Map ?? ""; ConfirmFarmland = value?.FarmlandConfirmed ?? false; Changed(nameof(RespawnMin)); Changed(nameof(RespawnMax)); Changed(nameof(OverrideMap)); Changed(nameof(ConfirmFarmland)); }
+        set { if(ReferenceEquals(selectedEntry,value))return; selectedEntry = value; Changed(); Changed(nameof(HasSelection)); Changed(nameof(DeathTitle)); NeedsRespawn=false; RespawnMin = value?.CustomMin ?? value?.MinMinutes; RespawnMax = value?.CustomMax ?? value?.MaxMinutes; OverrideMap = value?.Map ?? ""; ConfirmFarmland = value?.FarmlandConfirmed ?? false; Changed(nameof(RespawnMin)); Changed(nameof(RespawnMax)); Changed(nameof(OverrideMap)); Changed(nameof(ConfirmFarmland)); OnSearchSelection(value); }
     }
     public CatalogEntry? SelectedFavorite { get; set; }
     public MobRefDto? SelectedRemote { get; set; }
@@ -97,6 +97,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
         provider = new RagnaPlaceCatalogProvider(this.api); auth = new RagnaPlaceAuthService(this.api);
         catalog = new MvpCatalogService(owner.Store);
         Integration = owner.Store.Load<IntegrationSettings>("ragnaplace.json");
+        InitializeIntegratedSearch();
         // No unauthenticated guess is made about renewal gateways on startup.
         if (!string.IsNullOrEmpty(Integration.Gateway)) Gateways.Add(new Gateway { Slug = Integration.Gateway, Groups = new[] { "renewal" } });
         LoadGatewaysCommand = Async(async () =>
@@ -139,7 +140,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     {
         if (IsBusy) return; IsBusy = true;
         try { await action(); }
-        catch (RagnaPlaceException ex) { Status = ex.Message; if (ex.Status is HttpStatusCode.Unauthorized or HttpStatusCode.Forbidden) AuthStatus = ex.Status == HttpStatusCode.Unauthorized ? "Chave inválida/ausente (401)" : "Sem autorização (403)"; }
+        catch (RagnaPlaceException ex) { Status = ex.Message; SetAuthFailure(ex); }
         catch { Status = "Não foi possível concluir a consulta. Seus timers locais foram preservados."; }
         finally { IsBusy = false; }
     });
@@ -179,13 +180,18 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     {
         string? selectedKey = SelectedEntry?.Key, favoriteKey = SelectedFavorite?.Key;
         foreach(var group in catalog.Entries.GroupBy(e=>e.Name,StringComparer.OrdinalIgnoreCase))foreach(var e in group)e.DisambiguateMap=group.Count()>1;
-        Entries.Clear(); foreach (var e in catalog.Entries.Where(e => CultureInfo.InvariantCulture.CompareInfo.IndexOf(e.Name,query.Trim(),CompareOptions.IgnoreCase|CompareOptions.IgnoreNonSpace)>=0 && e.Map.Contains(map, StringComparison.OrdinalIgnoreCase) && (!favoritesOnly || e.Favorite)).OrderByDescending(e => e.Favorite).ThenBy(e => e.Name)) Entries.Add(e);
+        refreshingEntries=true;
+        var candidates=onlineEntries.Where(e=>e.IsSearchCandidate&&!catalog.Entries.Any(c=>c.MonsterId==e.MonsterId&&(c.Gateway==e.Gateway||string.IsNullOrEmpty(c.Gateway))));
+        var visible=catalog.Entries.Where(e=>MvpSearchCoordinator.Matches(e,query)||onlineEntries.Any(r=>r.Key==e.Key)).Concat(candidates).DistinctBy(e=>e.Key).ToList();
+        foreach(var group in visible.GroupBy(e=>e.Name,StringComparer.OrdinalIgnoreCase))foreach(var e in group)e.DisambiguateMap=group.Count()>1;
+        Entries.Clear(); foreach (var e in visible.Where(e => e.Map.Contains(map, StringComparison.OrdinalIgnoreCase) && (!favoritesOnly || e.Favorite)).OrderByDescending(e => e.Favorite).ThenBy(e => e.Name)) Entries.Add(e);
         FavoriteEntries.Clear(); foreach (var e in catalog.Entries.Where(e => e.Favorite).OrderBy(e => e.Name)) FavoriteEntries.Add(e);
         SelectedEntry = Entries.FirstOrDefault(e => e.Key == selectedKey);
         SelectedFavorite = FavoriteEntries.FirstOrDefault(e => e.Key == favoriteKey) ?? FavoriteEntries.FirstOrDefault(); Changed(nameof(SelectedFavorite));
         Changed(nameof(HasFavorites));
         RefreshFavoriteTimers();
         CompactChoices.Clear();foreach(var e in FavoriteEntries)CompactChoices.Add(new(this,e));
+        refreshingEntries=false;
     }
-    public void Dispose() { if (api is IDisposable d) d.Dispose(); }
+    public void Dispose() { searchCoordinator?.Dispose();selectionRequest?.Cancel(); if (api is IDisposable d) d.Dispose(); }
 }

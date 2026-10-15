@@ -119,7 +119,7 @@ public sealed partial class MainViewModel : Observable
     public string PinLabel => Settings.Topmost ? "● Fixado" : "○ Fixar";
     public string Feedback { get; private set; } = "Pronto para acompanhar sua próxima caçada.";
     private int lastHistoryCount = -1;
-    public MainViewModel(PersistenceService store, Func<DateTimeOffset>? mvpClock=null, Func<string,bool>? confirmMvp=null)
+    public MainViewModel(PersistenceService store, Func<DateTimeOffset>? mvpClock=null, Func<string,bool>? confirmMvp=null, IRagnaPlaceApiClient? mvpApi=null, ICredentialStorageService? mvpCredentials=null)
     {
         Store = store;
         var settings = store.Load<Settings>("settings.json"); PersistenceService.Validate(settings);
@@ -134,7 +134,7 @@ public sealed partial class MainViewModel : Observable
         var history = store.Load<List<HistoryEntry>>("history.json");
         history.RemoveAll(h => h == null || h.Message == null || h.Kind == null);
         Engine = new(settings, mining, mvps, history);
-        Catalog = new CatalogViewModel(this,clock:mvpClock,confirm:confirmMvp);
+        Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
         Spotlight = new SpotlightViewModel(store);
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");

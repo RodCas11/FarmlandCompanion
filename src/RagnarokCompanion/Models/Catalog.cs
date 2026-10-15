@@ -18,6 +18,9 @@ public sealed class CatalogEntry
     public double? CustomMax { get; set; }
     public bool FarmlandConfirmed { get; set; }
     public bool Favorite { get; set; }
+    public bool Retained { get; set; }
+    [JsonIgnore] public bool IsSearchCandidate { get; set; }
+    [JsonIgnore] public string SearchInfo => (MonsterId > 0 ? "#" + MonsterId + " · " : "") + (string.IsNullOrEmpty(Gateway) ? "Local" : "RagnaPlace · " + Gateway) + (IsSearchCandidate ? " · verificar MVP" : "");
     public string SourceUrl { get; set; } = "";
     public string Notes { get; set; } = "";
     [JsonIgnore] public bool DisambiguateMap { get; set; }

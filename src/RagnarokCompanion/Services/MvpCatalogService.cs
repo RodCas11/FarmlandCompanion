@@ -31,7 +31,7 @@ public sealed class MvpCatalogService : IMvpCatalogService
     }
     private static bool ValidChoice(CatalogEntry? c) => c != null && !string.IsNullOrWhiteSpace(c.Key) && !string.IsNullOrWhiteSpace(c.Name) && (c.MonsterId > 0 || c.Key.StartsWith("manual:",StringComparison.Ordinal)) && (c.CustomMin == null || MvpRespawnService.Valid(c.CustomMin.Value, c.CustomMax ?? -1));
     private static void CopyChoices(CatalogEntry from, CatalogEntry to)
-    { to.Favorite = from.Favorite; to.CustomMin = from.CustomMin; to.CustomMax = from.CustomMax; to.FarmlandConfirmed = from.FarmlandConfirmed; if (!string.IsNullOrWhiteSpace(from.Map)) to.Map = from.Map; }
+    { to.Retained = from.Retained; to.Favorite = from.Favorite; to.CustomMin = from.CustomMin; to.CustomMax = from.CustomMax; to.FarmlandConfirmed = from.FarmlandConfirmed; if (!string.IsNullOrWhiteSpace(from.Map)) to.Map = from.Map; }
     public void Merge(IEnumerable<CatalogEntry> entries)
     {
         foreach (var incoming in entries)
@@ -47,8 +47,8 @@ public sealed class MvpCatalogService : IMvpCatalogService
     public void SaveChoices()
     {
         // Save only explicitly chosen bookmarks/overrides. No API payload, sprite or generic respawn cache on disk.
-        var choices = Entries.Where(e => e.Favorite || e.CustomMin != null).Select(e => new CatalogEntry
-        { Key = e.Key, MonsterId = e.MonsterId, Name = e.Name, Map = e.Map, Gateway = e.Gateway, Favorite = e.Favorite, CustomMin = e.CustomMin, CustomMax = e.CustomMax, FarmlandConfirmed = e.FarmlandConfirmed, Origin = "Informação não verificada", SourceUrl = e.SourceUrl });
+        var choices = Entries.Where(e => !e.IsSearchCandidate && (e.Retained || e.Favorite || e.CustomMin != null)).Select(e => new CatalogEntry
+        { Key = e.Key, MonsterId = e.MonsterId, Name = e.Name, Map = e.Map, Gateway = e.Gateway, Retained=e.Retained, Favorite = e.Favorite, CustomMin = e.CustomMin, CustomMax = e.CustomMax, FarmlandConfirmed = e.FarmlandConfirmed, Origin = string.IsNullOrEmpty(e.Gateway) ? "Informação não verificada" : "RagnaPlace — " + e.Gateway, SourceUrl = e.SourceUrl });
         store.Save("catalog-choices.json", choices.ToList());
     }
 }
