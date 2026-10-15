@@ -59,7 +59,7 @@ public partial class App : Application
         try
         {
             var store = new PersistenceService(smoke ? Path.Combine(Path.GetTempPath(), "RagnarokCompanion-Smoke-" + Guid.NewGuid()) : null);
-            if (smoke) store.Save("spotlight-catalog.json", SpotlightDiagnostics.Synthetic());
+            if (smoke) store.Save("spotlight-catalog.json", SpotlightExtractedCatalog.LoadBundled());
             vm = new(store);
             if (smoke) vm.Events.Enabled = false;
             windows = new(vm, Quit); MainWindow = windows.Panel;
@@ -117,7 +117,8 @@ public partial class App : Application
             if (windows.Panel.Left < SystemParameters.VirtualScreenLeft - 1) throw new Exception("Janela fora da tela");
             windows.ShowPanel();
             vm.Catalog.Gateways.Add(new Models.Gateway { Slug = "iro", Groups = new[] { "renewal" } }); vm.Catalog.GatewaySlug = "iro";
-            vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.Last();
+            vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.First();vm.Spotlight.Confirm();
+            vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.Single(g=>g.Name=="Spotlight Lunar");
             SpotlightDiagnostics.Verify(SpotlightDiagnostics.Synthetic());
             for (int p = 0; p < 6; p++)
             {
@@ -127,6 +128,7 @@ public partial class App : Application
                 if (windows.Panel.Icon == null) throw new Exception("Ícone do aplicativo ausente");
                 if (p == 4 && VisualElements<DataGrid>(windows.Panel).Single().Columns.Any(c => c.ActualWidth < 50)) throw new Exception("Colunas Spotlight ilegíveis");
                 Capture(windows.Panel, Path.Combine(smokeOutput, $"smoke-page-{p}.png"));
+                if(p==4)SpotlightVisualDiagnostics.Verify(windows.Panel,smokeOutput);
             }
             vm.Catalog.SelectedEntry = vm.Catalog.Entries.First();
             vm.Catalog.RespawnMin = 60; vm.Catalog.RespawnMax = 90; vm.Catalog.ConfirmFarmland = true;

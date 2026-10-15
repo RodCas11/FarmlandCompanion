@@ -18,9 +18,9 @@ Abra `dist/latest/FarmlandCompanion.exe`. Não há instalador. Se a versão ante
 
 ## SpotLight
 
-Em **SpotLight**, selecione o grupo informado no jogo para ver todos os mapas. Pesquisa, filtros por recomendado, ordenação nos cabeçalhos, monstros no tooltip e links Divine Pride estão disponíveis. O nível do personagem é opcional e destaca faixas compatíveis. A seleção é manual; às 20h de São Paulo ela fica pendente de confirmação. O compacto mostra grupo, total, contador e seleção rápida na mesma janela.
+Em **SpotLight**, selecionar um grupo mostra seus mapas imediatamente. A consulta e o grupo confirmado como ativo são salvos separadamente; use **Confirmar este grupo no servidor** somente após verificar no jogo. Pesquisa instantânea por nome/código, filtros combinados, limpeza dos filtros, destaque pelo nível do personagem e ordenação ficam na mesma tela. Às 20h de São Paulo, a confirmação fica desatualizada. O compacto mostra o grupo confirmado, total e contador, com consulta e confirmação rápidas na mesma janela.
 
-O catálogo vem da [wiki oficial Farmland](https://farmland.net.br/wiki/index.php/SpotLight), é salvo localmente após a primeira consulta e funciona offline. A distribuição não inclui uma cópia do catálogo completo, pois a fonte não declara licença de redistribuição. Consulte [docs/SPOTLIGHT.md](docs/SPOTLIGHT.md) para origem, contagens e limitações.
+O catálogo usa o JSON fornecido na raiz, `spotlights_farmland_completo.json`, extraído da [wiki oficial Farmland](https://farmland.net.br/wiki/index.php/SpotLight): sete grupos e 268 mapas, incorporados ao executável para uso offline desde a primeira abertura. Links e monstros ausentes podem ser complementados pelo catálogo verificado já salvo ou pela atualização explícita da wiki; níveis e grupos do JSON permanecem como fonte principal. Links ausentes ficam desabilitados. Consulte [docs/SPOTLIGHT.md](docs/SPOTLIGHT.md) para origem, contagens e limitações.
 
 ## Eventos e notificações
 

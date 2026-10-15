@@ -24,7 +24,8 @@ public static class SpotlightDiagnostics
   var time=new DateTimeOffset(2026,10,15,22,59,59,TimeSpan.Zero);
   using var vm=new SpotlightViewModel(store,clock:()=>time);
   var lunar=vm.Groups.FirstOrDefault(g=>g.Id=="lunar")??vm.Groups.First();vm.SelectedGroup=lunar;
-  if(vm.Rows.Count!=lunar.Maps.Count||vm.Pending)throw new Exception("Seleção ou contagem incorreta.");
+  if(vm.Rows.Count!=lunar.Maps.Count||!vm.Pending)throw new Exception("Consulta deve mostrar mapas sem confirmar o grupo.");
+  vm.Confirm();
   var sample=lunar.Maps.First();vm.Search=sample.Code;if(!vm.Rows.Any(r=>r.Map.Code==sample.Code))throw new Exception("Busca por código falhou.");
   vm.Search=sample.Name;if(!vm.Rows.Any(r=>r.Map.Code==sample.Code))throw new Exception("Busca por nome falhou.");
   vm.Search="";vm.Filter=vm.Filters[3];if(vm.Rows.Any(r=>r.Map.Recommended is <80 or >99))throw new Exception("Filtro falhou.");

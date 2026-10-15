@@ -20,7 +20,7 @@ public class SpotlightTests
   var c=SpotlightCatalogService.Parse(Html,DateTimeOffset.UtcNow);
   Assert.Equal(123,c.Revision);Assert.Equal(2,c.Groups.Single().Maps.Count);
   var m=c.Groups[0].Maps[0];Assert.Equal(80,m.MinLevel);Assert.Equal(100,m.MaxLevel);Assert.Equal(85,m.Recommended);Assert.Contains("MVP",m.MonsterInfo);
-  Assert.Equal(1,c.Groups[0].Maps[1].Recommended);Assert.EndsWith("/test_map",m.DivinePrideUrl);
+  Assert.Equal(1,c.Groups[0].Maps[1].Recommended);Assert.Null(m.DivinePrideUrl);Assert.False(m.HasMapLink);
  }
  [Theory]
  [InlineData("const test =", "const missing =")]
@@ -42,7 +42,7 @@ public class SpotlightTests
  [Fact] public async Task InvalidRefreshPreservesOfflineCacheAndThrottles()
  {
   var store=new PersistenceService(Path.Combine(Path.GetTempPath(),"spotlight-test-"+Guid.NewGuid()));var original=SpotlightDiagnostics.Synthetic();store.Save("spotlight-catalog.json",original);
-  var handler=new FakeHandler();using var client=new HttpClient(handler);using var service=new SpotlightCatalogService(store,client);
+  var handler=new FakeHandler();using var client=new HttpClient(handler);using var service=new SpotlightCatalogService(store,client,preferBundled:false);
   await Assert.ThrowsAnyAsync<Exception>(()=>service.RefreshAsync());Assert.Equal(2,service.LoadLocal()!.Groups.Count);
   await Assert.ThrowsAsync<InvalidOperationException>(()=>service.RefreshAsync());Assert.Equal(1,handler.Calls);
  }

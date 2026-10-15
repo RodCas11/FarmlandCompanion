@@ -9,6 +9,8 @@ public sealed class SpotlightCatalog
     public int Version { get; set; } = 1;
     public string SourceUrl { get; set; } = "https://farmland.net.br/wiki/index.php/SpotLight";
     public long Revision { get; set; }
+    public bool ExplicitMapLinks { get; set; }
+    public string DataOrigin { get; set; } = "Wiki Farmland";
     public DateTimeOffset RetrievedUtc { get; set; }
     public List<SpotlightGroup> Groups { get; set; } = new();
 }
@@ -28,7 +30,9 @@ public sealed class SpotlightMap
     public int? MaxLevel { get; set; }
     public int? Recommended { get; set; }
     public List<SpotlightMonster> Monsters { get; set; } = new();
-    [JsonIgnore] public string DivinePrideUrl => "https://www.divine-pride.net/database/map/" + Uri.EscapeDataString(Code);
+    public string? MapUrl { get; set; }
+    [JsonIgnore] public string? DivinePrideUrl => MapUrl;
+    [JsonIgnore] public bool HasMapLink => Uri.TryCreate(MapUrl, UriKind.Absolute, out var uri) && uri.Scheme == "https";
     [JsonIgnore] public string MonsterInfo => Monsters.Count == 0 ? "Monstros não informados na fonte." : string.Join(Environment.NewLine, Monsters.Select(m => $"{m.Name} — Nv. {m.Level}{(string.IsNullOrEmpty(m.Tag) ? "" : " (" + m.Tag + ")")}"));
 }
 public sealed class SpotlightMonster
@@ -40,6 +44,7 @@ public sealed class SpotlightMonster
 public sealed class SpotlightSelection
 {
     public string GroupId { get; set; } = "";
+    public string ViewedGroupId { get; set; } = "";
     public DateTimeOffset? SelectedUtc { get; set; }
     public int? CharacterLevel { get; set; }
     public bool ShowCompact { get; set; } = true;

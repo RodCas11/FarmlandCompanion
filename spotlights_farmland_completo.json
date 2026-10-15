@@ -1,0 +1,2486 @@
+{
+  "fonte": "https://farmland.net.br/wiki/index.php/SpotLight",
+  "extraido_em": "2026-10-15T19:26:18.075Z",
+  "origem": "DOM renderizado do componente .guia-up",
+  "observacao": "Os grupos mapeiam listas possíveis, não o SpotLight ativo no servidor.",
+  "total_grupos": 7,
+  "total_registros": 268,
+  "grupos_com_divergencias": [],
+  "grupos": [
+    {
+      "id": "Spotlight Solar",
+      "nome": "Spotlight Solar",
+      "mapas_exibidos_na_wiki": 39,
+      "quantidade_extraida": 39,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "ecl_tdun01",
+          "nome": "Calabouço de Eclage 1",
+          "nivel_minimo": 136,
+          "nivel_maximo": 156,
+          "nivel_recomendado": 141,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lhz_dun02",
+          "nome": "Laboratório de LHZ 2",
+          "nivel_minimo": 126,
+          "nivel_maximo": 146,
+          "nivel_recomendado": 131,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abyss_03",
+          "nome": "Lago do Abismo 3",
+          "nivel_minimo": 120,
+          "nivel_maximo": 140,
+          "nivel_recomendado": 125,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dic_fild01",
+          "nome": "Campo de El Dicastes 1",
+          "nivel_minimo": 115,
+          "nivel_maximo": 135,
+          "nivel_recomendado": 120,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abbey02",
+          "nome": "Abadia da Ilha 2",
+          "nivel_minimo": 114,
+          "nivel_maximo": 134,
+          "nivel_recomendado": 119,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gefenia02",
+          "nome": "Geffenia 2",
+          "nivel_minimo": 108,
+          "nivel_maximo": 128,
+          "nivel_recomendado": 113,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ve_fild03",
+          "nome": "Campo de Veins 3",
+          "nivel_minimo": 100,
+          "nivel_maximo": 120,
+          "nivel_recomendado": 105,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "spl_fild03",
+          "nome": "Campo de Splendide 3",
+          "nivel_minimo": 99,
+          "nivel_maximo": 119,
+          "nivel_recomendado": 104,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ama_dun03",
+          "nome": "Calabouço de Amatsu 3",
+          "nivel_minimo": 88,
+          "nivel_maximo": 108,
+          "nivel_recomendado": 93,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_prison1",
+          "nome": "Prisão Subterrânea de GH",
+          "nivel_minimo": 85,
+          "nivel_maximo": 105,
+          "nivel_recomendado": 90,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild03",
+          "nome": "Campo de Einbroch 3",
+          "nivel_minimo": 81,
+          "nivel_maximo": 101,
+          "nivel_recomendado": 86,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "hu_fild01",
+          "nome": "Campo de Hugel 1",
+          "nivel_minimo": 80,
+          "nivel_maximo": 100,
+          "nivel_recomendado": 85,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tur_dun01",
+          "nome": "Ilha das Tartarugas 1",
+          "nivel_minimo": 78,
+          "nivel_maximo": 98,
+          "nivel_recomendado": 83,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild03",
+          "nome": "Campo de Juno 3",
+          "nivel_minimo": 73,
+          "nivel_maximo": 93,
+          "nivel_recomendado": 78,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "c_tower2",
+          "nome": "Torre do Relógio 2",
+          "nivel_minimo": 72,
+          "nivel_maximo": 92,
+          "nivel_recomendado": 77,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mosk_dun02",
+          "nome": "Calabouço de Moscóvia 2",
+          "nivel_minimo": 72,
+          "nivel_maximo": 92,
+          "nivel_recomendado": 77,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dew_fild01",
+          "nome": "Campo de Dewata 1",
+          "nivel_minimo": 70,
+          "nivel_maximo": 90,
+          "nivel_recomendado": 75,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lou_dun01",
+          "nome": "Calabouço de Louyang 1",
+          "nivel_minimo": 70,
+          "nivel_maximo": 90,
+          "nivel_recomendado": 75,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild07",
+          "nome": "Campo de Juno 7",
+          "nivel_minimo": 70,
+          "nivel_maximo": 90,
+          "nivel_recomendado": 75,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "in_sphinx3",
+          "nome": "Esfinge 3",
+          "nivel_minimo": 63,
+          "nivel_maximo": 83,
+          "nivel_recomendado": 68,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild12",
+          "nome": "Campo de Juno 12",
+          "nivel_minimo": 63,
+          "nivel_maximo": 83,
+          "nivel_recomendado": 68,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ayo_dun01",
+          "nome": "Calabouço de Ayothaya 1",
+          "nivel_minimo": 54,
+          "nivel_maximo": 74,
+          "nivel_recomendado": 59,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_dun00",
+          "nome": "Calabouço de Geffen 0",
+          "nivel_minimo": 53,
+          "nivel_maximo": 73,
+          "nivel_recomendado": 58,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild17",
+          "nome": "Campo de Morroc 17",
+          "nivel_minimo": 53,
+          "nivel_maximo": 73,
+          "nivel_recomendado": 58,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild03",
+          "nome": "Campo de Comodo 3",
+          "nivel_minimo": 47,
+          "nivel_maximo": 67,
+          "nivel_recomendado": 52,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd02",
+          "nome": "Pirâmide de Morroc 2",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun03",
+          "nome": "Calabouço de Izlude 3",
+          "nivel_minimo": 42,
+          "nivel_maximo": 62,
+          "nivel_recomendado": 47,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild10",
+          "nome": "Campo de Geffen 10",
+          "nivel_minimo": 34,
+          "nivel_maximo": 54,
+          "nivel_recomendado": 39,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_dun01",
+          "nome": "Caverna de Payon 1",
+          "nivel_minimo": 24,
+          "nivel_maximo": 44,
+          "nivel_recomendado": 29,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild09",
+          "nome": "Campo de Payon 9",
+          "nivel_minimo": 22,
+          "nivel_maximo": 42,
+          "nivel_recomendado": 27,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_sewb3",
+          "nome": "Esgoto de Prontera 3",
+          "nivel_minimo": 20,
+          "nivel_maximo": 40,
+          "nivel_recomendado": 25,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild02",
+          "nome": "Campo de Prontera 2",
+          "nivel_minimo": 11,
+          "nivel_maximo": 31,
+          "nivel_recomendado": 16,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild04",
+          "nome": "Campo de Prontera 4",
+          "nivel_minimo": 9,
+          "nivel_maximo": 29,
+          "nivel_recomendado": 14,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild08",
+          "nome": "Campo de Payon 8",
+          "nivel_minimo": 8,
+          "nivel_maximo": 28,
+          "nivel_recomendado": 13,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_dun00",
+          "nome": "Caverna de Payon 0",
+          "nivel_minimo": 7,
+          "nivel_maximo": 27,
+          "nivel_recomendado": 12,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild04",
+          "nome": "Campo de Geffen 4",
+          "nivel_minimo": 3,
+          "nivel_maximo": 23,
+          "nivel_recomendado": 8,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild00",
+          "nome": "Campo de Prontera 0",
+          "nivel_minimo": 3,
+          "nivel_maximo": 23,
+          "nivel_recomendado": 8,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild05",
+          "nome": "Campo de Prontera 5",
+          "nivel_minimo": 1,
+          "nivel_maximo": 21,
+          "nivel_recomendado": 6,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild12",
+          "nome": "Campo de Morroc 12",
+          "nivel_minimo": 1,
+          "nivel_maximo": 20,
+          "nivel_recomendado": 5,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Lunar",
+      "nome": "Spotlight Lunar",
+      "mapas_exibidos_na_wiki": 37,
+      "quantidade_extraida": 37,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "pay_fild01",
+          "nome": "Campo de Payon 1",
+          "nivel_minimo": 1,
+          "nivel_maximo": 18,
+          "nivel_recomendado": 3,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild07",
+          "nome": "Campo de Prontera 7",
+          "nivel_minimo": 5,
+          "nivel_maximo": 25,
+          "nivel_recomendado": 10,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_01",
+          "nome": "Monte Mjolnir 1",
+          "nivel_minimo": 15,
+          "nivel_maximo": 35,
+          "nivel_recomendado": 20,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild07",
+          "nome": "Campo de Payon 7",
+          "nivel_minimo": 19,
+          "nivel_maximo": 39,
+          "nivel_recomendado": 24,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_maze03",
+          "nome": "Labirinto de Prontera 3",
+          "nivel_minimo": 20,
+          "nivel_maximo": 40,
+          "nivel_recomendado": 25,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild10",
+          "nome": "Campo de Prontera 10",
+          "nivel_minimo": 24,
+          "nivel_maximo": 44,
+          "nivel_recomendado": 29,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ayo_fild01",
+          "nome": "Campo de Ayothaya 1",
+          "nivel_minimo": 28,
+          "nivel_maximo": 48,
+          "nivel_recomendado": 33,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild03",
+          "nome": "Campo de Prontera 3",
+          "nivel_minimo": 28,
+          "nivel_maximo": 48,
+          "nivel_recomendado": 33,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild02",
+          "nome": "Campo de Comodo 2",
+          "nivel_minimo": 37,
+          "nivel_maximo": 57,
+          "nivel_recomendado": 42,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild04",
+          "nome": "Campo de Comodo 4",
+          "nivel_minimo": 38,
+          "nivel_maximo": 58,
+          "nivel_recomendado": 43,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild11",
+          "nome": "Campo de Geffen 11",
+          "nivel_minimo": 39,
+          "nivel_maximo": 59,
+          "nivel_recomendado": 44,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "orcsdun02",
+          "nome": "Calabouço dos Orcs 2",
+          "nivel_minimo": 44,
+          "nivel_maximo": 64,
+          "nivel_recomendado": 49,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_08",
+          "nome": "Monte Mjolnir 8",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd03",
+          "nome": "Pirâmide de Morroc 3",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd04",
+          "nome": "Pirâmide de Morroc 4",
+          "nivel_minimo": 49,
+          "nivel_maximo": 69,
+          "nivel_recomendado": 54,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_dun01",
+          "nome": "Calabouço de Geffen 1",
+          "nivel_minimo": 53,
+          "nivel_maximo": 73,
+          "nivel_recomendado": 58,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_04",
+          "nome": "Monte Mjolnir 4",
+          "nivel_minimo": 55,
+          "nivel_maximo": 75,
+          "nivel_recomendado": 60,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild08",
+          "nome": "Campo de Geffen 8",
+          "nivel_minimo": 69,
+          "nivel_maximo": 89,
+          "nivel_recomendado": 74,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_church",
+          "nome": "Igreja de Glast Heim",
+          "nivel_minimo": 70,
+          "nivel_maximo": 90,
+          "nivel_recomendado": 75,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "hu_fild04",
+          "nome": "Campo de Hugel 4",
+          "nivel_minimo": 74,
+          "nivel_maximo": 94,
+          "nivel_recomendado": 79,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild09",
+          "nome": "Campo de Einbroch 9",
+          "nivel_minimo": 75,
+          "nivel_maximo": 95,
+          "nivel_recomendado": 80,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lou_dun03",
+          "nome": "Calabouço de Louyang 3",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mosk_dun03",
+          "nome": "Calabouço de Moscóvia 3",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_sew01",
+          "nome": "Esgoto de Glast Heim 1",
+          "nivel_minimo": 89,
+          "nivel_maximo": 99,
+          "nivel_recomendado": 84,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tur_dun02",
+          "nome": "Ilha das Tartarugas 2",
+          "nivel_minimo": 82,
+          "nivel_maximo": 102,
+          "nivel_recomendado": 87,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_sew02",
+          "nome": "Esgoto de Glast Heim 2",
+          "nivel_minimo": 90,
+          "nivel_maximo": 110,
+          "nivel_recomendado": 95,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mag_dun01",
+          "nome": "Calabouço de Magma 1",
+          "nivel_minimo": 90,
+          "nivel_maximo": 110,
+          "nivel_recomendado": 95,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild08",
+          "nome": "Campo de Rachel 8",
+          "nivel_minimo": 90,
+          "nivel_maximo": 110,
+          "nivel_recomendado": 95,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gefenia01",
+          "nome": "Geffenia 1",
+          "nivel_minimo": 95,
+          "nivel_maximo": 115,
+          "nivel_recomendado": 100,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "spl_fild02",
+          "nome": "Campo de Splendide 2",
+          "nivel_minimo": 95,
+          "nivel_maximo": 115,
+          "nivel_recomendado": 100,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mag_dun02",
+          "nome": "Calabouço de Magma 2",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_sew04",
+          "nome": "Esgoto de Glast Heim 4",
+          "nivel_minimo": 99,
+          "nivel_maximo": 119,
+          "nivel_recomendado": 104,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_knt02",
+          "nome": "Cavalaria de Glast Heim 2",
+          "nivel_minimo": 105,
+          "nivel_maximo": 125,
+          "nivel_recomendado": 110,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "odin_tem01",
+          "nome": "Templo de Odin 1",
+          "nivel_minimo": 109,
+          "nivel_maximo": 129,
+          "nivel_recomendado": 114,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_san04",
+          "nome": "Santuário de Rachel 4",
+          "nivel_minimo": 116,
+          "nivel_maximo": 136,
+          "nivel_recomendado": 121,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "bif_fild01",
+          "nome": "Campo de Bifrost 1",
+          "nivel_minimo": 130,
+          "nivel_maximo": 150,
+          "nivel_recomendado": 135,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "verus03",
+          "nome": "Verus 3",
+          "nivel_minimo": 158,
+          "nivel_maximo": 178,
+          "nivel_recomendado": 163,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Estelar",
+      "nome": "Spotlight Estelar",
+      "mapas_exibidos_na_wiki": 39,
+      "quantidade_extraida": 39,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "dic_dun03",
+          "nome": "Calabouço de El Dicastes 3",
+          "nivel_minimo": 129,
+          "nivel_maximo": 149,
+          "nivel_recomendado": 134,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "thor_v01",
+          "nome": "Vulcão de Thor 1",
+          "nivel_minimo": 125,
+          "nivel_maximo": 145,
+          "nivel_recomendado": 130,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abbey01",
+          "nome": "Abadia da Ilha 1",
+          "nivel_minimo": 120,
+          "nivel_maximo": 140,
+          "nivel_recomendado": 125,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abyss_02",
+          "nome": "Lago do Abismo 2",
+          "nivel_minimo": 120,
+          "nivel_maximo": 140,
+          "nivel_recomendado": 125,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "odin_tem02",
+          "nome": "Templo de Odin 2",
+          "nivel_minimo": 118,
+          "nivel_maximo": 138,
+          "nivel_recomendado": 123,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_san03",
+          "nome": "Santuário de Rachel 3",
+          "nivel_minimo": 112,
+          "nivel_maximo": 132,
+          "nivel_recomendado": 117,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild06",
+          "nome": "Campo de Rachel 6",
+          "nivel_minimo": 98,
+          "nivel_maximo": 118,
+          "nivel_recomendado": 103,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_sew03",
+          "nome": "Esgoto de Glast Heim 3",
+          "nivel_minimo": 94,
+          "nivel_maximo": 114,
+          "nivel_recomendado": 99,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_cas01",
+          "nome": "Castelo de Glast Heim 1",
+          "nivel_minimo": 93,
+          "nivel_maximo": 113,
+          "nivel_recomendado": 98,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "nif_fild01",
+          "nome": "Campo de Niflheim 1",
+          "nivel_minimo": 93,
+          "nivel_maximo": 113,
+          "nivel_recomendado": 98,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tur_dun04",
+          "nome": "Ilha das Tartarugas 4",
+          "nivel_minimo": 90,
+          "nivel_maximo": 110,
+          "nivel_recomendado": 95,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ve_fild01",
+          "nome": "Campo de Veins 1",
+          "nivel_minimo": 90,
+          "nivel_maximo": 110,
+          "nivel_recomendado": 95,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gon_dun03",
+          "nome": "Calabouço de Gonryun 3",
+          "nivel_minimo": 87,
+          "nivel_maximo": 107,
+          "nivel_recomendado": 92,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gon_dun02",
+          "nome": "Calabouço de Gonryun 2",
+          "nivel_minimo": 82,
+          "nivel_maximo": 102,
+          "nivel_recomendado": 87,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t05",
+          "nome": "Torre de Thanatos 5",
+          "nivel_minimo": 82,
+          "nivel_maximo": 102,
+          "nivel_recomendado": 87,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_prison",
+          "nome": "Prisão de Glast Heim",
+          "nivel_minimo": 79,
+          "nivel_maximo": 99,
+          "nivel_recomendado": 84,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "c_tower3",
+          "nome": "Torre do Relógio 3",
+          "nivel_minimo": 78,
+          "nivel_maximo": 98,
+          "nivel_recomendado": 83,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild05",
+          "nome": "Campo de Einbroch 5",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dew_dun02",
+          "nome": "Calabouço de Dewata 2",
+          "nivel_minimo": 75,
+          "nivel_maximo": 95,
+          "nivel_recomendado": 80,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dew_dun01",
+          "nome": "Calabouço de Dewata 1",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild02",
+          "nome": "Campo de Juno 2",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild06",
+          "nome": "Campo de Juno 6",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild11",
+          "nome": "Campo de Juno 11",
+          "nivel_minimo": 70,
+          "nivel_maximo": 90,
+          "nivel_recomendado": 75,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "bra_fild01",
+          "nome": "Campo de Brasilis 1",
+          "nivel_minimo": 60,
+          "nivel_maximo": 80,
+          "nivel_recomendado": 65,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild06",
+          "nome": "Campo de Comodo 6",
+          "nivel_minimo": 51,
+          "nivel_maximo": 71,
+          "nivel_recomendado": 56,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild16",
+          "nome": "Campo de Morroc 16",
+          "nivel_minimo": 51,
+          "nivel_maximo": 71,
+          "nivel_recomendado": 56,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "in_sphinx4",
+          "nome": "Esfinge 4",
+          "nivel_minimo": 48,
+          "nivel_maximo": 68,
+          "nivel_recomendado": 53,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd06",
+          "nome": "Pirâmide de Morroc 6",
+          "nivel_minimo": 46,
+          "nivel_maximo": 66,
+          "nivel_recomendado": 51,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild11",
+          "nome": "Campo de Prontera 11",
+          "nivel_minimo": 46,
+          "nivel_maximo": 66,
+          "nivel_recomendado": 51,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild07",
+          "nome": "Campo de Comodo 7",
+          "nivel_minimo": 38,
+          "nivel_maximo": 58,
+          "nivel_recomendado": 43,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjo_dun03",
+          "nome": "Mina de Mjolnir 3",
+          "nivel_minimo": 34,
+          "nivel_maximo": 54,
+          "nivel_recomendado": 39,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "beach_dun3",
+          "nome": "Caverna da Praia 3",
+          "nivel_minimo": 30,
+          "nivel_maximo": 50,
+          "nivel_recomendado": 35,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "xmas_dun02",
+          "nome": "Fábrica de Brinquedos 2",
+          "nivel_minimo": 29,
+          "nivel_maximo": 49,
+          "nivel_recomendado": 34,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild02",
+          "nome": "Campo de Geffen 2",
+          "nivel_minimo": 28,
+          "nivel_maximo": 48,
+          "nivel_recomendado": 33,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "xmas_dun01",
+          "nome": "Fábrica de Brinquedos 1",
+          "nivel_minimo": 27,
+          "nivel_maximo": 47,
+          "nivel_recomendado": 32,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "xmas_fild01",
+          "nome": "Campo de Lutie 1",
+          "nivel_minimo": 27,
+          "nivel_maximo": 47,
+          "nivel_recomendado": 32,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild08",
+          "nome": "Campo de Comodo 8",
+          "nivel_minimo": 23,
+          "nivel_maximo": 43,
+          "nivel_recomendado": 28,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild04",
+          "nome": "Campo de Payon 4",
+          "nivel_minimo": 20,
+          "nivel_maximo": 40,
+          "nivel_recomendado": 25,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild11",
+          "nome": "Campo de Morroc 11",
+          "nivel_minimo": 4,
+          "nivel_maximo": 24,
+          "nivel_recomendado": 9,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Radiante",
+      "nome": "Spotlight Radiante",
+      "mapas_exibidos_na_wiki": 39,
+      "quantidade_extraida": 39,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "pay_fild03",
+          "nome": "Campo de Payon 3",
+          "nivel_minimo": 1,
+          "nivel_maximo": 16,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild02",
+          "nome": "Campo de Payon 2",
+          "nivel_minimo": 8,
+          "nivel_maximo": 28,
+          "nivel_recomendado": 13,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_sewb1",
+          "nome": "Esgoto de Prontera 1",
+          "nivel_minimo": 10,
+          "nivel_maximo": 30,
+          "nivel_recomendado": 15,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjo_dun01",
+          "nome": "Mina de Mjolnir 1",
+          "nivel_minimo": 12,
+          "nivel_maximo": 32,
+          "nivel_recomendado": 17,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild05",
+          "nome": "Campo de Geffen 5",
+          "nivel_minimo": 13,
+          "nivel_maximo": 33,
+          "nivel_recomendado": 18,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_maze02",
+          "nome": "Labirinto de Prontera 2",
+          "nivel_minimo": 20,
+          "nivel_maximo": 40,
+          "nivel_recomendado": 25,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "anthell02",
+          "nome": "Formigueiro Infernal 2",
+          "nivel_minimo": 23,
+          "nivel_maximo": 43,
+          "nivel_recomendado": 28,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_02",
+          "nome": "Monte Mjolnir 2",
+          "nivel_minimo": 24,
+          "nivel_maximo": 44,
+          "nivel_recomendado": 29,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_dun02",
+          "nome": "Caverna de Payon 2",
+          "nivel_minimo": 24,
+          "nivel_maximo": 44,
+          "nivel_recomendado": 29,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun01",
+          "nome": "Calabouço de Izlude 1",
+          "nivel_minimo": 35,
+          "nivel_maximo": 55,
+          "nivel_recomendado": 40,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild09",
+          "nome": "Campo de Prontera 9",
+          "nivel_minimo": 43,
+          "nivel_maximo": 63,
+          "nivel_recomendado": 48,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_dun04",
+          "nome": "Caverna de Payon 4",
+          "nivel_minimo": 58,
+          "nivel_maximo": 78,
+          "nivel_recomendado": 63,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_03",
+          "nome": "Monte Mjolnir 3",
+          "nivel_minimo": 60,
+          "nivel_maximo": 80,
+          "nivel_recomendado": 65,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "um_fild04",
+          "nome": "Campo de Umbala 4",
+          "nivel_minimo": 60,
+          "nivel_maximo": 80,
+          "nivel_recomendado": 65,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "in_sphinx2",
+          "nome": "Esfinge 2",
+          "nivel_minimo": 61,
+          "nivel_maximo": 81,
+          "nivel_recomendado": 66,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ayo_dun02",
+          "nome": "Calabouço de Ayothaya 2",
+          "nivel_minimo": 63,
+          "nivel_maximo": 83,
+          "nivel_recomendado": 68,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "in_sphinx5",
+          "nome": "Esfinge 5",
+          "nivel_minimo": 69,
+          "nivel_maximo": 89,
+          "nivel_recomendado": 74,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mosk_dun01",
+          "nome": "Calabouço de Moscóvia 1",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "c_tower1",
+          "nome": "Torre do Relógio 1",
+          "nivel_minimo": 72,
+          "nivel_maximo": 92,
+          "nivel_recomendado": 77,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "alde_dun03",
+          "nome": "Torre do Relógio 3",
+          "nivel_minimo": 75,
+          "nivel_maximo": 95,
+          "nivel_recomendado": 80,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ama_dun01",
+          "nome": "Calabouço de Amatsu 1",
+          "nivel_minimo": 75,
+          "nivel_maximo": 95,
+          "nivel_recomendado": 80,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild04",
+          "nome": "Campo de Einbroch 4",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lou_dun02",
+          "nome": "Calabouço de Louyang 2",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lhz_fild03",
+          "nome": "Campo de Lighthalzen 3",
+          "nivel_minimo": 82,
+          "nivel_maximo": 102,
+          "nivel_recomendado": 87,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild12",
+          "nome": "Campo de Rachel 12",
+          "nivel_minimo": 85,
+          "nivel_maximo": 105,
+          "nivel_recomendado": 90,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ve_fild07",
+          "nome": "Campo de Veins 7",
+          "nivel_minimo": 85,
+          "nivel_maximo": 105,
+          "nivel_recomendado": 90,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild04",
+          "nome": "Campo de Rachel 4",
+          "nivel_minimo": 91,
+          "nivel_maximo": 111,
+          "nivel_recomendado": 96,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_dun01",
+          "nome": "Calabouço de Glast Heim 1",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild05",
+          "nome": "Campo de Rachel 5",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "nif_fild02",
+          "nome": "Campo de Niflheim 2",
+          "nivel_minimo": 99,
+          "nivel_maximo": 119,
+          "nivel_recomendado": 104,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t01",
+          "nome": "Torre de Thanatos 1",
+          "nivel_minimo": 106,
+          "nivel_maximo": 126,
+          "nivel_recomendado": 111,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_cas02",
+          "nome": "Castelo de Glast Heim 2",
+          "nivel_minimo": 110,
+          "nivel_maximo": 130,
+          "nivel_recomendado": 115,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t07",
+          "nome": "Torre de Thanatos 7",
+          "nivel_minimo": 111,
+          "nivel_maximo": 131,
+          "nivel_recomendado": 116,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_san01",
+          "nome": "Santuário de Rachel 1",
+          "nivel_minimo": 113,
+          "nivel_maximo": 133,
+          "nivel_recomendado": 118,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "thor_v02",
+          "nome": "Vulcão de Thor 2",
+          "nivel_minimo": 116,
+          "nivel_maximo": 136,
+          "nivel_recomendado": 121,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ecl_fild01",
+          "nome": "Campo de Eclage 1",
+          "nivel_minimo": 133,
+          "nivel_maximo": 153,
+          "nivel_recomendado": 138,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ecl_tdun02",
+          "nome": "Calabouço de Eclage 2",
+          "nivel_minimo": 138,
+          "nivel_maximo": 158,
+          "nivel_recomendado": 143,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ecl_tdun03",
+          "nome": "Calabouço de Eclage 3",
+          "nivel_minimo": 138,
+          "nivel_maximo": 158,
+          "nivel_recomendado": 143,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild11",
+          "nome": "Campo de Rachel 11",
+          "nivel_minimo": 158,
+          "nivel_maximo": 178,
+          "nivel_recomendado": 163,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Celestial",
+      "nome": "Spotlight Celestial",
+      "mapas_exibidos_na_wiki": 38,
+      "quantidade_extraida": 38,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "thor_v03",
+          "nome": "Vulcão de Thor 3",
+          "nivel_minimo": 128,
+          "nivel_maximo": 148,
+          "nivel_recomendado": 133,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dic_dun02",
+          "nome": "Calabouço de El Dicastes 2",
+          "nivel_minimo": 126,
+          "nivel_maximo": 146,
+          "nivel_recomendado": 131,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abbey03",
+          "nome": "Abadia da Ilha 3",
+          "nivel_minimo": 123,
+          "nivel_maximo": 143,
+          "nivel_recomendado": 128,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "man_fild02",
+          "nome": "Campo de Manuk 2",
+          "nivel_minimo": 123,
+          "nivel_maximo": 143,
+          "nivel_recomendado": 128,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ma_fild02",
+          "nome": "Campo de Malaya 2",
+          "nivel_minimo": 111,
+          "nivel_maximo": 131,
+          "nivel_recomendado": 116,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "jupe_core",
+          "nome": "Núcleo de Juperos",
+          "nivel_minimo": 109,
+          "nivel_maximo": 129,
+          "nivel_recomendado": 114,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "odin_tem03",
+          "nome": "Templo de Odin 3",
+          "nivel_minimo": 109,
+          "nivel_maximo": 129,
+          "nivel_recomendado": 114,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_knt01",
+          "nome": "Cavalaria de Glast Heim 1",
+          "nivel_minimo": 105,
+          "nivel_maximo": 125,
+          "nivel_recomendado": 110,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "kh_dun02",
+          "nome": "Fábrica de Kiel Hyre 2",
+          "nivel_minimo": 105,
+          "nivel_maximo": 125,
+          "nivel_recomendado": 110,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t03",
+          "nome": "Torre de Thanatos 3",
+          "nivel_minimo": 104,
+          "nivel_maximo": 124,
+          "nivel_recomendado": 109,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "juperos_01",
+          "nome": "Ruínas de Juperos 1",
+          "nivel_minimo": 103,
+          "nivel_maximo": 123,
+          "nivel_recomendado": 108,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "kh_dun01",
+          "nome": "Fábrica de Kiel Hyre 1",
+          "nivel_minimo": 102,
+          "nivel_maximo": 122,
+          "nivel_recomendado": 107,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "alde_dun01",
+          "nome": "Torre do Relógio 1",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "beach_dun",
+          "nome": "Caverna da Praia",
+          "nivel_minimo": 92,
+          "nivel_maximo": 112,
+          "nivel_recomendado": 97,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_chyard",
+          "nome": "Cemitério de Glast Heim",
+          "nivel_minimo": 88,
+          "nivel_maximo": 108,
+          "nivel_recomendado": 93,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tur_dun05",
+          "nome": "Ilha das Tartarugas 5",
+          "nivel_minimo": 84,
+          "nivel_maximo": 104,
+          "nivel_recomendado": 89,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_dun02",
+          "nome": "Calabouço de Geffen 2",
+          "nivel_minimo": 83,
+          "nivel_maximo": 103,
+          "nivel_recomendado": 88,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mal_dun01",
+          "nome": "Calabouço de Malangdo 1",
+          "nivel_minimo": 81,
+          "nivel_maximo": 101,
+          "nivel_recomendado": 86,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lhz_fild01",
+          "nome": "Campo de Lighthalzen 1",
+          "nivel_minimo": 76,
+          "nivel_maximo": 96,
+          "nivel_recomendado": 81,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lhz_fild02",
+          "nome": "Campo de Lighthalzen 2",
+          "nivel_minimo": 74,
+          "nivel_maximo": 94,
+          "nivel_recomendado": 79,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lou_fild01",
+          "nome": "Campo de Louyang 1",
+          "nivel_minimo": 73,
+          "nivel_maximo": 93,
+          "nivel_recomendado": 78,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mosk_fild02",
+          "nome": "Campo de Moscóvia 2",
+          "nivel_minimo": 60,
+          "nivel_maximo": 80,
+          "nivel_recomendado": 65,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "um_fild01",
+          "nome": "Campo de Umbala 1",
+          "nivel_minimo": 58,
+          "nivel_maximo": 78,
+          "nivel_recomendado": 63,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_12",
+          "nome": "Monte Mjolnir 12",
+          "nivel_minimo": 52,
+          "nivel_maximo": 72,
+          "nivel_recomendado": 57,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun04",
+          "nome": "Calabouço de Izlude 4",
+          "nivel_minimo": 50,
+          "nivel_maximo": 70,
+          "nivel_recomendado": 55,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_maze01",
+          "nome": "Labirinto de Prontera 1",
+          "nivel_minimo": 49,
+          "nivel_maximo": 69,
+          "nivel_recomendado": 54,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild10",
+          "nome": "Campo de Payon 10",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild13",
+          "nome": "Campo de Morroc 13",
+          "nivel_minimo": 38,
+          "nivel_maximo": 58,
+          "nivel_recomendado": 43,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "treasure02",
+          "nome": "Ilha do Tesouro 2",
+          "nivel_minimo": 38,
+          "nivel_maximo": 58,
+          "nivel_recomendado": 43,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_10",
+          "nome": "Monte Mjolnir 10",
+          "nivel_minimo": 37,
+          "nivel_maximo": 57,
+          "nivel_recomendado": 42,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjo_dun02",
+          "nome": "Mina de Mjolnir 2",
+          "nivel_minimo": 29,
+          "nivel_maximo": 49,
+          "nivel_recomendado": 34,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild09",
+          "nome": "Campo de Geffen 9",
+          "nivel_minimo": 28,
+          "nivel_maximo": 48,
+          "nivel_recomendado": 33,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild02",
+          "nome": "Campo de Morroc 2",
+          "nivel_minimo": 15,
+          "nivel_maximo": 35,
+          "nivel_recomendado": 20,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_sewb2",
+          "nome": "Esgoto de Prontera 2",
+          "nivel_minimo": 11,
+          "nivel_maximo": 31,
+          "nivel_recomendado": 16,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild01",
+          "nome": "Campo de Geffen 1",
+          "nivel_minimo": 3,
+          "nivel_maximo": 23,
+          "nivel_recomendado": 8,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild07",
+          "nome": "Campo de Morroc 7",
+          "nivel_minimo": 1,
+          "nivel_maximo": 12,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild01",
+          "nome": "Campo de Prontera 1",
+          "nivel_minimo": 1,
+          "nivel_maximo": 13,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild06",
+          "nome": "Campo de Prontera 6",
+          "nivel_minimo": 1,
+          "nivel_maximo": 16,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Infernal",
+      "nome": "Spotlight Infernal",
+      "mapas_exibidos_na_wiki": 38,
+      "quantidade_extraida": 38,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "gef_fild07",
+          "nome": "Campo de Geffen 7",
+          "nivel_minimo": 1,
+          "nivel_maximo": 14,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_fild08",
+          "nome": "Campo de Prontera 8",
+          "nivel_minimo": 1,
+          "nivel_maximo": 11,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd01",
+          "nome": "Pirâmide de Morroc 1",
+          "nivel_minimo": 14,
+          "nivel_maximo": 34,
+          "nivel_recomendado": 19,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "treasure01",
+          "nome": "Ilha do Tesouro 1",
+          "nivel_minimo": 24,
+          "nivel_maximo": 44,
+          "nivel_recomendado": 29,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun00",
+          "nome": "Calabouço de Izlude 0",
+          "nivel_minimo": 30,
+          "nivel_maximo": 50,
+          "nivel_recomendado": 35,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild03",
+          "nome": "Campo de Geffen 3",
+          "nivel_minimo": 35,
+          "nivel_maximo": 55,
+          "nivel_recomendado": 40,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun02",
+          "nome": "Calabouço de Izlude 2",
+          "nivel_minimo": 38,
+          "nivel_maximo": 58,
+          "nivel_recomendado": 43,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "hu_fild06",
+          "nome": "Campo de Hugel 6",
+          "nivel_minimo": 40,
+          "nivel_maximo": 60,
+          "nivel_recomendado": 45,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "orcsdun01",
+          "nome": "Calabouço dos Orcs 1",
+          "nivel_minimo": 41,
+          "nivel_maximo": 61,
+          "nivel_recomendado": 46,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild09",
+          "nome": "Campo de Comodo 9",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_pryd05",
+          "nome": "Pirâmide de Morroc 5",
+          "nivel_minimo": 48,
+          "nivel_maximo": 68,
+          "nivel_recomendado": 53,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_07",
+          "nome": "Monte Mjolnir 7",
+          "nivel_minimo": 49,
+          "nivel_maximo": 69,
+          "nivel_recomendado": 54,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "um_fild02",
+          "nome": "Campo de Umbala 2",
+          "nivel_minimo": 57,
+          "nivel_maximo": 77,
+          "nivel_recomendado": 62,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ama_fild01",
+          "nome": "Campo de Amatsu 1",
+          "nivel_minimo": 62,
+          "nivel_maximo": 82,
+          "nivel_recomendado": 67,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "bra_dun01",
+          "nome": "Calabouço de Brasilis 1",
+          "nivel_minimo": 65,
+          "nivel_maximo": 85,
+          "nivel_recomendado": 70,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_05",
+          "nome": "Monte Mjolnir 5",
+          "nivel_minimo": 65,
+          "nivel_maximo": 85,
+          "nivel_recomendado": 70,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_11",
+          "nome": "Monte Mjolnir 11",
+          "nivel_minimo": 65,
+          "nivel_maximo": 85,
+          "nivel_recomendado": 70,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild08",
+          "nome": "Campo de Juno 8",
+          "nivel_minimo": 65,
+          "nivel_maximo": 85,
+          "nivel_recomendado": 70,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "c_tower4",
+          "nome": "Torre do Relógio 4",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild07",
+          "nome": "Campo de Einbroch 7",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild04",
+          "nome": "Campo de Juno 4",
+          "nivel_minimo": 73,
+          "nivel_maximo": 93,
+          "nivel_recomendado": 78,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "alde_dun04",
+          "nome": "Torre do Relógio 4",
+          "nivel_minimo": 76,
+          "nivel_maximo": 96,
+          "nivel_recomendado": 81,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_dun01",
+          "nome": "Mina de Einbech 1",
+          "nivel_minimo": 80,
+          "nivel_maximo": 100,
+          "nivel_recomendado": 85,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "hu_fild02",
+          "nome": "Campo de Hugel 2",
+          "nivel_minimo": 80,
+          "nivel_maximo": 100,
+          "nivel_recomendado": 85,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tur_dun03",
+          "nome": "Ilha das Tartarugas 3",
+          "nivel_minimo": 84,
+          "nivel_maximo": 104,
+          "nivel_recomendado": 89,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_dun02",
+          "nome": "Mina de Einbech 2",
+          "nivel_minimo": 86,
+          "nivel_maximo": 106,
+          "nivel_recomendado": 91,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild03",
+          "nome": "Campo de Rachel 3",
+          "nivel_minimo": 91,
+          "nivel_maximo": 111,
+          "nivel_recomendado": 96,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ve_fild02",
+          "nome": "Campo de Veins 2",
+          "nivel_minimo": 91,
+          "nivel_maximo": 111,
+          "nivel_recomendado": 96,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild01",
+          "nome": "Campo de Rachel 1",
+          "nivel_minimo": 93,
+          "nivel_maximo": 113,
+          "nivel_recomendado": 98,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ve_fild04",
+          "nome": "Campo de Veins 4",
+          "nivel_minimo": 95,
+          "nivel_maximo": 115,
+          "nivel_recomendado": 100,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gl_dun02",
+          "nome": "Calabouço de Glast Heim 2",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "iz_dun05",
+          "nome": "Calabouço de Izlude 5",
+          "nivel_minimo": 100,
+          "nivel_maximo": 120,
+          "nivel_recomendado": 105,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gefenia03",
+          "nome": "Geffenia 3",
+          "nivel_minimo": 108,
+          "nivel_maximo": 128,
+          "nivel_recomendado": 113,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t04",
+          "nome": "Torre de Thanatos 4",
+          "nivel_minimo": 108,
+          "nivel_maximo": 128,
+          "nivel_recomendado": 113,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "man_fild03",
+          "nome": "Campo de Manuk 3",
+          "nivel_minimo": 118,
+          "nivel_maximo": 138,
+          "nivel_recomendado": 123,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dic_dun01",
+          "nome": "Calabouço de El Dicastes 1",
+          "nivel_minimo": 120,
+          "nivel_maximo": 140,
+          "nivel_recomendado": 125,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "bif_fild02",
+          "nome": "Campo de Bifrost 2",
+          "nivel_minimo": 132,
+          "nivel_maximo": 152,
+          "nivel_recomendado": 137,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_fild10",
+          "nome": "Campo de Rachel 10",
+          "nivel_minimo": 158,
+          "nivel_maximo": 178,
+          "nivel_recomendado": 163,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    },
+    {
+      "id": "Spotlight Astral",
+      "nome": "Spotlight Astral",
+      "mapas_exibidos_na_wiki": 38,
+      "quantidade_extraida": 38,
+      "extracao_possivelmente_incompleta": false,
+      "mapas": [
+        {
+          "codigo": "lhz_dun03",
+          "nome": "Laboratório de LHZ 3",
+          "nivel_minimo": 132,
+          "nivel_maximo": 152,
+          "nivel_recomendado": 137,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "dic_fild02",
+          "nome": "Campo de El Dicastes 2",
+          "nivel_minimo": 122,
+          "nivel_maximo": 142,
+          "nivel_recomendado": 127,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_san05",
+          "nome": "Santuário de Rachel 5",
+          "nivel_minimo": 118,
+          "nivel_maximo": 138,
+          "nivel_recomendado": 123,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "abyss_01",
+          "nome": "Lago do Abismo 1",
+          "nivel_minimo": 116,
+          "nivel_maximo": 136,
+          "nivel_recomendado": 121,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ra_san02",
+          "nome": "Santuário de Rachel 2",
+          "nivel_minimo": 114,
+          "nivel_maximo": 134,
+          "nivel_recomendado": 119,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "juperos_02",
+          "nome": "Ruínas de Juperos 2",
+          "nivel_minimo": 111,
+          "nivel_maximo": 131,
+          "nivel_recomendado": 116,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "lhz_dun01",
+          "nome": "Laboratório de LHZ 1",
+          "nivel_minimo": 111,
+          "nivel_maximo": 131,
+          "nivel_recomendado": 116,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t06",
+          "nome": "Torre de Thanatos 6",
+          "nivel_minimo": 110,
+          "nivel_maximo": 130,
+          "nivel_recomendado": 115,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ma_fild01",
+          "nome": "Campo de Malaya 1",
+          "nivel_minimo": 105,
+          "nivel_maximo": 125,
+          "nivel_recomendado": 110,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "man_fild01",
+          "nome": "Campo de Manuk 1",
+          "nivel_minimo": 104,
+          "nivel_maximo": 124,
+          "nivel_recomendado": 109,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "spl_fild01",
+          "nome": "Campo de Splendide 1",
+          "nivel_minimo": 103,
+          "nivel_maximo": 123,
+          "nivel_recomendado": 108,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "tha_t02",
+          "nome": "Torre de Thanatos 2",
+          "nivel_minimo": 102,
+          "nivel_maximo": 122,
+          "nivel_recomendado": 107,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ma_dun01",
+          "nome": "Calabouço de Malaya 1",
+          "nivel_minimo": 97,
+          "nivel_maximo": 117,
+          "nivel_recomendado": 102,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gon_dun01",
+          "nome": "Calabouço de Gonryun 1",
+          "nivel_minimo": 84,
+          "nivel_maximo": 104,
+          "nivel_recomendado": 89,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ama_dun02",
+          "nome": "Calabouço de Amatsu 2",
+          "nivel_minimo": 77,
+          "nivel_maximo": 97,
+          "nivel_recomendado": 82,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild06",
+          "nome": "Campo de Geffen 6",
+          "nivel_minimo": 76,
+          "nivel_maximo": 96,
+          "nivel_recomendado": 81,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild06",
+          "nome": "Campo de Einbroch 6",
+          "nivel_minimo": 75,
+          "nivel_maximo": 95,
+          "nivel_recomendado": 80,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "hu_fild05",
+          "nome": "Campo de Hugel 5",
+          "nivel_minimo": 74,
+          "nivel_maximo": 94,
+          "nivel_recomendado": 79,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "alde_dun02",
+          "nome": "Torre do Relógio 2",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "ein_fild08",
+          "nome": "Campo de Einbroch 8",
+          "nivel_minimo": 71,
+          "nivel_maximo": 91,
+          "nivel_recomendado": 76,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "bra_dun02",
+          "nome": "Calabouço de Brasilis 2",
+          "nivel_minimo": 69,
+          "nivel_maximo": 89,
+          "nivel_recomendado": 74,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "um_fild03",
+          "nome": "Campo de Umbala 3",
+          "nivel_minimo": 66,
+          "nivel_maximo": 86,
+          "nivel_recomendado": 71,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild09",
+          "nome": "Campo de Juno 9",
+          "nivel_minimo": 65,
+          "nivel_maximo": 85,
+          "nivel_recomendado": 70,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "yuno_fild01",
+          "nome": "Campo de Juno 1",
+          "nivel_minimo": 63,
+          "nivel_maximo": 83,
+          "nivel_recomendado": 68,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "beach_dun2",
+          "nome": "Caverna da Praia 2",
+          "nivel_minimo": 58,
+          "nivel_maximo": 78,
+          "nivel_recomendado": 63,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_dun03",
+          "nome": "Caverna de Payon 3",
+          "nivel_minimo": 54,
+          "nivel_maximo": 74,
+          "nivel_recomendado": 59,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gon_fild01",
+          "nome": "Campo de Gonryun 1",
+          "nivel_minimo": 50,
+          "nivel_maximo": 70,
+          "nivel_recomendado": 55,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "cmd_fild01",
+          "nome": "Campo de Comodo 1",
+          "nivel_minimo": 45,
+          "nivel_maximo": 65,
+          "nivel_recomendado": 50,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "in_sphinx1",
+          "nome": "Esfinge 1",
+          "nivel_minimo": 37,
+          "nivel_maximo": 57,
+          "nivel_recomendado": 42,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild03",
+          "nome": "Campo de Morroc 3",
+          "nivel_minimo": 35,
+          "nivel_maximo": 55,
+          "nivel_recomendado": 40,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "prt_sewb4",
+          "nome": "Esgoto de Prontera 4",
+          "nivel_minimo": 20,
+          "nivel_maximo": 40,
+          "nivel_recomendado": 25,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "anthell01",
+          "nome": "Formigueiro Infernal 1",
+          "nivel_minimo": 18,
+          "nivel_maximo": 38,
+          "nivel_recomendado": 23,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_06",
+          "nome": "Monte Mjolnir 6",
+          "nivel_minimo": 16,
+          "nivel_maximo": 36,
+          "nivel_recomendado": 21,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild01",
+          "nome": "Campo de Morroc 1",
+          "nivel_minimo": 13,
+          "nivel_maximo": 33,
+          "nivel_recomendado": 18,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "pay_fild06",
+          "nome": "Campo de Payon 6",
+          "nivel_minimo": 7,
+          "nivel_maximo": 27,
+          "nivel_recomendado": 12,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "moc_fild18",
+          "nome": "Campo de Morroc 18",
+          "nivel_minimo": 6,
+          "nivel_maximo": 26,
+          "nivel_recomendado": 11,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "mjolnir_09",
+          "nome": "Monte Mjolnir 9",
+          "nivel_minimo": 4,
+          "nivel_maximo": 24,
+          "nivel_recomendado": 9,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        },
+        {
+          "codigo": "gef_fild00",
+          "nome": "Campo de Geffen 0",
+          "nivel_minimo": 1,
+          "nivel_maximo": 15,
+          "nivel_recomendado": 1,
+          "link_divine_pride": null,
+          "monstros_tooltip": null
+        }
+      ]
+    }
+  ]
+}
