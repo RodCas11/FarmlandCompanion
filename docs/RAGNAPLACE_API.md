@@ -1,4 +1,52 @@
-# Contrato e decisões da integração RagnaPlace
+# RagnaPlace — chave API e integração
+
+## Como obter e configurar sua chave API
+
+A chave permite que o Farmland Companion consulte o catálogo online do RagnaPlace. Cada usuário deve solicitar sua própria chave; ela não vem incluída no aplicativo.
+
+### 1. Criar uma conta
+
+1. Abra a [página oficial da API RagnaPlace](https://ragnaplace.com/en/api).
+2. Se ainda não tem conta, clique em **Sign up** e conclua o cadastro seguindo as instruções do site.
+3. Entre na conta pelo botão **Login**. Se aparecer **Log in to request an API key**, faça o login para continuar.
+
+### 2. Solicitar a chave
+
+1. Na mesma página, encontre a seção **Your API keys**.
+2. Clique em **Request a key**, conforme exibido na página quando você está conectado.
+3. Preencha as informações solicitadas pelo RagnaPlace. Caso seja solicitada uma descrição, explique que pretende usar a chave no Farmland Companion para consultas pessoais ao catálogo de monstros.
+4. Envie a solicitação e aguarde a aprovação. A [página oficial](https://ragnaplace.com/en/api) informa que as solicitações passam por aprovação; solicitar uma chave não garante liberação imediata.
+5. Quando a chave estiver disponível na sua conta, copie o valor da **API key**. Os campos e as instruções da solicitação podem mudar; siga o que o site apresentar.
+
+### 3. Colocar a chave no Farmland Companion
+
+1. Abra o aplicativo e entre em **Configurações**.
+2. Localize **Integração RagnaPlace**.
+3. Cole a chave no campo **API Key**.
+4. Clique em **Proteger e salvar chave**. O campo será limpo após salvar; isso é esperado e não significa que a chave foi apagada.
+5. Clique em **Atualizar gateways** e selecione um gateway Renewal disponível.
+6. Clique em **Testar conexão autenticada** e confira a mensagem de resultado.
+
+O gateway identifica a base consultada no RagnaPlace. Ele não confirma os mapas ou os tempos de respawn do Farmland; esses tempos continuam sujeitos à configuração e confirmação no aplicativo.
+
+### 4. Usar o catálogo
+
+Abra **MVPs**, digite o nome de um monstro e clique em **Pesquisar no RagnaPlace**. Selecione o resultado e clique em **Detalhes do resultado selecionado** para consultar os dados disponíveis.
+
+### Se a conexão não funcionar
+
+- **Chave ainda pendente:** confira o andamento da solicitação na sua conta RagnaPlace.
+- **Chave inválida ou revogada:** confira o status no site e copie novamente a chave disponível; salve-a outra vez no aplicativo.
+- **Nenhum gateway selecionado:** use **Atualizar gateways**, escolha um e repita o teste autenticado. Carregar a lista de gateways, por si só, não valida a chave.
+- **Limite de consultas ou indisponibilidade:** aguarde e tente novamente mais tarde, evitando cliques repetidos.
+
+### Cuidados com a chave
+
+Trate a chave como uma senha: não publique em código, GitHub, mensagens ou capturas de tela. No aplicativo ela é armazenada localmente, criptografada pelo Windows para o seu usuário, e não precisa ser colocada em nenhum arquivo do projeto. Para removê-la, clique em **Apagar chave**.
+
+O RagnaPlace permite uso gratuito e não comercial, exige atribuição e proíbe contornar limites ou extrair toda a base. Consulte as [regras oficiais da API](https://ragnaplace.com/en/api) antes de solicitar sua chave.
+
+## Contrato e decisões técnicas
 
 Inspeção em 15/10/2026. Fontes oficiais:
 

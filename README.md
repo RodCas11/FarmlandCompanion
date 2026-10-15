@@ -14,6 +14,8 @@ O catálogo vem da [wiki oficial Farmland](https://farmland.net.br/wiki/index.ph
 
 ## RagnaPlace e catálogo
 
+Ainda não tem uma chave? Veja o [guia para criar sua conta, solicitar a API key e configurá-la no aplicativo](docs/RAGNAPLACE_API.md#como-obter-e-configurar-sua-chave-api).
+
 1. Em **Configurações → Integração RagnaPlace**, informe a API Key no campo mascarado e clique **Proteger e salvar chave**. O campo é limpo após salvar.
 2. Clique **Atualizar gateways**, selecione um Renewal ativo e clique **Testar conexão autenticada**.
 3. Em **Catálogo de MVPs**, digite um nome e clique **Pesquisar no RagnaPlace**. A navegação entre páginas é manual.
