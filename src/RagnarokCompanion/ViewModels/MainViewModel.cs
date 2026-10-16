@@ -120,7 +120,7 @@ public sealed partial class MainViewModel : Observable
     public string PinLabel => Settings.Topmost ? "● Fixado" : "○ Fixar";
     public string Feedback { get; private set; } = "Pronto para acompanhar sua próxima caçada.";
     private int lastHistoryCount = -1;
-    public MainViewModel(PersistenceService store, Func<DateTimeOffset>? mvpClock=null, Func<string,bool>? confirmMvp=null, IRagnaPlaceApiClient? mvpApi=null, ICredentialStorageService? mvpCredentials=null)
+    public MainViewModel(PersistenceService store, Func<DateTimeOffset>? mvpClock=null, Func<string,bool>? confirmMvp=null, IDivinePrideApiClient? mvpApi=null, ICredentialStorageService? mvpCredentials=null)
     {
         Store = store;
         var settings = store.Load<Settings>("settings.json"); PersistenceService.Validate(settings);

@@ -17,7 +17,7 @@ public sealed class FavoriteTimerRow : Observable
     public string Countdown=>Timer is {} timer?owner.Settings.CompactMvpAbsoluteTime?Absolute(timer):new MvpRow(timer,owner.Engine).CompactCountdown:"—";
     static string Absolute(Mvp timer)=>timer.StartUtc is {} start?(timer.EndUtc==start?start.ToLocalTime().ToString("HH:mm"):start.ToLocalTime().ToString("HH:mm")+"–"+timer.EndUtc!.Value.ToLocalTime().ToString("HH:mm")):"—";
     public double ClockFont=>owner.Settings.CompactMvpAbsoluteTime?12:20;
-    public string TimeTooltip=>Timer is {} timer?new MvpRow(timer,owner.Engine).Window+"\n"+timer.Origin:"Sem horário";
+    public string TimeTooltip=>Timer is {} timer?new MvpRow(timer,owner.Engine).Window+"\n"+timer.Origin.Replace("RagnaPlace","Fonte anterior",StringComparison.OrdinalIgnoreCase):"Sem horário";
     public string Status=>Timer is {} timer?new MvpRow(timer,owner.Engine).Status:"Sem horário";
     public string Color=>Timer is {} timer?new MvpRow(timer,owner.Engine).StatusColor:"#9AA6BF";
     public void Refresh(){Changed(nameof(Name));Changed(nameof(Countdown));Changed(nameof(Status));Changed(nameof(Color));Changed(nameof(ClockFont));Changed(nameof(TimeTooltip));}
@@ -38,7 +38,7 @@ public sealed partial class CatalogViewModel
     public bool ShowAbsoluteTimes {get=>owner.Settings.CompactMvpAbsoluteTime;set{owner.Settings.CompactMvpAbsoluteTime=value;owner.Store.Save("settings.json",owner.Settings);Changed();RefreshFavoriteTimers();}}
     Mvp? SelectedTimer=>owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==SelectedEntry?.Key&&m.DeathUtc!=null);
     public string SelectedRespawnSummary=>SelectedTimer is {} timer?$"Morte: {timer.DeathUtc!.Value.ToLocalTime():dd/MM HH:mm}\n"+(timer.HasRespawn?$"Próximo nascimento previsto: {new MvpRow(timer,owner.Engine).Window}\n{new MvpRow(timer,owner.Engine).Countdown} • {owner.Engine.Status(timer,DateTimeOffset.UtcNow)}":"Respawn não encontrado. A morte foi preservada."):"";
-    public string SelectedRespawnSource=>SelectedTimer?.Origin??(SelectedEntry is {} entry?respawns.Resolve(entry,false)?.Origin??"Respawn desconhecido":"");
+    public string SelectedRespawnSource=>(SelectedTimer?.Origin??(SelectedEntry is {} entry?respawns.Resolve(entry,false)?.Origin??"Respawn desconhecido":"")).Replace("RagnaPlace","Fonte anterior",StringComparison.OrdinalIgnoreCase);
     public string DeathTitle=>SelectedEntry==null?"Selecione um MVP":"Morte de "+SelectedEntry.DisplayName;
     public string DeathTime {get;set;}="";
     public bool PreviousDay {get;set;}
@@ -82,7 +82,7 @@ public sealed partial class CatalogViewModel
     void RegisterShortDeath()
     {
         var entry=SelectedEntry;if(entry==null){Status="Selecione um MVP.";return;}
-        if(entry.IsSearchCandidate){Status="Aguarde a confirmação de MVP no RagnaPlace antes de registrar a morte.";return;}
+        if(entry.IsSearchCandidate){Status="Aguarde a confirmação de MVP no DivinePride antes de registrar a morte.";return;}
         if(!MvpDeathTimeService.TryResolve(DeathTime,PreviousDay,simpleClock(),TimeZoneInfo.Local,out var death,out string error)){Status=error;return;}
         var previous=owner.Engine.Mvps.FirstOrDefault(m=>m.CatalogKey==entry.Key);
         var resolved=ResolveRegistration(entry,previous);

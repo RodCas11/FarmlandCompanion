@@ -25,6 +25,7 @@ public sealed class SearchResultDto
 }
 public sealed class MobDto
 {
+    [JsonPropertyName("level")] public int? Level {get;set;}
     [JsonPropertyName("categories")] public List<string>? Categories {get;set;}
     [JsonPropertyName("subcategories")] public List<string>? Subcategories {get;set;}
     [JsonPropertyName("id")] public int? Id { get; set; }

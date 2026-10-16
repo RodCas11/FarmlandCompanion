@@ -26,7 +26,7 @@ public sealed class CatalogEntry
     public bool Favorite { get; set; }
     public bool Retained { get; set; }
     [JsonIgnore] public bool IsSearchCandidate { get; set; }
-    [JsonIgnore] public string SearchInfo => (MonsterId > 0 ? "#" + MonsterId + " · " : "") + (string.IsNullOrEmpty(Gateway) ? "Local" : "RagnaPlace · " + Gateway) + (IsSearchCandidate ? " · verificar MVP" : "");
+    [JsonIgnore] public string SearchInfo => (MonsterId > 0 ? "#" + MonsterId + " · " : "") + (string.IsNullOrEmpty(Gateway) ? "Local" : (Gateway.StartsWith("dp:")?"Divine Pride · "+Gateway[3..]:"Salvo")) + (IsSearchCandidate ? " · verificar MVP" : "");
     public string SourceUrl { get; set; } = "";
     public string Notes { get; set; } = "";
     [JsonIgnore] public bool DisambiguateMap { get; set; }
@@ -41,14 +41,15 @@ public sealed class CatalogEntry
 }
 public sealed class IntegrationSettings
 {
-    public string Gateway { get; set; } = "";
+    public string Gateway { get; set; } = "LATAM";
+    public string Language {get;set;}="pt";
     public DateTimeOffset? LastSyncUtc { get; set; }
 }
 public sealed class Gateway
 {
     [JsonPropertyName("slug")] public string Slug { get; set; } = "";
     [JsonPropertyName("group")] public string[] Groups { get; set; } = Array.Empty<string>();
-    [JsonIgnore] public string Label => Slug + " • Renewal";
+    [JsonIgnore] public string Label => Slug;
 }
 public sealed class GatewayResponse
 {

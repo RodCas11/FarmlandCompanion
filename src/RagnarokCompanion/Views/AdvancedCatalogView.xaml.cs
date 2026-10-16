@@ -6,5 +6,5 @@ public partial class AdvancedCatalogView : UserControl
 {
     public AdvancedCatalogView() => InitializeComponent();
     private void OpenAttribution(object sender, RequestNavigateEventArgs e)
-    { try { Process.Start(new ProcessStartInfo("https://ragnaplace.com") { UseShellExecute = true }); } catch { } e.Handled = true; }
+    { try { Process.Start(new ProcessStartInfo("https://www.divine-pride.net") { UseShellExecute = true }); } catch { } e.Handled = true; }
 }

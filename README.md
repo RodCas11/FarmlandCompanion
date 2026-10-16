@@ -10,7 +10,7 @@
 
 Requer **Windows 11 x64**. Mantenha as pastas `Data`, `docs` e `licenses` junto do executável. Para atualizar, use **Sair** na bandeja da versão antiga antes de abrir a nova; suas configurações e sua chave API são preservadas. Na página de releases, escolha o ZIP do aplicativo; os downloads **Source code** são para desenvolvedores.
 
-Aplicativo WPF para Windows 11 x64, C#/.NET 8 e MVVM. Mineração, timers MVP, catálogo híbrido com RagnaPlace e uma única janela que alterna entre painel e modo compacto. Executável self-contained: não exige runtime instalado manualmente, administrador, drivers ou serviços.
+Aplicativo WPF para Windows 11 x64, C#/.NET 8 e MVVM. Mineração, timers MVP, catálogo híbrido com Divine Pride e uma única janela que alterna entre painel e modo compacto. Executável self-contained: não exige runtime instalado manualmente, administrador, drivers ou serviços.
 
 ## Executar
 
@@ -48,31 +48,25 @@ A Maré Infernal tem 12 ocorrências diárias e é adicionada automaticamente ao
 
 Quando avisos de eventos com o mesmo horário ficam devidos no mesmo ciclo, o aplicativo os reúne em um único pop-up, por exemplo: “Fantasminhas Dudu e Maré Infernal começam em 5 minutos!”. As coincidências oficiais são 00:30, 10:30, 20:30 e 22:30. O histórico JSON registra cada evento individualmente, com ID, nome, horário e antecedência; os identificadores persistidos continuam evitando repetição após reinício. Preferências são revalidadas no envio: eventos desativados saem do grupo, e o som toca somente se o controle geral e pelo menos um membro permitirem. Antecedências diferentes podem produzir avisos em momentos diferentes, respeitando a escolha de cada evento. Avisos expirados são descartados.
 
-## RagnaPlace e catálogo
+## Divine Pride e catálogo
 
-Ainda não tem uma chave? Veja o [guia para criar sua conta, solicitar a API key e configurá-la no aplicativo](docs/RAGNAPLACE_API.md#como-obter-e-configurar-sua-chave-api).
+1. Acesse a [documentação oficial](https://www.divine-pride.net/tools/api-doc), entre na sua conta e obtenha sua API Key.
+2. Em **Configurações → Conexão com o Divine Pride**, cole a chave e clique **Proteger e salvar chave**. Região padrão **LATAM**, idioma **pt**, ambos configuráveis.
+3. Em **MVPs**, pesquise por nome ou ID no catálogo local, selecione, favorite e registre a morte em **HH:mm**. A seleção consulta detalhes pelo ID; não existe busca online por nome.
 
-1. Em **Configurações → Integração RagnaPlace**, informe a API Key no campo mascarado e clique **Proteger e salvar chave**. O campo é limpo após salvar.
-2. Clique **Atualizar gateways**, selecione um Renewal ativo e clique **Testar conexão autenticada**.
-3. Em **MVPs**, digite um nome, parte dele ou ID. A lista local aparece imediatamente; com chave e gateway configurados, a busca RagnaPlace começa após 400 ms. O botão **Buscar no RagnaPlace** repete a consulta explicitamente.
-4. Informe a morte em **HH:mm** e clique **Registrar morte**. A data padrão é hoje; use **Dia anterior** quando necessário. Horários futuros são recusados.
-5. Resultados externos mostram ID, gateway e “verificar MVP”. Selecione ou clique na estrela: o aplicativo consulta os detalhes e exige `exp.mvp > 0` antes de salvar ou favoritar. Se houver mais de um mapa, escolha o ponto desejado. Não é necessário cadastro manual.
+A chave usa **DPAPI CurrentUser**, em `divine-pride-key.dpapi`, separado da credencial anterior. Favoritos, mapas, ajustes e timers são preservados. O cache local dura sete dias, com até 200 resultados. Consulte [o guia da integração](docs/RAGNAPLACE_API.md).
 
-A chave fica apenas no arquivo `ragnaplace-key.dpapi`, protegida por **DPAPI CurrentUser**, nunca em JSON, URL, exportação ou código. Não é transferível entre usuários/computadores. **Apagar chave** remove a credencial e invalida o cache. Gateways é uma rota pública e não prova autenticação; o teste usa uma consulta autenticada pequena.
-
-Dados online fornecidos por **[RagnaPlace](https://ragnaplace.com)**, para uso pessoal e não comercial conforme as [regras da API](https://ragnaplace.com/pt/api). A busca acompanha a digitação com debounce e cancelamento; não há consultas periódicas em segundo plano, paginação automática, extração em massa nem espelhamento do banco. O [OpenAPI oficial](https://api.ragnaplace.com/v1/openapi.json) foi inspecionado antes de implementar a integração. Consulte [docs/RAGNAPLACE_API.md](docs/RAGNAPLACE_API.md) para rotas, campos, limites e decisões.
-
-O catálogo integrado identifica automaticamente o respawn de **53 IDs MVP em 65 definições de spawn** do rAthena Renewal, com mapa, base, variação, origem e commit verificados. São referências Renewal, sem confirmação dos tempos do Farmland. O recorte de dados em formato fonte e a licença GPL-3.0-or-later acompanham `Data/` e `licenses/`. Esta versão reconhece URLs de imagem no contrato, mas não baixa/distribui sprites do jogo.
+A documentação não define unidades dos campos de `spawns`. A previsão usa fontes verificadas Farmland, referências salvas e o catálogo Renewal; sem dados, mantém a morte sem inventar horários.
 
 ## Farmland, tempos e favoritos
 
-O **Farmland é Renewal sem terceiras classes**. Um gateway oficial não representa seus tempos ou configurações. A interface diferencia dados RagnaPlace/gateway, informação não verificada, personalizado e Farmland confirmado **pelo usuário**.
+O **Farmland é Renewal sem terceiras classes**. Um gateway oficial não representa seus tempos ou configurações. A interface diferencia dados Divine Pride/gateway, informação não verificada, personalizado e Farmland confirmado **pelo usuário**.
 
-O registro cotidiano pede somente **HH:mm** e a opção de dia anterior. O aplicativo associa ID, mapa e ponto ao catálogo, usa o respawn do RagnaPlace quando disponível e preserva ajustes personalizados. Se não houver dados, salva a morte e o favorito sem inventar um intervalo. Importação de catálogo e correções opcionais ficam em Configurações. O mapa é opcional se desconhecido. Use mínimo igual ao máximo para respawn fixo, ou dois limites para uma janela variável. Os valores são minutos, acima de zero e até 10080. Marque a confirmação Farmland somente quando tiver verificado esses tempos. As configurações locais têm prioridade sobre valores genéricos do mesmo monstro/mapa recebidos da API.
+O registro cotidiano pede somente **HH:mm** e a opção de dia anterior. O aplicativo associa ID, mapa e ponto ao catálogo, usa o respawn do Divine Pride quando disponível e preserva ajustes personalizados. Se não houver dados, salva a morte e o favorito sem inventar um intervalo. Importação de catálogo e correções opcionais ficam em Configurações. O mapa é opcional se desconhecido. Use mínimo igual ao máximo para respawn fixo, ou dois limites para uma janela variável. Os valores são minutos, acima de zero e até 10080. Marque a confirmação Farmland somente quando tiver verificado esses tempos. As configurações locais têm prioridade sobre valores genéricos do mesmo monstro/mapa recebidos da API.
 
 O contrato fornece um único respawn em segundos por mapa, sem máximo variável. O app converte a unidade e usa essa referência automaticamente, identificando o gateway; não inventa uma variação ausente nem presume que o tempo vale no Farmland. As previsões não confirmam que o monstro está vivo.
 
-Clique na estrela ao lado do nome para favoritar ou desfavoritar sem iniciar um timer. A busca é imediata e mostra favoritos primeiro. Favoritos e tempos personalizados funcionam offline. Um novo horário substitui a morte do mesmo ponto; corrigir para uma morte mais antiga pede confirmação. Cadastro manual, edição, filtros avançados, respawn e consulta RagnaPlace ficam em Configurações. O histórico mantém mortes, correções e alertas.
+Clique na estrela ao lado do nome para favoritar ou desfavoritar sem iniciar um timer. A busca é imediata e mostra favoritos primeiro. Favoritos e tempos personalizados funcionam offline. Um novo horário substitui a morte do mesmo ponto; corrigir para uma morte mais antiga pede confirmação. Cadastro manual, edição, filtros avançados, respawn e consulta Divine Pride ficam em Configurações. O histórico mantém mortes, correções e alertas.
 
 ## Painel e compacto na mesma janela
 
@@ -105,8 +99,8 @@ Dados em `%APPDATA%\RagnarokCompanion\`:
 
 - `settings.json`, `mining.json`, `mvps.json`, `history.json`, `window-layout.json`: estado principal, histórico de até 5000 entradas e posição do compacto.
 - `catalog-choices.json`: favoritos/configurações escolhidas, sem respostas brutas da API.
-- `ragnaplace.json`: gateway e última consulta bem-sucedida, sem chave.
-- `ragnaplace-key.dpapi`: credencial cifrada por usuário do Windows.
+- `divine-pride.json`: gateway e última consulta bem-sucedida, sem chave.
+- `divine-pride-key.dpapi`: credencial cifrada por usuário do Windows.
 
 Preferências são salvas automaticamente; textos são aplicados ao perder foco. JSONs usam arquivo temporário, flush e substituição atômica por arquivo com `.bak`. Arquivos inválidos são preservados como `.invalid-<timestamp>` e recuperados da cópia anterior ou padrões. Não há transação única entre os arquivos: uma interrupção entre gravações pode deixar o histórico uma revisão atrás do timer.
 
@@ -118,7 +112,7 @@ Importação/exportação preserva o formato anterior: preferências principais 
 
 ## Gepard Shield
 
-O programa não acessa memória/processos do jogo, não injeta DLLs, não captura pacotes, não usa hooks de teclado/mouse e não automatiza ações. Usa janela WPF comum e `Topmost`, sem overlay gráfico. A comunicação online ocorre com RagnaPlace quando solicitada.
+O programa não acessa memória/processos do jogo, não injeta DLLs, não captura pacotes, não usa hooks de teclado/mouse e não automatiza ações. Usa janela WPF comum e `Topmost`, sem overlay gráfico. A comunicação online ocorre com Divine Pride quando solicitada.
 
 **Compatibilidade com Gepard não é garantida e não foi validada no jogo. Consulte as regras do servidor.** Tela cheia exclusiva pode ocultar a janela; não há técnica para forçar a exibição ou contornar o anticheat.
 
@@ -142,7 +136,7 @@ Get-Content "$env:TEMP/RagnarokCompanion-validation/smoke-test.txt"
 
 Gera relatório e PNGs fora da distribuição, em `%TEMP%\RagnarokCompanion-validation` (ou no diretório passado em `--smoke-output=CAMINHO`). Exercita seis páginas, Eventos, Spotlight, modos da mesma janela, timers, bandeja, recuperação de posição, favoritos, configuração Farmland, persistência e envio de notificação nativa. Os testes HTTP usam mocks e não consomem a API real.
 
-A integração é coberta por testes HTTP simulados. Para confirmar a conta sem alterar timers ou preferências, use Configurações → Conexão com o RagnaPlace → Testar conexão autenticada, ou execute o aplicativo com --check-ragnaplace. O diagnóstico usa a chave DPAPI já armazenada, valida o gateway Renewal, faz uma busca e consulta detalhes de um MVP, com até três requisições limitadas e sem exibir credenciais. O resultado fica em %TEMP%\RagnarokCompanion-validation\ragnaplace-check.txt, ou no arquivo passado em --check-output=CAMINHO. O teste de publicação nunca usa a API real.
+A integração possui testes HTTP simulados. Use **Testar conexão** ou `--check-divine-pride` com sua nova chave para validar a autenticação real. A publicação não usa a API real.
 
 ## Interface simplificada
 
@@ -163,7 +157,7 @@ git tag -a v4.0.1 -m "🚀 Release v4.0.1"
 git push origin v4.0.1
 ```
 
-O botão **Run workflow** na Action gera o pacote como artifact para conferência, sem criar uma release quando executado na branch `main`. O workflow usa o token automático do GitHub; não precisa de API key RagnaPlace nem de credenciais pessoais nos secrets.
+O botão **Run workflow** na Action gera o pacote como artifact para conferência, sem criar uma release quando executado na branch `main`. O workflow usa o token automático do GitHub; não precisa de API key Divine Pride nem de credenciais pessoais nos secrets.
 
 Para gerar o mesmo pacote localmente:
 

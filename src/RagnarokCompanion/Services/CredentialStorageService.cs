@@ -15,8 +15,8 @@ public interface ICredentialStorageService
 public sealed class CredentialStorageService : ICredentialStorageService
 {
     private readonly string path;
-    private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("RagnarokCompanion/RagnaPlace/v1");
-    public CredentialStorageService(string root) => path = Path.Combine(root, "ragnaplace-key.dpapi");
+    private static readonly byte[] Entropy = Encoding.UTF8.GetBytes("RagnarokCompanion/DivinePride/v1");
+    public CredentialStorageService(string root) => path = Path.Combine(root, "divine-pride-key.dpapi");
     public bool HasKey => File.Exists(path);
     public void Store(string key)
     {

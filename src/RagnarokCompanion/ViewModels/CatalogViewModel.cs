@@ -30,9 +30,9 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
 {
     private readonly MainViewModel owner;
     private readonly ICredentialStorageService credentials;
-    private readonly IRagnaPlaceApiClient api;
-    private readonly IRagnaPlaceCatalogProvider provider;
-    private readonly IRagnaPlaceAuthService auth;
+    private readonly IDivinePrideApiClient api;
+    private readonly IDivinePrideCatalogProvider provider;
+
     private readonly IMvpCatalogService catalog;
     private readonly MvpRespawnService respawns;
     public IntegrationSettings Integration { get; }
@@ -54,7 +54,9 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     public string AuthStatus { get => authStatus; private set { authStatus = value; Changed(); } }
     public string KeyStatus => credentials.HasKey ? "Chave armazenada com DPAPI • conteúdo oculto" : "Nenhuma chave armazenada";
     public string LastSync => Integration.LastSyncUtc?.ToLocalTime().ToString("dd/MM/yyyy HH:mm:ss") ?? "Nenhuma sincronização";
-    public string GatewaySlug { get => Integration.Gateway; set { if(Integration.Gateway==value)return;Integration.Gateway = value ?? ""; Changed(); AuthStatus = "Gateway alterado • teste a conexão"; PersistIntegration(); QueryChanged(); } }
+    public string[] Languages=>DivinePrideApiClient.Languages;
+    public string Language {get=>Integration.Language;set{if(!DivinePrideApiClient.Languages.Contains(value))return;Integration.Language=value;PersistIntegration();Changed();selectionRequest?.Cancel();}}
+    public string GatewaySlug { get => Integration.Gateway; set { if(Integration.Gateway==value)return;Integration.Gateway = value ?? ""; Changed(); AuthStatus = "Região alterada • teste a conexão"; PersistIntegration(); QueryChanged(); } }
     private CatalogEntry? selectedEntry;
     public CatalogEntry? SelectedEntry
     {
@@ -88,27 +90,22 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     public ICommand QuickDeathCommand { get; }
     public ICommand BrowseCommand { get; }
     public ICommand SaveAndDeathCommand { get; }
-    public CatalogViewModel(MainViewModel owner, IRagnaPlaceApiClient? api = null, ICredentialStorageService? credentials = null, Func<DateTimeOffset>? clock = null, Func<string,bool>? confirm = null)
+    public CatalogViewModel(MainViewModel owner, IDivinePrideApiClient? api = null, ICredentialStorageService? credentials = null, Func<DateTimeOffset>? clock = null, Func<string,bool>? confirm = null)
     {
         this.owner = owner;
         respawns=new(new MvpRespawnCatalog(owner.Store));
         InitializeSimpleFlow(clock,confirm);
         this.credentials = credentials ?? new CredentialStorageService(owner.Store.Root);
-        this.api = api ?? new RagnaPlaceApiClient(new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(15) }, this.credentials, new LocalCacheService());
-        provider = new RagnaPlaceCatalogProvider(this.api); auth = new RagnaPlaceAuthService(this.api);
+        this.api = api ?? new DivinePrideApiClient(new HttpClient(new HttpClientHandler { AllowAutoRedirect = false }) { Timeout = TimeSpan.FromSeconds(15) }, this.credentials, owner.Store,()=>Language);
+        provider = new DivinePrideCatalogProvider(this.api);
         catalog = new MvpCatalogService(owner.Store);
-        Integration = owner.Store.Load<IntegrationSettings>("ragnaplace.json");
+        Integration = owner.Store.Load<IntegrationSettings>("divine-pride.json");
+        if(!DivinePrideApiClient.ValidGateway(Integration.Gateway))Integration.Gateway="LATAM";
+        if(!DivinePrideApiClient.Languages.Contains(Integration.Language))Integration.Language="pt";
         InitializeIntegratedSearch();
-        // No unauthenticated guess is made about renewal gateways on startup.
-        if (!string.IsNullOrEmpty(Integration.Gateway)) Gateways.Add(new Gateway { Slug = Integration.Gateway, Groups = new[] { "renewal" } });
-        LoadGatewaysCommand = Async(async () =>
-        {
-            var gateways = await this.api.GatewaysAsync(); Gateways.Clear(); foreach (var g in gateways) Gateways.Add(g);
-            if (!gateways.Any(g => g.Slug == GatewaySlug)) GatewaySlug = gateways.FirstOrDefault()?.Slug ?? "";
-            Success("Gateways Renewal ativos atualizados. Nenhum gateway oficial representa o Farmland.");
-        });
-        TestConnectionCommand = Async(async () => { EnsureGateway(); await auth.TestAsync(GatewaySlug); AuthStatus = "Autenticação confirmada • " + GatewaySlug; Success("Conexão autenticada confirmada com o RagnaPlace."); });
-        DeleteKeyCommand = Command(() => { this.credentials.Delete(); this.api.ClearCache(); AuthStatus = "Chave apagada"; Changed(nameof(KeyStatus)); });
+        foreach(var region in DivinePrideApiClient.Regions)Gateways.Add(new Gateway{Slug=region});
+        LoadGatewaysCommand=Command(()=>Status="Regiões Divine Pride disponíveis nas Configurações.");
+        TestConnectionCommand=Async(async()=>{await this.api.MonsterAsync(GatewaySlug,1039,true);AuthStatus="Conexão Divine Pride confirmada • "+GatewaySlug;Success("Conexão autenticada confirmada.");});        DeleteKeyCommand = Command(() => { this.credentials.Delete(); this.api.ClearCache(); AuthStatus = "Chave apagada"; Changed(nameof(KeyStatus)); });
         SearchCommand = Async(async () => await SearchRemote(1, Query, GatewaySlug));
         PreviousCommand = Async(async () => { if (remotePage > 1) await SearchRemote(remotePage - 1, lastQuery, lastGateway); });
         NextCommand = Async(async () => { if (remotePage < pages) await SearchRemote(remotePage + 1, lastQuery, lastGateway); });
@@ -141,30 +138,23 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     {
         if (IsBusy) return; IsBusy = true;
         try { await action(); }
-        catch (RagnaPlaceException ex) { Status = ex.Message; SetAuthFailure(ex); }
+        catch (DivinePrideException ex) { Status = ex.Message; SetAuthFailure(ex); }
         catch { Status = "Não foi possível concluir a consulta. Seus timers locais foram preservados."; }
         finally { IsBusy = false; }
     });
     private ICommand Command(Action action) => new RelayCommand(_ => { try { action(); } catch { Status = "Não foi possível salvar a alteração. Os timers existentes foram preservados."; } });
-    private void EnsureGateway() { if (!RagnaPlaceApiClient.ValidGateway(GatewaySlug)) throw new RagnaPlaceException("Atualize e selecione um gateway Renewal nas Configurações."); }
-    private void PersistIntegration() => owner.Store.Save("ragnaplace.json", Integration);
+    private void EnsureGateway() { if (!DivinePrideApiClient.ValidGateway(GatewaySlug)) throw new DivinePrideException("Atualize e selecione um gateway Renewal nas Configurações."); }
+    private void PersistIntegration() => owner.Store.Save("divine-pride.json", Integration);
     private void Success(string message) { Status = message; Integration.LastSyncUtc = DateTimeOffset.UtcNow; PersistIntegration(); Changed(nameof(LastSync)); }
     private async Task SearchRemote(int page, string name, string gateway)
     {
-        EnsureGateway(); var r = await provider.SearchAsync(gateway, name, page);
-        RemoteResults.Clear(); foreach (var item in r.Items!) RemoteResults.Add(item);
-        lastQuery = name; lastGateway = gateway; remotePage = page;
-        pages = Math.Clamp(r.Pages ?? 1, 1, 20); Changed(nameof(PageLabel));
-        Success("Resultados de monstros. Consulte os detalhes para confirmar se são MVPs; a busca não oferece filtro MVP documentado.");
+        await SearchIntegratedAsync(false);
     }
     private async Task Details(bool refresh)
     {
-        EnsureGateway(); int? id = refresh ? SelectedEntry?.MonsterId ?? SelectedRemote?.Id : SelectedRemote?.Id ?? SelectedEntry?.MonsterId;
-        if (id == null || id <= 0) { Status = "Selecione um resultado RagnaPlace ou um MVP do catálogo online."; return; }
-        var entries = await provider.DetailsAsync(GatewaySlug, id.Value, refresh); catalog.Merge(entries); RefreshEntries(); SelectedEntry = entries.FirstOrDefault();
-        Success("Detalhes RagnaPlace carregados. Cada mapa é uma entrada independente; confirme os tempos no Farmland.");
-    }
-    private void Register(CatalogEntry? entry, DateTimeOffset death)
+        if(SelectedEntry==null){Status="Selecione um MVP no catálogo local.";return;}
+        await LoadSelectedDetailsAsync(SelectedEntry,refresh);
+    }    private void Register(CatalogEntry? entry, DateTimeOffset death)
     {
         if (entry == null) { Status = "Selecione um MVP do catálogo ou dos favoritos."; return; }
         var previous = owner.Engine.Mvps.FirstOrDefault(m => m.CatalogKey == entry.Key);
@@ -194,5 +184,5 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
         CompactChoices.Clear();foreach(var e in FavoriteEntries)CompactChoices.Add(new(this,e));
         refreshingEntries=false;
     }
-    public void Dispose() { searchCoordinator?.Dispose();selectionRequest?.Cancel(); if (api is IDisposable d) d.Dispose(); }
+    public void Dispose() { selectionRequest?.Cancel(); if (api is IDisposable d) d.Dispose(); }
 }

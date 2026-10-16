@@ -55,7 +55,7 @@ public sealed class MvpCatalogService : IMvpCatalogService
     {
         // Save only explicitly chosen bookmarks/overrides. No API payload, sprite or generic respawn cache on disk.
         var choices = Entries.Where(e => !e.IsSearchCandidate && (e.Retained || e.Favorite || e.CustomMin != null)).Select(e => new CatalogEntry
-        { Key = e.Key, MonsterId = e.MonsterId, Name = e.Name, Map = e.Map, SpawnIdentifier=e.SpawnIdentifier, IsSpecialEncounter=e.IsSpecialEncounter, AmbiguousSpawn=e.AmbiguousSpawn, Gateway = e.Gateway, Retained=e.Retained, Favorite = e.Favorite, CustomMin = e.CustomMin, CustomMax = e.CustomMax, FarmlandConfirmed = e.FarmlandConfirmed, Origin = string.IsNullOrEmpty(e.Gateway) ? e.Origin : "RagnaPlace — " + e.Gateway, SourceUrl = e.SourceUrl, SavedReferenceMin=e.MinMinutes??e.SavedReferenceMin,SavedReferenceMax=e.MaxMinutes??e.SavedReferenceMax,SavedReferenceOrigin=e.MinMinutes!=null?e.Origin:e.SavedReferenceOrigin });
+        { Key = e.Key, MonsterId = e.MonsterId, Name = e.Name, Map = e.Map, SpawnIdentifier=e.SpawnIdentifier, IsSpecialEncounter=e.IsSpecialEncounter, AmbiguousSpawn=e.AmbiguousSpawn, Gateway = e.Gateway, Retained=e.Retained, Favorite = e.Favorite, CustomMin = e.CustomMin, CustomMax = e.CustomMax, FarmlandConfirmed = e.FarmlandConfirmed, Origin = e.Origin, SourceUrl = e.SourceUrl, SavedReferenceMin=e.MinMinutes??e.SavedReferenceMin,SavedReferenceMax=e.MaxMinutes??e.SavedReferenceMax,SavedReferenceOrigin=e.MinMinutes!=null?e.Origin:e.SavedReferenceOrigin });
         store.Save("catalog-choices.json", choices.ToList());
     }
 }

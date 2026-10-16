@@ -26,11 +26,11 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        if (e.Args.Contains("--check-ragnaplace"))
+        if (e.Args.Contains("--check-divine-pride"))
         {
             string? requested = e.Args.FirstOrDefault(a => a.StartsWith("--check-output=", StringComparison.Ordinal));
-            string file = requested == null ? Path.Combine(Path.GetTempPath(), "RagnarokCompanion-validation", "ragnaplace-check.txt") : Path.GetFullPath(requested.Substring("--check-output=".Length));
-            try { Directory.CreateDirectory(Path.GetDirectoryName(file)!); string result = await RagnaPlaceDiagnostics.CheckAsync(); File.WriteAllText(file, result); Shutdown(result.StartsWith("FAIL:") ? 1 : 0); }
+            string file = requested == null ? Path.Combine(Path.GetTempPath(), "RagnarokCompanion-validation", "divine-pride-check.txt") : Path.GetFullPath(requested.Substring("--check-output=".Length));
+            try { Directory.CreateDirectory(Path.GetDirectoryName(file)!); string result = await DivinePrideDiagnostics.CheckAsync(); File.WriteAllText(file, result); Shutdown(result.StartsWith("FAIL:") ? 1 : 0); }
             catch { Shutdown(1); }
             return;
         }
@@ -116,7 +116,7 @@ public partial class App : Application
             windows.Panel.Left = -50000; windows.Panel.Top = -50000; WindowManagementService.EnsureVisible(windows.Panel);
             if (windows.Panel.Left < SystemParameters.VirtualScreenLeft - 1) throw new Exception("Janela fora da tela");
             windows.ShowPanel();
-            vm.Catalog.Gateways.Add(new Models.Gateway { Slug = "iro", Groups = new[] { "renewal" } }); vm.Catalog.GatewaySlug = "iro";
+            vm.Catalog.Gateways.Add(new Models.Gateway { Slug = "LATAM", Groups = new[] { "renewal" } }); vm.Catalog.GatewaySlug = "LATAM";
             vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.First();vm.Spotlight.Confirm();
             vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.Single(g=>g.Name=="Spotlight Lunar");
             SpotlightDiagnostics.Verify(SpotlightDiagnostics.Synthetic());
