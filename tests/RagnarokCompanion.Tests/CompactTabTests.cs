@@ -61,7 +61,7 @@ public sealed class CompactTabTests
     [Fact] public void EventTabHasSeparateNextDuduAndKvmAndRespectsDisabledEvents()
     {
         var repo=new EventRepository(Path.Combine(Path.GetTempPath(),"Farmland-next-events-"+Guid.NewGuid()));var now=new DateTimeOffset(2026,10,15,19,58,0,TimeSpan.FromHours(-3));var vm=new EventViewModel(repo,()=>now);
-        Assert.Equal("20:30",vm.NextDudu!.Time);Assert.Equal("20:00",vm.NextKvm!.Time);Assert.Contains("Abertura",vm.NextKvm.Timing);
+        Assert.Equal("21:00",vm.NextDudu!.Time);Assert.Equal("20:00",vm.NextKvm!.Time);Assert.Contains("Abertura",vm.NextKvm.Timing);
         repo.Events.Single(e=>e.OfficialId=="dudu").Enabled=false;vm.Refresh();Assert.Null(vm.NextDudu);Assert.NotNull(vm.NextKvm);
     }
     [Fact] public void UnknownSavedTabFallsBackToMining()

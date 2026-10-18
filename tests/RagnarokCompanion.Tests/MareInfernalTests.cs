@@ -6,7 +6,7 @@ namespace RagnarokCompanion.Tests;
 
 public sealed class MareInfernalTests
 {
-    static EventRepository Repo()=>new(Path.Combine(Path.GetTempPath(),"Farmland-mare-"+Guid.NewGuid()));
+    static EventRepository Repo(){ var repo=new EventRepository(Path.Combine(Path.GetTempPath(),"Farmland-mare-"+Guid.NewGuid())); /* Explicit custom coincidences exercise grouping independently of official schedules. */ var dudu=repo.Events.Single(e=>e.OfficialId=="dudu"); dudu.Times=new(){"00:30","05:30","10:30","15:30","20:30","22:30"}; dudu.TimesCustomized=true; return repo; }
     static DateTimeOffset At(int hour,int minute,int day=15,int second=0)=>new(2026,10,day,hour,minute,second,TimeSpan.FromHours(-3));
     [Theory]
     [InlineData(0)] [InlineData(2)] [InlineData(4)] [InlineData(6)] [InlineData(8)] [InlineData(10)]

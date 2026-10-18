@@ -157,6 +157,10 @@ public partial class App : Application
             windows.Panel.Hide();
             vm.Events.Repository.Settings.Enabled = true;
             var nextEvent = vm.Events.Schedule.Upcoming(DateTimeOffset.UtcNow).First(e=>e.Event.OfficialId=="mare-infernal" && e.ServerTime.Hour is 0 or 10 or 20 or 22);
+            // Exercise custom simultaneous schedules independently of official times (isolated smoke data).
+            var smokeDudu = vm.Events.Repository.Events.First(e=>e.OfficialId=="dudu");
+            var officialDuduTimes = smokeDudu.Times;
+            smokeDudu.Times = new() { nextEvent.Time };
             var alertTime = nextEvent.StartUtc.AddMinutes(-5);
             int groupedMembers=0;
             void ObserveGroup(IReadOnlyList<Models.EventAlert> alerts) => groupedMembers=alerts.Count;
@@ -166,6 +170,7 @@ public partial class App : Application
             vm.Events.Schedule.Evaluate(alertTime);
             if (notifications.PendingCount != 1 || groupedMembers != 2) throw new Exception("Aviso simultâneo minimizado não foi agrupado em um único popup");
             vm.Events.Schedule.AlertBatch -= ObserveGroup;
+            smokeDudu.Times = officialDuduTimes;
             windows.Panel.WindowState = WindowState.Normal;
             vm.Events.Repository.Settings.Enabled = false;
             vm.ActiveCompactTab = Models.CompactTab.Events;

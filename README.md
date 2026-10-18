@@ -28,7 +28,7 @@ A tela **Eventos** mostra o próximo evento, contagem regressiva, agenda do dia 
 
 | Evento | Horários diários | Avisos padrão |
 |---|---|---|
-| 👻 Fantasminhas Dudu | 00:30, 05:30, 10:30, 15:30, 20:30, 22:30 | 00:25, 05:25, 10:25, 15:25, 20:25, 22:25 |
+| 👻 Fantasminhas Dudu | 00:00, 04:00, 08:00, 12:00, 16:00, 18:00, 21:00 | 23:55 do dia anterior, 03:55, 07:55, 11:55, 15:55, 17:55, 20:55 |
 | ⚔ KVM: Batalha de Midgard | Aberturas às 20:00 e 22:00 | 19:55 e 21:55 |
 | 🔥 Maré Infernal | 00:30, 02:30, 04:30, 06:30, 08:30, 10:30, 12:30, 14:30, 16:30, 18:30, 20:30 e 22:30 | Sempre 5 minutos antes, por padrão |
 
@@ -46,7 +46,7 @@ O ícone original do Companion é incorporado no executável, na janela/barra de
 
 A Maré Infernal tem 12 ocorrências diárias e é adicionada automaticamente ao atualizar o aplicativo, preservando horários personalizados, preferências e histórico dos eventos existentes. Compartilha o fuso configurado, reagenda o próximo dia e permite as mesmas antecedências de 1/5/10/15/30 minutos. Em **Gerenciar eventos**, desmarque **Usar antecedências gerais** para escolher seus avisos e ajuste **Som deste evento** para silenciá-la individualmente.
 
-Quando avisos de eventos com o mesmo horário ficam devidos no mesmo ciclo, o aplicativo os reúne em um único pop-up, por exemplo: “Fantasminhas Dudu e Maré Infernal começam em 5 minutos!”. As coincidências oficiais são 00:30, 10:30, 20:30 e 22:30. O histórico JSON registra cada evento individualmente, com ID, nome, horário e antecedência; os identificadores persistidos continuam evitando repetição após reinício. Preferências são revalidadas no envio: eventos desativados saem do grupo, e o som toca somente se o controle geral e pelo menos um membro permitirem. Antecedências diferentes podem produzir avisos em momentos diferentes, respeitando a escolha de cada evento. Avisos expirados são descartados.
+Quando avisos de eventos com o mesmo horário ficam devidos no mesmo ciclo, o aplicativo os reúne em um único pop-up, por exemplo: “Fantasminhas Dudu e Maré Infernal começam em 5 minutos!”. Os horários oficiais atuais de Dudu e Maré Infernal não coincidem; o agrupamento continua disponível para horários personalizados coincidentes. O histórico JSON registra cada evento individualmente, com ID, nome, horário e antecedência; os identificadores persistidos continuam evitando repetição após reinício. Preferências são revalidadas no envio: eventos desativados saem do grupo, e o som toca somente se o controle geral e pelo menos um membro permitirem. Antecedências diferentes podem produzir avisos em momentos diferentes, respeitando a escolha de cada evento. Avisos expirados são descartados.
 
 ## Divine Pride e catálogo
 

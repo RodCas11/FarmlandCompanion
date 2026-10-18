@@ -6,11 +6,24 @@ namespace RagnarokCompanion.Tests;
 
 public sealed class EventTests
 {
+    [Fact] public void UpdatedDuduTimesMigratePersistAndNotifyIncludingPreviousDay()
+    {
+        var root=Path.Combine(Path.GetTempPath(),"Farmland-dudu-update-"+Guid.NewGuid());
+        var repo=new EventRepository(root);var dudu=repo.Events.Single(e=>e.OfficialId=="dudu");
+        dudu.OfficialRevision=1;dudu.Times=new(){"00:30","05:30","10:30","15:30","20:30","22:30"};dudu.SoundsEnabled=false;repo.Save();
+        repo=new EventRepository(root);dudu=repo.Events.Single(e=>e.OfficialId=="dudu");
+        Assert.Equal(new[]{"00:00","04:00","08:00","12:00","16:00","18:00","21:00"},dudu.Times);Assert.False(dudu.SoundsEnabled);
+        var service=new EventScheduleService(repo);var alerts=new List<EventAlert>();service.Alert+=alerts.Add;
+        foreach(var hour in new[]{0,4,8,12,16,18,21}) {var start=Server(hour,0);service.Evaluate(start.AddMinutes(-5));Assert.Contains(alerts,a=>a.EventId==dudu.Id&&a.ExpiresUtc==start);}
+        Assert.Equal(Server(0,0,16),service.Upcoming(Server(23,59)).First().StartUtc);
+        Assert.Equal(dudu.Times,new EventRepository(root).Events.Single(e=>e.OfficialId=="dudu").Times);
+    }
+
     // Keep these legacy scenarios focused on Dudu/KVM. Mare/grouping has its own suite.
     static EventRepository Repo(string? root=null)
     {
         var repository=new EventRepository(root??Path.Combine(Path.GetTempPath(), "Farmland-events-tests-" + Guid.NewGuid()));
-        repository.Events.RemoveAll(e=>e.OfficialId=="mare-infernal");return repository;
+        repository.Events.RemoveAll(e=>e.OfficialId=="mare-infernal"); repository.Events.Single(e=>e.OfficialId=="dudu").Times=new(){"00:30","05:30","10:30","15:30","20:30","22:30"}; return repository;
     }
     static DateTimeOffset Server(int hour, int minute, int day=15, int second=0) => new(2026,10,day,hour,minute,second,TimeSpan.FromHours(-3));
     [Theory]
