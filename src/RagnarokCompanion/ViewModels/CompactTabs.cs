@@ -14,7 +14,7 @@ public sealed class CompactTabConverter : IValueConverter
 }
 public sealed partial class MainViewModel
 {
-    public static readonly CompactTab[] VisibleCompactTabs = { CompactTab.Mining, CompactTab.Mvps, CompactTab.Events, CompactTab.Items };
+    public static readonly CompactTab[] VisibleCompactTabs = { CompactTab.Mining, CompactTab.Mvps, CompactTab.Events, CompactTab.Items, CompactTab.Quests };
     public ObservableCollection<MvpRow> CompactAllRows { get; } = new();
     public bool NoMonitoredMvps => CompactAllRows.Count == 0;
     public double CompactMvpViewport => Settings.CompactCount * 48;

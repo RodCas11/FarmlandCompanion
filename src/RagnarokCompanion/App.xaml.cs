@@ -26,13 +26,14 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        if(e.Args.Contains("--import-items")||e.Args.Contains("--import-item-spawns")||e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions")) {
+        if(e.Args.Contains("--import-quests")||e.Args.Contains("--import-items")||e.Args.Contains("--import-item-spawns")||e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions")) {
             string? Argument(string prefix)=>e.Args.FirstOrDefault(a=>a.StartsWith(prefix,StringComparison.Ordinal))?.Substring(prefix.Length);
             string report=Argument("--import-report=")??Path.Combine(Path.GetTempPath(),"farmland-item-import.txt");
             try {
                 string output=Argument("--database=")??ItemFarmIndex.DatabasePath;
                 string result;
-                if(e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions"))result=ItemFarmDataUpdater.Update(output,Argument("--lua="));
+                if(e.Args.Contains("--import-quests"))result=$"Quests importadas: {QuestRepository.Import(Argument("--quests=")??throw new InvalidDataException("Arquivo ausente."),Argument("--source=")??throw new InvalidDataException("Catálogo ausente."),output)}";
+                else if(e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions"))result=ItemFarmDataUpdater.Update(output,Argument("--lua="));
                 else if(e.Args.Contains("--import-items"))result=FarmlandItemImporter.Import(Argument("--source=")??throw new InvalidDataException("Pasta de origem ausente."),output,Argument("--rules="));
                 else { var records=System.Text.Json.JsonSerializer.Deserialize<List<FarmlandItemImporter.PublicSpawn>>(File.ReadAllText(Argument("--spawns=")??throw new InvalidDataException("Arquivo de spawns ausente.")))??throw new InvalidDataException("Spawns inválidos.");FarmlandItemImporter.ImportSpawns(output,records);result="Spawns públicos importados."; }
                 Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(report))!);File.WriteAllText(report,result);Shutdown(0);
@@ -137,8 +138,9 @@ public partial class App : Application
             if(vm.Items.ItemName!="[Q] Avental Elegante · #661"||!vm.Items.Best!.HasMap)throw new Exception("Tradução ou mapa do item 661 ausente");
             vm.Items.Query="1061"; vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(1061); await vm.Items.SelectionTask;
             if(vm.Items.Best==null||vm.Items.Best.Monster.IsSpecial)throw new Exception("Pesquisa do item 1061 sem spawn regular confirmado");
-            for (int p = 0; p < 7; p++)
+            for (int p = 0; p < 8; p++)
             {
+                if(p==7){if(!vm.Quests.Results.Any(q=>q.Model.ItemId==28728&&q.Name=="Adaga das Valquírias"))throw new Exception("Recompensa Valkyrias_Dagger deve ser Adaga das Valquírias #28728");if(vm.Quests.Results.Count!=99)throw new Exception("Catálogo deve conter 99 quests");var quest=vm.Quests.Results.First(q=>q.Model.ItemId>0);quest.Favorite=true;vm.Quests.Selected=quest;await vm.Quests.SelectionTask;if(vm.Quests.Materials.Count!=quest.Model.Materials.Count)throw new Exception("Materiais de quest ausentes");vm.Quests.Materials[0].Obtained=true;var saved=vm.Store.Load<Models.QuestProgress>("quest-progress.json");if(!saved.Favorites.Contains(quest.Model.Id)||!saved.Obtained.Contains(quest.Model.Id+":0"))throw new Exception("Progresso de quest não persistido");}
                 if(p==6){vm.Items.Query="2255";vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(2255);await vm.Items.SelectionTask;}
                 vm.Page = p; windows.Panel.UpdateLayout();
                 Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); windows.Panel.UpdateLayout();
@@ -204,7 +206,7 @@ public partial class App : Application
             restarted.Items.Dispose(); restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
             int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
             if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
-            File.WriteAllText(report, "PASS: WPF startup; seven navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four icon-only tabs; official Farmland branding; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; eight navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render eight pages; compact auto height; five icon-only tabs; 99 quests, favorites and material progress; official Farmland branding; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -220,7 +222,7 @@ public partial class App : Application
         {
             model.ActiveCompactTab=tab;windows.FitCompact();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);windows.FitCompact();
             var buttons=VisualElements<RadioButton>(panel.CompactContent).Where(b=>b.GroupName=="CompactTabs").ToList();
-            if(buttons.Count!=4 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
+            if(buttons.Count!=MainViewModel.VisibleCompactTabs.Length || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
             foreach(var button in buttons)
             {
                 var bounds=button.TransformToAncestor(panel.CompactContent).TransformBounds(new Rect(button.RenderSize));

@@ -51,6 +51,7 @@ public sealed partial class MainViewModel : Observable
 {
     public CatalogViewModel Catalog { get; }
     public ItemFarmViewModel Items { get; }
+    public QuestViewModel Quests { get; }
     public SpotlightViewModel Spotlight { get; }
     public EventViewModel Events { get; }
     public TimerService Engine { get; }
@@ -139,6 +140,7 @@ public sealed partial class MainViewModel : Observable
         Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
         Items = new ItemFarmViewModel(store,Catalog);
         Spotlight = new SpotlightViewModel(store);
+        Quests = new QuestViewModel(store,Spotlight,Catalog);
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");
         InitializeCompactTabs();

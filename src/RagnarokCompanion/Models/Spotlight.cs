@@ -43,6 +43,7 @@ public sealed class SpotlightMonster
 }
 public sealed class SpotlightSelection
 {
+    public List<string> RotationOrder { get; set; } = new();
     public string GroupId { get; set; } = "";
     public string ViewedGroupId { get; set; } = "";
     public DateTimeOffset? SelectedUtc { get; set; }

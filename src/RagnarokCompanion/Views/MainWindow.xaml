@@ -7,12 +7,13 @@
      <Border DockPanel.Dock="Top" Padding="0,2,0,24"><Image Source="/Assets/FarmlandHorizontal.png" Width="140" Height="62" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" ToolTip="Farmland Companion" AutomationProperties.Name="Logo oficial Farmland Companion"/></Border>
      <StackPanel DockPanel.Dock="Bottom" Margin="0,14,0,0"><Border Height="1" Background="#30384B" Margin="0,0,0,12"/><RadioButton GroupName="Navigation" ToolTip="Configurações" AutomationProperties.Name="Configurações" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=3}" Command="{Binding NavigateCommand}" CommandParameter="3" HorizontalAlignment="Left"><TextBlock Text="&#xE713;" FontFamily="Segoe MDL2 Assets" FontSize="19" Foreground="{Binding Foreground, RelativeSource={RelativeSource AncestorType=RadioButton}}"/></RadioButton></StackPanel>
      <StackPanel>
-      <RadioButton Content="Início" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=0}" Command="{Binding NavigateCommand}" CommandParameter="0"/>
-      <RadioButton Content="MVPs" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=1}" Command="{Binding NavigateCommand}" CommandParameter="1"/>
-      <RadioButton Content="Eventos" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=5}" Command="{Binding NavigateCommand}" CommandParameter="5"/>
-      <RadioButton Content="Buscar Itens" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=6}" Command="{Binding NavigateCommand}" CommandParameter="6"/>
-      <RadioButton Content="SpotLight" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=4}" Command="{Binding NavigateCommand}" CommandParameter="4"/>
-      <RadioButton Content="Histórico" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=2}" Command="{Binding NavigateCommand}" CommandParameter="2"/>
+      <RadioButton Content="🏠 Início" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=0}" Command="{Binding NavigateCommand}" CommandParameter="0"/>
+      <RadioButton Content="💀 MVPs" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=1}" Command="{Binding NavigateCommand}" CommandParameter="1"/>
+      <RadioButton Content="🔔 Eventos" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=5}" Command="{Binding NavigateCommand}" CommandParameter="5"/>
+      <RadioButton Content="🔎 Buscar Itens" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=6}" Command="{Binding NavigateCommand}" CommandParameter="6"/>
+      <RadioButton Content="📜 Quests" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=7}" Command="{Binding NavigateCommand}" CommandParameter="7"/>
+      <RadioButton Content="☀ SpotLight" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=4}" Command="{Binding NavigateCommand}" CommandParameter="4"/>
+      <RadioButton Content="📖 Histórico" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=2}" Command="{Binding NavigateCommand}" CommandParameter="2"/>
       <Button Content="Modo compacto ↗" Command="{Binding CompactCommand}" Style="{StaticResource Primary}" Padding="8,11" Margin="0,24,0,0"/>
      </StackPanel>
     </DockPanel></Border>
@@ -23,7 +24,7 @@
       <TabItem><views:CatalogView DataContext="{Binding Catalog}"/></TabItem>
       <TabItem><DockPanel><TextBlock DockPanel.Dock="Top" Text="Histórico" Style="{StaticResource Title}"/><TextBlock DockPanel.Dock="Top" Text="Entradas na mina, mortes registradas e alertas." Style="{StaticResource Muted}"/><ListBox ItemsSource="{Binding History}" ItemTemplate="{StaticResource HistoryCard}"/></DockPanel></TabItem>
       <TabItem><views:SettingsView/></TabItem><TabItem><views:SpotlightView DataContext="{Binding Spotlight}"/></TabItem><TabItem><views:EventsView DataContext="{Binding Events}"/></TabItem>
-      <TabItem><views:ItemFarmView DataContext="{Binding Items}"/></TabItem>
+      <TabItem><views:ItemFarmView DataContext="{Binding Items}"/></TabItem><TabItem><views:QuestsView DataContext="{Binding Quests}"/></TabItem>
      </TabControl>
     </DockPanel>
    </Grid>

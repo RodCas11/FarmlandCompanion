@@ -23,10 +23,10 @@ public sealed class SpotlightUxTests
         var saved=SpotlightDiagnostics.Synthetic();saved.Groups[0].Maps[0].Code=target.Code;saved.Groups[0].Maps[0].MapUrl="https://www.divine-pride.net/database/map/"+target.Code;
         SpotlightExtractedCatalog.Supplement(primary,saved);Assert.Equal(expected,target.Recommended);Assert.Single(target.Monsters);Assert.True(target.HasMapLink);Assert.Equal(7,primary.Groups.Count);
     }
-    [Fact] public void BrowseAndConfirmationAreIndependentPersistOfflineAndExpire(){Sta(()=>{
+    [Fact] public void BrowseAndConfirmationAreIndependentPersistOfflineAndRotate(){Sta(()=>{
         var store=Store();using var source=new SpotlightCatalogService(store);var time=new DateTimeOffset(2026,10,15,22,59,59,TimeSpan.Zero);using var vm=new SpotlightViewModel(store,source,()=>time);
         var first=vm.Groups[0];var other=vm.Groups[1];vm.SelectedGroup=first;Assert.True(vm.Pending);vm.Confirm();Assert.False(vm.Pending);vm.SelectedGroup=other;Assert.Equal(37,vm.Rows.Count);Assert.Equal(first.Id,vm.ConfirmedGroup!.Id);Assert.Contains(first.Name,vm.Summary);
-        using var reload=new SpotlightViewModel(store,new SpotlightCatalogService(store),()=>time);Assert.Equal(other.Id,reload.SelectedGroup!.Id);Assert.Equal(first.Id,reload.ConfirmedGroup!.Id);time=time.AddSeconds(1);reload.Tick();Assert.True(reload.Pending);Assert.Equal(37,reload.Rows.Count);Assert.Equal(7,reload.Groups.Count);reload.Confirm();Assert.Equal(other.Id,reload.ConfirmedGroup!.Id);
+        using var reload=new SpotlightViewModel(store,new SpotlightCatalogService(store),()=>time);Assert.Equal(other.Id,reload.SelectedGroup!.Id);Assert.Equal(first.Id,reload.ConfirmedGroup!.Id);time=time.AddSeconds(1);reload.Tick();Assert.False(reload.Pending);Assert.Equal("Spotlight Lunar",reload.ConfirmedGroup!.Name);Assert.Equal(37,reload.Rows.Count);Assert.Equal(7,reload.Groups.Count);reload.Confirm();Assert.Equal(other.Id,reload.ConfirmedGroup!.Id);
     });}
     [Fact] public void SearchCombinedFiltersSortAndClearUsePublishedLevels(){Sta(()=>{
         var store=Store();using var vm=new SpotlightViewModel(store,new SpotlightCatalogService(store));

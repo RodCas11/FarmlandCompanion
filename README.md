@@ -36,6 +36,7 @@ Mantenha as pastas **Data**, **docs** e **licenses** junto do executável. Na p�
 | 💀 Acompanhar o próximo respawn de um MVP | **MVPs** |
 | 🔔 Receber um lembrete antes dos eventos | **Eventos** |
 | 🔎 Descobrir onde farmar um item | **Buscar Itens** |
+| 📜 Organizar materiais e acompanhar equipamentos | **Quests** |
 | ✨ Consultar os mapas dos grupos de SpotLight | **SpotLight** |
 | 📜 Conferir seus registros | **Histórico** |
 | ⚙️ Ajustar avisos, aparência e conexão | **Engrenagem no menu lateral** |
@@ -97,15 +98,31 @@ Em **Gerenciar eventos**, personalize horários ou crie seus próprios lembretes
 
 Abra **SpotLight** no modo completo para consultar grupos, pesquisar mapas e filtrar pelo nível do personagem.
 
-Selecionar um grupo serve para **consultar**. Depois de conferir no jogo qual está ativo, use **Confirmar este grupo no servidor**. Às **20h de São Paulo**, a confirmação fica desatualizada: confira o novo grupo no jogo e confirme novamente.
+Selecionar um grupo serve para **consultar**. A sequência oficial já vem configurada. Depois de conferir no jogo, selecione o grupo atual e use **Corrigir SpotLight atual**. O Companion passa a calcular as mudanças às **20h de São Paulo**, inclusive após dias fechado. Use o mesmo botão para corrigir a referência quando necessário; o status diferencia o grupo confirmado daquele calculado pela sequência.
+
+A sequência confirmada é **Solar → Lunar → Estelar → Radiante → Celestial → Infernal → Astral**, voltando ao Solar. Se o servidor mudar a ordem, ajuste em **Configurar rotação automática**.
+
+## 📜 Quests: sua lista de compras para farmar
+
+São **99 quests**, divididas em **Topo, Meio, Baixo, Escudos, Capas, Acessórios e Armas**. Para acompanhar a sua:
+
+1. Abra **📜 Quests**, busque o equipamento e escolha uma categoria se quiser.
+2. Marque a **estrela** para favoritar.
+3. Confira o custo em **Zeny**, os materiais, as quantidades e os refinos exigidos, como **+7, +9 ou +12**.
+4. Use **Ver mapa ↗** para consultar o local de farm.
+5. Marque os materiais já obtidos. O progresso fica salvo ao fechar o app e também pode ser atualizado na aba **Quests** do compacto.
+
+> 💡 As caixas de materiais são uma lista de acompanhamento manual; o Companion não lê seu inventário. O Certificado de Caça não aparece nessa lista.
+
+Os materiais mostram monstros comuns, chances de drop e mapas disponíveis. Quando houver uma alternativa no SpotLight atual, ela recebe um destaque ☀. A indicação usa o grupo confirmado ou calculado pela sequência configurada, sem presumir bônus de drop. Itens sem ID no catálogo fornecido e mapas desconhecidos são identificados claramente.
 
 ## 🪟 Modo compacto: pequeno na tela, útil na hunt
 
-Alterne para o compacto e continue na mesma janela, com quatro abas por ícone:
+Alterne para o compacto e continue na mesma janela, com cinco abas por ícone:
 
-**⛏️ Mina · 💀 MVPs · 🔔 Eventos · 🔎 Itens**
+**⛏️ Mina · 💀 MVPs · 🔔 Eventos · 🔎 Itens · 📜 Quests**
 
-Na aba MVPs, aparecem até **cinco favoritos**, ordenados pelo próximo respawn. Seus timers continuam funcionando ao alternar entre os modos.
+Na aba MVPs, aparecem até **cinco favoritos**, ordenados pelo próximo respawn. Na aba **Quests**, escolha uma favorita para ver seu custo, materiais, mapas e progresso, com rolagem para listas maiores. Seus timers continuam funcionando ao alternar entre os modos.
 
 Arraste pelo cabeçalho ou pela logo para posicionar a janela. Use o **alfinete** para mantê-la por cima e o botão de expandir para voltar ao painel completo. Opacidade, tamanho de fonte e outras preferências ficam na engrenagem. O SpotLight é consultado no modo completo.
 

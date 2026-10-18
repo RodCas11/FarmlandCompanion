@@ -26,3 +26,8 @@ private-data/
 src/RagnarokCompanion/Data/item-farm.json
 *.sqlite.*.tmp
 **/bRO.lua
+
+# Private quest source
+**/message.txt
+**/farmland.lua
+**/farmlandc.lua

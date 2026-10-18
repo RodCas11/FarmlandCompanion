@@ -168,3 +168,21 @@ Para uma **nova versão do aplicativo**, incremente `<Version>` no `.csproj`. A 
 Se o banco público mudar, publique um **novo asset versionado** autorizado na release de dados e atualize `build/item-database.json` com o nome e SHA-256 corretos. Não substitua silenciosamente o conteúdo de um asset já referenciado. Depois, incremente a versão do aplicativo para distribuir o novo pacote.
 
 O workflow usa o token automático do GitHub para publicar; não precisa de chave Divine Pride. Não publique arquivos pessoais, `bin/`, `obj/`, originais privados ou o diretório de trabalho inteiro como assets de release.
+
+## Quests e rotação do SpotLight
+
+O arquivo privado `message.txt` é ignorado pelo Git e nunca entra no pacote. Para importar suas 99 quests, use o catálogo YAML autorizado apenas para relacionar AegisName e ID:
+
+```powershell
+.\build\Import-Quests.ps1 -Quests 'C:\dados-autorizados\message.txt' -SourceDirectory 'C:\dados-autorizados'
+```
+
+A importação usa DTOs de dados, transação SQLite e preserva os demais dados. Armazena recompensas, categorias, Zeny, materiais e refinos; exclui `Certificado_de_Caca`. Itens sem correspondência ficam com ID desconhecido e identificação explícita, sem adivinhar relações. Reimporte com o catálogo atualizado para resolvê-los. Uma importação completa de itens também importa quests se `message.txt` estiver na pasta de origem; caso contrário, preserva o catálogo de quests anterior.
+
+Favoritos e materiais obtidos ficam em `quest-progress.json` na persistência do usuário. A sequência completa do SpotLight fica em `spotlight-selection.json`, junto do grupo e horário de referência. A ordem do catálogo não define a rotação oficial. O cálculo considera as viradas às 20h de São Paulo, sem exigir que o aplicativo permaneça aberto.
+
+Antes de distribuir esta versão via Actions, publique o novo banco autorizado com quests e atualize o manifesto de dados conforme a seção de releases. A validação WPF exige as 99 quests no pacote para evitar uma release com a aba vazia.
+
+Quando `farmland.lua` estiver na pasta de origem das quests, o importador lê seus nomes/descrições como dados e prioriza essa fonte autorizada sobre o bRO. Correspondências confirmadas: `Gigant_Helm_BR` → 19220, `Crow_Tengu_MaskF` → 19456 e `Crow_Tengu_MaskM` → 19457. O original é privado e ignorado pelo Git. Nenhuma relação adicional é inferida por semelhança de nomes. A atualização completa de Lua e quests ocorre em uma cópia temporária do banco, substituída somente após sucesso.
+
+Complemento de identificação: `farmlandc.lua` fornece o Martelo Cósmico (16074), associado à recompensa `Meteor_Strike_BR`; `bRO.lua` fornece Livro Muscular (540127), associado a `Livro_Muscular`, mantendo a descrição como referência bRO. `Valkyrjas_Dagger` corresponde à Adaga das Valquírias, ID 28728, confirmado pelo usuário. Apenas as entradas necessárias são extraídas do complemento, e `farmlandc.lua` também é privado e ignorado pelo Git.

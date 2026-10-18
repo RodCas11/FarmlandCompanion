@@ -67,7 +67,7 @@ public sealed class CompactTabTests
     [Fact] public void LegacySpotlightCompactSelectionMigratesWithoutChangingTimers()
     {
         var vm=Create();var now=DateTimeOffset.UtcNow;vm.Engine.StartMining(now);vm.Settings.CompactTab=CompactTab.Spotlight;vm.Save();var restored=Create(vm.Store.Root);
-        try{Assert.Equal(CompactTab.Mining,restored.ActiveCompactTab);Assert.Equal(now,restored.Engine.Mining.EnteredUtc);Assert.Equal(new[]{CompactTab.Mining,CompactTab.Mvps,CompactTab.Events,CompactTab.Items},MainViewModel.VisibleCompactTabs);restored.NavigateCommand.Execute("4");Assert.Equal(4,restored.Page);}
+        try{Assert.Equal(CompactTab.Mining,restored.ActiveCompactTab);Assert.Equal(now,restored.Engine.Mining.EnteredUtc);Assert.Equal(new[]{CompactTab.Mining,CompactTab.Mvps,CompactTab.Events,CompactTab.Items,CompactTab.Quests},MainViewModel.VisibleCompactTabs);restored.NavigateCommand.Execute("4");Assert.Equal(4,restored.Page);}
         finally{Dispose(restored);Dispose(vm);}
     }
     [Fact] public void UnknownSavedTabFallsBackToMining()

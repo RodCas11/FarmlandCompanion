@@ -27,7 +27,7 @@ public sealed class SpotlightViewModel : Observable, IDisposable
  public SpotlightViewModel(PersistenceService store, ISpotlightCatalogService? service=null, Func<DateTimeOffset>? clock=null)
  {
   this.store=store; this.service=service??new SpotlightCatalogService(store,preferBundled:store.IsDefaultLocation); this.clock=clock??(()=>DateTimeOffset.UtcNow);
-  selection=store.Load<SpotlightSelection>("spotlight-selection.json"); filter=Filters[0]; Maps=CollectionViewSource.GetDefaultView(Rows);
+  selection=store.Load<SpotlightSelection>("spotlight-selection.json");selection.RotationOrder??=new(); filter=Filters[0]; Maps=CollectionViewSource.GetDefaultView(Rows);
   RefreshCommand=new RelayCommand(async _=>await LoadAsync(true)); ConfirmCommand=new RelayCommand(_=>Confirm());
   OpenMapCommand=new RelayCommand(p=>{if(p is SpotlightMap { HasMapLink: true } map) {try{System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(map.MapUrl!){UseShellExecute=true});}catch{Message="Não foi possível abrir o navegador.";Changed(nameof(Message));}}});
   ClearFiltersCommand=new RelayCommand(_=>{Search="";Filter=Filters[0];CharacterLevel=null;});
@@ -41,9 +41,19 @@ public sealed class SpotlightViewModel : Observable, IDisposable
  public int? CharacterLevel {get=>selection.CharacterLevel;set{selection.CharacterLevel=value is >=1 and <=999?value:null;Save();Changed();Rebuild();}}
  public bool ShowCompact {get=>selection.ShowCompact;set{selection.ShowCompact=value;Save();Changed();}}
  public string Countdown=>SpotlightRotationService.Countdown(clock());
- public SpotlightGroup? ConfirmedGroup=>Groups.FirstOrDefault(g=>g.Id==selection.GroupId);
- public bool Pending=>ConfirmedGroup==null||SpotlightRotationService.IsPending(selection.SelectedUtc,clock());
- public string Status=>ConfirmedGroup==null?"Nenhum grupo confirmado":Pending?"Confirmação desatualizada • confirme no jogo":"Ativo informado: "+ConfirmedGroup.Name;
+ string? rotationDraft;
+ public string RotationHelp=>"Grupos disponíveis: "+string.Join(" · ",Groups.Select(g=>g.Name));
+ public string RotationDraft {get=>rotationDraft??(selection.RotationOrder.Count==0?"Celestial → Infernal → Astral → Solar":string.Join(" → ",selection.RotationOrder.Select(id=>Groups.FirstOrDefault(g=>g.Id==id)?.Name??id)));set{rotationDraft=value;Changed();}}
+ public ICommand SaveRotationCommand=>new RelayCommand(_=>{
+  var names=RotationDraft.Split(new[]{"→",",",";"},StringSplitOptions.RemoveEmptyEntries|StringSplitOptions.TrimEntries);
+  var order=names.Select(n=>Groups.FirstOrDefault(g=>g.Name.Equals(n,StringComparison.OrdinalIgnoreCase)||g.Id.Equals(n,StringComparison.OrdinalIgnoreCase)||g.Name.Equals("Spotlight "+n,StringComparison.OrdinalIgnoreCase))).ToArray();
+  if(order.Length!=Groups.Count||order.Any(g=>g==null)||order.Select(g=>g!.Id).Distinct().Count()!=Groups.Count){Message="Informe todos os sete grupos, uma vez cada, na ordem confirmada pelo servidor.";Changed(nameof(Message));return;}
+  var current=HasRotation&&!Pending?ConfirmedGroup:null;selection.RotationOrder=order.Select(g=>g!.Id).ToList();if(current!=null){selection.GroupId=current.Id;selection.SelectedUtc=clock();}Save();Message="Sequência salva. Corrija o grupo atual se necessário.";Changed(nameof(Message));Tick();
+ });
+ public bool HasRotation=>selection.RotationOrder.Count==Groups.Count&&selection.RotationOrder.Distinct().Count()==Groups.Count&&selection.RotationOrder.All(id=>Groups.Any(g=>g.Id==id));
+ public SpotlightGroup? ConfirmedGroup {get{string id=selection.GroupId;if(HasRotation&&selection.SelectedUtc is {} reference&&reference<=clock()){int start=selection.RotationOrder.IndexOf(id);if(start>=0)id=selection.RotationOrder[(start+SpotlightRotationService.Steps(reference,clock()))%selection.RotationOrder.Count];}return Groups.FirstOrDefault(g=>g.Id==id);}}
+ public bool Pending=>ConfirmedGroup==null||selection.SelectedUtc>clock()||(!HasRotation&&SpotlightRotationService.IsPending(selection.SelectedUtc,clock()));
+ public string Status=>ConfirmedGroup==null?"Informe o grupo atual":Pending?"Configure a sequência completa para acompanhar a rotação":(HasRotation&&selection.SelectedUtc is {} reference&&SpotlightRotationService.Steps(reference,clock())>0?"Calculado pela sequência: ":"Confirmado por você: ")+ConfirmedGroup.Name;
  public string Confirmation=>selection.SelectedUtc is {} time?"Informado em "+TimeZoneInfo.ConvertTime(time,SpotlightRotationService.ServerZone).ToString("dd/MM/yyyy HH:mm:ss")+" (São Paulo)":"Nenhum grupo informado";
  public string Summary=>ConfirmedGroup?.Summary??"Nenhum Spotlight confirmado";
  public string Count=>selected==null?"Selecione um grupo":Rows.Count==selected.Maps.Count?$"{selected.Maps.Count} mapas":$"{Rows.Count} de {selected.Maps.Count} mapas";
@@ -58,6 +68,7 @@ public sealed class SpotlightViewModel : Observable, IDisposable
  void Apply(SpotlightCatalog? catalog)
  {
   if(catalog==null)return; Catalog=catalog;Groups.Clear();foreach(var g in catalog.Groups)Groups.Add(g);
+  if(selection.RotationOrder.Count==0&&SpotlightRotationService.OfficialOrder.All(id=>Groups.Any(g=>g.Id==id))){selection.RotationOrder=SpotlightRotationService.OfficialOrder.ToList();Save();}
   selected=Groups.FirstOrDefault(g=>g.Id==(string.IsNullOrEmpty(selection.ViewedGroupId)?selection.GroupId:selection.ViewedGroupId))??Groups.FirstOrDefault();Message="Catálogo local disponível offline.";Rebuild();Changed(nameof(SelectedGroup));Changed(nameof(Source));Tick();
  }
  void Rebuild()
