@@ -39,6 +39,7 @@ try {
     Copy-Item -LiteralPath docs/SPOTLIGHT.md -Destination "$package/docs/SPOTLIGHT.md"
     Copy-Item -LiteralPath licenses/rathena-GPL-3.0.txt,licenses/THIRD-PARTY-NOTICES.md -Destination "$package/licenses"
     Copy-Item -LiteralPath src/RagnarokCompanion/Data/mvp-seed.json -Destination "$package/Data/mvp-seed.json"
+    Copy-Item -LiteralPath src/RagnarokCompanion/Data/farmland-items.sqlite,src/RagnarokCompanion/Data/item-monster-rules.json -Destination "$package/Data"
     New-BuildManifest $package
     $null = Test-BuildPackage $package
     $reportDir = Join-Path $PSScriptRoot 'artifacts/latest-smoke'

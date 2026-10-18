@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace RagnarokCompanion.Models;
 
 public enum MiningPhase { Available, Mining, Cooldown }
-public enum CompactTab { Mining, Mvps, Events, Spotlight }
+public enum CompactTab { Mining, Mvps, Events, Spotlight, Items }
 public sealed class Settings : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;

@@ -33,6 +33,8 @@ public sealed class MobDto
     [JsonPropertyName("name")] public string? Name { get; set; }
     [JsonPropertyName("url")] public string? Url { get; set; }
     [JsonPropertyName("class")] public string? Class { get; set; }
+    public int SpawnSchemaVersion {get;set;} public List<RagnarokCompanion.Models.FarmSpawn>? MapCandidates {get;set;}
+    public string? Description {get;set;} public string? IconUrl {get;set;}
     [JsonPropertyName("exp")] public ExperienceDto? Exp { get; set; }
     [JsonPropertyName("image")] public MobImageDto? Image { get; set; }
     [JsonPropertyName("spawns")] public List<MapSpawnDto>? Spawns { get; set; }

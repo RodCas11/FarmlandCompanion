@@ -11,12 +11,13 @@
          its ApplicationConfiguration.Initialize/Application.Run entry point is not used. -->
     <NoWarn>$(NoWarn);WFAC010</NoWarn>
     <AssemblyName>FarmlandCompanion</AssemblyName><RootNamespace>RagnarokCompanion</RootNamespace>
-    <Version>4.8.0</Version>
+    <Version>4.13.0</Version>
     <ApplicationIcon>Assets/AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
-  <ItemGroup><PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0"/></ItemGroup>
-  <ItemGroup><EmbeddedResource Include="Data/mvp-seed.json"/></ItemGroup>
+  <ItemGroup><PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0"/><PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.32"/><PackageReference Include="YamlDotNet" Version="16.3.0"/></ItemGroup>
+  <ItemGroup><EmbeddedResource Include="Data/mvp-seed.json"/><EmbeddedResource Include="Data/public-regular-spawns.json"/></ItemGroup>
   <ItemGroup><EmbeddedResource Include="Data/mvp-respawns.json"/></ItemGroup>
   <ItemGroup><EmbeddedResource Include="../../spotlights_farmland_completo.json" LogicalName="RagnarokCompanion.Data.spotlights_farmland_completo.json"/></ItemGroup>
   <ItemGroup><Resource Include="Assets/AppIcon.ico"/></ItemGroup>
+  <ItemGroup><Content Include="Data/farmland-items.sqlite" Condition="Exists('Data/farmland-items.sqlite')" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never"/><Content Include="Data/item-monster-rules.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="Never"/></ItemGroup>
 </Project>

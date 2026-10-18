@@ -50,6 +50,7 @@ public sealed class MvpRow : Observable
 public sealed partial class MainViewModel : Observable
 {
     public CatalogViewModel Catalog { get; }
+    public ItemFarmViewModel Items { get; }
     public SpotlightViewModel Spotlight { get; }
     public EventViewModel Events { get; }
     public TimerService Engine { get; }
@@ -90,7 +91,7 @@ public sealed partial class MainViewModel : Observable
     public ICommand ImportCommand { get; }
     public ICommand NavigateCommand { get; }
     private int page;
-    public int Page { get => page; set { page = value; Changed(); } }
+    public int Page { get => page; set { page = value; Changed(); if(value==6)Items.Restore(); } }
     private string search = "", mapFilter = "";
     public string Search { get => search; set { search = value; Changed(); RefreshLists(); } }
     public string MapFilter { get => mapFilter; set { mapFilter = value; Changed(); RefreshLists(); } }
@@ -136,6 +137,7 @@ public sealed partial class MainViewModel : Observable
         history.RemoveAll(h => h == null || h.Message == null || h.Kind == null);
         Engine = new(settings, mining, mvps, history);
         Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
+        Items = new ItemFarmViewModel(store,Catalog);
         Spotlight = new SpotlightViewModel(store);
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");

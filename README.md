@@ -148,7 +148,7 @@ A navegação tem Início, MVPs, Histórico, Configurações, SpotLight e Evento
 
 ### Releases no GitHub
 
-A Action [Release Windows](https://github.com/RodCas11/FarmlandCompanion/actions/workflows/release.yml) compila no Windows, executa os testes e o smoke WPF offline, gera o ZIP e seu SHA256 e publica uma release quando uma tag `v*` é enviada. A tag deve corresponder à `<Version>` do projeto, por exemplo `v4.0.0` para `4.0.0`.
+A Action [Release Windows](https://github.com/RodCas11/FarmlandCompanion/actions/workflows/release.yml) compila no Windows, executa os testes e o smoke WPF offline, gera o ZIP e seu SHA256 e publica uma release ao enviar uma nova versão para `main` ou uma tag `v*`. A tag deve corresponder à `<Version>` do projeto, por exemplo `v4.0.0` para `4.0.0`.
 
 Para publicar uma nova versão, atualize a versão do projeto, faça commit usando gitmoji e envie uma nova tag:
 
@@ -157,7 +157,7 @@ git tag -a v4.0.1 -m "🚀 Release v4.0.1"
 git push origin v4.0.1
 ```
 
-O botão **Run workflow** na Action gera o pacote como artifact para conferência, sem criar uma release quando executado na branch `main`. O workflow usa o token automático do GitHub; não precisa de API key Divine Pride nem de credenciais pessoais nos secrets.
+O botão **Run workflow** na branch `main` também publica a versão definida no projeto. Releases existentes são preservadas: incremente `<Version>` para gerar outra. O workflow usa o token automático do GitHub; não precisa de API key Divine Pride nem de credenciais pessoais nos secrets.
 
 Para gerar o mesmo pacote localmente:
 
@@ -176,3 +176,77 @@ A substituição usa um manifesto SHA256 e restaura a distribuição anterior se
 A migração dos antigos executáveis da raiz de dist usa uma lista explícita de hashes dos artefatos gerados anteriormente pelo projeto. Nenhum arquivo é reconhecido apenas pela extensão. O relatório de remoções e preservações fica em artifacts/publication.json; testes e screenshots ficam fora de dist. Não edite/adicione arquivos dentro de latest: se o conteúdo não corresponder ao manifesto, o script preserva o diretório e interrompe a substituição para revisão.
 
 Os critérios, cálculos, atualização e a lista dos 68 IDs sem spawn convencional estão em [Respawns automáticos](docs/RAGNAPLACE_API.md#respawns-automaticos).
+
+## Buscar Itens — banco Farmland offline
+
+**Pesquisar item → Ver melhores monstros → Ver melhor mapa.** A pesquisa por nome/ID é local e instantânea, com filtro inicial de 10% e até cinco recomendações por maior drop. Variantes Furious, Swift, Solid, Ringleader, campeões, eventos, invocações, quests e identificadores reconhecidos de instância são excluídos por padrão; MVPs e classes especiais também são classificados separadamente. Não basta `Class: Normal` para liberar um monstro.
+
+Os quatro YAMLs originais do ADM **são privados**: não fazem parte do Git, do executável nem do pacote. Somente o banco `Data/farmland-items.sqlite` acompanha a distribuição, com IDs, nomes públicos, porcentagens, chaves de pesquisa e um indicador derivado para excluir variantes. Nenhum AegisName, script, atributo de combate ou configuração original é armazenado. `AegisName` e `Drops.Item` são usados apenas em memória para relacionar IDs; `Rate / 100` converte para porcentagem. Os índices SQLite cobrem IDs, nomes e relações de drop.
+
+### Gerar ou atualizar o banco
+
+Mantenha os arquivos privados fora do Git (por exemplo, em `private-data/`) e execute:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File build/Import-FarmlandItems.ps1 -SourceDirectory C:\CAMINHO\PRIVADO
+```
+
+A pasta deve conter `item_db_equip.yml`, `item_db_etc.yml`, `item_db_usable.yml` e `mob_db.yml`. Por padrão o banco vai para `src/RagnarokCompanion/Data/farmland-items.sqlite`; use `-OutputDatabase CAMINHO` para outro destino. A substituição só ocorre após importação e validação completas; os originais permanecem intactos. Depois, execute `build-latest.ps1`. Em CI/publicação, disponibilize previamente o SQLite público gerado; os YAMLs não são necessários para compilar ou executar o aplicativo. A publicação exige esse banco e não gera uma base fictícia.
+
+Para atualizar uma instalação, feche o Companion e substitua somente `Data/farmland-items.sqlite` pelo novo banco público gerado. Não é preciso alterar o aplicativo. Não coloque os YAMLs em `dist/latest` nem os anexe ao GitHub. Bancos SQLite e YAMLs de origem estão ignorados pelo Git.
+
+### Exclusões e exceções
+
+`Data/item-monster-rules.json` mantém IDs excluídos, IDs permitidos e padrões de nomes/identificadores. `ExcludeIds` tem prioridade; `IncludeIds` permite exceções explícitas. Os padrões Aegis são aplicados durante a importação, sem exportar seus valores. Nomes e IDs permitem revisar a classificação no aplicativo. Após mudar as regras, regenere o banco e reinicie o Companion. Uma exceção **não confirma spawn** e não cria mapa/população.
+
+### Mapas e futura importação de spawns
+
+`mob_db.yml` sozinho não comprova spawns ou populações. Na ausência de spawns do Farmland, o aplicativo usa referências públicas de mapas regulares do Renewal, identificadas nos resultados. Dados sem fonte suficiente continuam como **Mapa não identificado** e **Quantidade desconhecida**. Referências Renewal e Divine Pride não são apresentadas como confirmação do Farmland. **Melhor farm** só usa chance × população quando existe população importada; é um indicador comparativo, não itens por hora.
+
+O banco já aceita uma importação pública futura de spawns, separada dos originais:
+
+```json
+[{"MonsterId":1102,"MapCode":"mapa_confirmado","MapName":"Nome público","Count":null,"Regular":true}]
+```
+
+Use `build/Import-FarmlandItems.ps1 -Spawns CAMINHO.json`. Informe `Regular: true` somente após verificar o spawn permanente nos arquivos do servidor; mapas de instância, quantidades inválidas e registros sem essa confirmação são recusados. Pontos regulares do mesmo monstro/mapa são somados; quantidade desconhecida permanece desconhecida. Reimportar os quatro YAMLs atualiza os drops, preserva os spawns Farmland existentes de IDs ainda presentes e atualiza a referência pública de mapas.
+
+A aba **Itens** do compacto usa a mesma MainWindow e o mesmo banco. A seleção e os filtros permanecem salvos. Divine Pride é opcional: imagens/traduções são consultadas apenas pelo botão de informações adicionais; o ranking continua usando os drops do ADM. O cache e a chave protegida existentes são reaproveitados. Favoritos MVP, mineração, eventos e SpotLight continuam independentes.
+
+### Nomes em português e mapas automáticos
+
+Coloque `bRO.lua` na pasta privada dos YAMLs antes de regenerar a base. O importador lê somente dados, sem executar Lua: detecta UTF-8 ou Windows-1252 e extrai `identifiedDisplayName` por ID como nome principal. O nome inglês original e `unidentifiedDisplayName` permanecem como alternativas de pesquisa, com índices normalizados sem acentos; a apresentação mantém acentos e prefixos. Exemplo: **661 → [Q] Avental Elegante**, pesquisável também por **Avental Elegante** e pelo nome inglês; **1061 → Areia Estelar de Bruxa**. O Lua original está ignorado pelo Git e não acompanha o aplicativo.
+
+Para atualizar somente tradução e referências de mapas, preservando drops e dados existentes:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File build/Import-FarmlandItems.ps1 -DataOnly -Lua C:\PRIVADO\bRO.lua
+```
+
+O SQLite versão 2 acrescenta nome inglês, nome não identificado, índices de busca e procedência dos mapas. A migração ocorre em transação, sem apagar itens, drops ou spawns existentes. A regeneração completa também integra automaticamente o Lua presente na pasta de origem.
+
+Ao selecionar um item, até cinco monstros comuns têm os mapas complementados pelo cliente Divine Pride existente, por ID e região. Foram verificados os campos públicos `spawns[].mapName` (código), `mapDisplayName` e `quantity`; `respawnTime` não é interpretado. Apenas pares monstro/mapa constantes do catálogo público de spawns permanentes são aceitos, excluindo instâncias, callbacks, scripts de evento e mapas de quest conhecidos. A consulta reaproveita o cache de sete dias, com uma única atualização de registros antigos sem campos de mapa. Não há enumeração da API nem consulta por tecla. Dados explícitos do Farmland têm prioridade.
+
+A referência offline em `Data/public-regular-spawns.json` deriva exclusivamente dos arquivos públicos rAthena Renewal no commit `d4b8e7b8f16061cc2496d377ac8f777ce72a4f39`; não utiliza spawns privados do ADM. O gerador é `build/Update-PublicFarmSpawns.ps1 -RathenaRoot CAMINHO`. Mapas com população conhecida são ordenados pela maior quantidade; dados ausentes permanecem desconhecidos. Aliza (1737) tem referência regular em `kh_dun01` (55) e `kh_dun02` (13); `kh_kiehl01` é excluído como mapa de quest. Para o drop **0,01%** do item 661, escolha **Todas** ou **Mostrar chances menores**, disponível também no compacto.
+
+### Consulta simplificada
+
+O cabeçalho mostra nome português, ID, ícone e **Ver no Divine Pride ↗**. Não exibe nem consulta descrições, efeitos ou requisitos de equipamento. O link aponta à seção da região/idioma configurados na página pública do item; o servidor global do site continua sendo uma preferência do navegador. O endereço e cache de imagens existentes são reaproveitados. Os resultados de farm e os dados armazenados permanecem preservados.
+
+### Descrição por hover
+
+Passe o mouse sobre o ícone ou nome do item no painel ou compacto. Após 400 ms, um Popup WPF escuro mostra o nome, ícone e descrição local formatada. Há rolagem para textos grandes, largura de 340 px e 250 ms de tolerância ao sair, permitindo mover o ponteiro para ler e rolar. O popup não recebe foco e fecha ao sair, trocar item, esconder o painel ou desativar a janela. A interface principal continua sem descrições e mantém **Ver no Divine Pride ↗**.
+
+O texto é carregado por ID apenas no hover, fora da thread da interface, com cache limitado a 64 itens e sem chamadas à API. A fonte bRO é identificada como referência fornecida, sem declarar modificações Farmland confirmadas. Se o ADM fornecer descrições próprias atualizadas, mantenha o arquivo original dentro de `private-data/` e importe somente uma projeção pública autorizada:
+
+```json
+[{"Id":2255,"Description":"Descrição atualizada fornecida pelo ADM, com os códigos de cor originais."}]
+```
+
+```powershell
+powershell -ExecutionPolicy Bypass -File build/Import-FarmlandItems.ps1 -Descriptions private-data/descricoes-autorizadas.json
+```
+
+A tabela `item_description_overrides` tem prioridade sobre o bRO e não altera seu texto original. Use essa opção somente com descrições cuja divulgação foi autorizada pelo ADM. Reinicie o aplicativo após atualizar o banco para renovar o cache. O Lua continua sendo lido somente como dados, e os originais privados não integram Git ou distribuição.
+
+O CI obtém somente o SQLite público autorizado da release de dados indicada em `build/item-database.json` e valida seu SHA256 antes dos testes e da publicação. YAMLs e Lua originais não são enviados ao GitHub. Ao atualizar a base, envie um novo asset público versionado à release de dados e atualize esse manifesto antes do push. A tag da aplicação é criada somente após compilação, testes, smoke WPF e verificação do pacote.

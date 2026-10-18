@@ -1,0 +1,6 @@
+﻿{
+  "ExcludeIds": [],
+  "IncludeIds": [],
+  "ExcludedNamePatterns": ["(^|[ _-])(Furious|Swift|Solid|Ringleader|Champion|Event|Evento|Summoned|Invocado|Quest)([ _-]|$)", "^(Furios[oa]|Veloz|S[oó]lid[oa]|L[ií]der) "],
+  "ExcludedAegisPatterns": ["^(C[1-5]_|G_|I_|EVENT_|QUEST_|SUMMON_)"]
+}

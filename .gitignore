@@ -11,3 +11,18 @@ artifacts/
 .env
 .env.*
 !.env.example
+
+# Private Farmland source data and generated databases
+**/item_db_equip.yml
+**/item_db_etc.yml
+**/item_db_usable.yml
+**/mob_db.yml
+private-data/
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.db
+*.db-*
+src/RagnarokCompanion/Data/item-farm.json
+*.sqlite.*.tmp
+**/bRO.lua

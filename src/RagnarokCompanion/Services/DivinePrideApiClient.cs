@@ -18,6 +18,9 @@ public interface IDivinePrideApiClient {
  Task<List<Gateway>> GatewaysAsync(CancellationToken ct=default);
  Task<SearchResultDto> SearchAsync(string gateway,string name,int page=1,bool refresh=false,CancellationToken ct=default);
  Task<MobDto> MonsterAsync(string gateway,int id,bool refresh=false,CancellationToken ct=default);
+ Task<MobDto> ItemAsync(string gateway,int id,bool refresh=false,CancellationToken ct=default)=>Task.FromException<MobDto>(new DivinePrideException("Consulta de itens indisponível."));
+ bool CanQuery=>true;
+ Task<MobDto> MonsterSpawnsAsync(string gateway,int id,CancellationToken ct=default)=>MonsterAsync(gateway,id,ct:ct);
  void ClearCache();
 }
 public sealed class DivinePrideApiClient:IDivinePrideApiClient,IDisposable {
@@ -30,31 +33,37 @@ public sealed class DivinePrideApiClient:IDivinePrideApiClient,IDisposable {
  public static bool ValidGateway(string? region)=>Regions.Contains(region);
  public Task<List<Gateway>> GatewaysAsync(CancellationToken ct=default)=>Task.FromResult(Regions.Select(r=>new Gateway{Slug=r,Groups=new[]{"renewal"}}).ToList());
  public Task<SearchResultDto> SearchAsync(string gateway,string name,int page=1,bool refresh=false,CancellationToken ct=default)=>throw new DivinePrideException("Pesquise por nome no catálogo local e selecione um MVP para consultar seus detalhes.");
+ public bool CanQuery=>credentials.HasKey;
+ public Task<MobDto> MonsterSpawnsAsync(string gateway,int id,CancellationToken ct=default)=>LookupAsync("Monster",gateway,id,false,ct,true);
  public void ClearCache(){Interlocked.Increment(ref generation);cached=new();store?.Save("divine-pride-cache.json",cached);}
- public async Task<MobDto> MonsterAsync(string gateway,int id,bool refresh=false,CancellationToken ct=default){
+ public Task<MobDto> MonsterAsync(string gateway,int id,bool refresh=false,CancellationToken ct=default)=>LookupAsync("Monster",gateway,id,refresh,ct);
+ public Task<MobDto> ItemAsync(string gateway,int id,bool refresh=false,CancellationToken ct=default)=>LookupAsync("Item",gateway,id,refresh,ct);
+ async Task<MobDto> LookupAsync(string kind,string gateway,int id,bool refresh,CancellationToken ct,bool requireSpawns=false){
   string lang=language();if(!ValidGateway(gateway)||!Languages.Contains(lang)||id<=0)throw new DivinePrideException("Selecione uma região e um idioma válidos nas Configurações.");
-  string cacheId=gateway+":"+lang+":"+id;long version=Interlocked.Read(ref generation);
+  string cacheId=(kind=="Item"?"item:":"")+gateway+":"+lang+":"+id;long version=Interlocked.Read(ref generation);
   using var timeout=CancellationTokenSource.CreateLinkedTokenSource(ct);timeout.CancelAfter(TimeSpan.FromSeconds(15));
   bool locked=false;
   try {
    await gate.WaitAsync(timeout.Token);locked=true;
-   if(!refresh&&cached.TryGetValue(cacheId,out var hit)&&hit!=null&&hit.Monster?.Id==id&&!string.IsNullOrWhiteSpace(hit.Monster.Name)&&hit.SavedUtc<=DateTimeOffset.UtcNow&&DateTimeOffset.UtcNow-hit.SavedUtc<TimeSpan.FromDays(7))return hit.Monster;
+   if(!refresh&&cached.TryGetValue(cacheId,out var hit)&&hit!=null&&hit.Monster?.Id==id&&(!requireSpawns||hit.Monster.SpawnSchemaVersion>=1)&&!string.IsNullOrWhiteSpace(hit.Monster.Name)&&hit.SavedUtc<=DateTimeOffset.UtcNow&&DateTimeOffset.UtcNow-hit.SavedUtc<TimeSpan.FromDays(7))return hit.Monster;
    if(blockedUntil>DateTimeOffset.UtcNow)throw new DivinePrideException("Limite de consultas atingido. Aguarde antes de tentar novamente.",HttpStatusCode.TooManyRequests);
    if(nextRequest>DateTimeOffset.UtcNow)await Task.Delay(nextRequest-DateTimeOffset.UtcNow,timeout.Token);
    string? key;try{key=credentials.Read();}catch{throw new DivinePrideException("Não foi possível desbloquear a chave. Salve-a novamente nas Configurações.");}
    if(string.IsNullOrEmpty(key))throw new DivinePrideException("Configure sua chave Divine Pride nas Configurações.",HttpStatusCode.Unauthorized);
-   using var request=new HttpRequestMessage(HttpMethod.Get,"https://www.divine-pride.net/api/database/Monster/"+id+"?apiKey="+Uri.EscapeDataString(key));
+   using var request=new HttpRequestMessage(HttpMethod.Get,"https://www.divine-pride.net/api/database/"+kind+"/"+id+"?apiKey="+Uri.EscapeDataString(key));
    request.Headers.Add("Accept-Language",lang);request.Headers.Add("x-server",gateway);request.Headers.Accept.ParseAdd("application/json");
    nextRequest=DateTimeOffset.UtcNow.AddSeconds(1);
    using var response=await http.SendAsync(request,HttpCompletionOption.ResponseHeadersRead,timeout.Token);
    if(response.StatusCode==HttpStatusCode.TooManyRequests){var delay=response.Headers.RetryAfter?.Delta??(response.Headers.RetryAfter?.Date-DateTimeOffset.UtcNow)??TimeSpan.FromSeconds(60);blockedUntil=DateTimeOffset.UtcNow+(delay>TimeSpan.Zero?delay:TimeSpan.FromSeconds(60));throw new DivinePrideException("Limite Divine Pride atingido (429). Aguarde antes de consultar novamente.",response.StatusCode);}
-   if(!response.IsSuccessStatusCode)throw new DivinePrideException(response.StatusCode switch{HttpStatusCode.Unauthorized=>"Chave Divine Pride inválida ou ausente (401).",HttpStatusCode.Forbidden=>"Acesso Divine Pride não autorizado (403).",HttpStatusCode.NotFound=>"Monstro indisponível nesta região (404).",_=>"Divine Pride indisponível. Os dados locais foram preservados."},response.StatusCode);
+   if(!response.IsSuccessStatusCode)throw new DivinePrideException(response.StatusCode switch{HttpStatusCode.Unauthorized=>"Chave Divine Pride inválida ou ausente (401).",HttpStatusCode.Forbidden=>"Acesso Divine Pride não autorizado (403).",HttpStatusCode.NotFound=>"Registro indisponível nesta região (404).",_=>"Divine Pride indisponível. Os dados locais foram preservados."},response.StatusCode);
    await using var stream=await response.Content.ReadAsStreamAsync(timeout.Token);using var buffer=new MemoryStream();var block=new byte[8192];int read;
    while((read=await stream.ReadAsync(block,timeout.Token))>0){if(buffer.Length+read>2_000_000)throw new DivinePrideException("Resposta Divine Pride maior que o esperado.");buffer.Write(block,0,read);}
    using var document=JsonDocument.Parse(buffer.ToArray());var root=document.RootElement;
    if(!root.TryGetProperty("id",out var value)||!value.TryGetInt32(out int actual)||actual!=id||!root.TryGetProperty("name",out var name)||name.ValueKind!=JsonValueKind.String||string.IsNullOrWhiteSpace(name.GetString()))throw new DivinePrideException("Resposta Divine Pride em formato inesperado.");
    bool mvp=(root.TryGetProperty("mvpDrops",out var drops)&&drops.ValueKind==JsonValueKind.Array&&drops.GetArrayLength()>0)||(root.TryGetProperty("type",out var type)&&type.GetString()=="MVP");
-   var result=new MobDto{Id=id,Name=name.GetString(),GatewayId=gateway,Url="https://www.divine-pride.net/database/monster/"+id,Exp=new ExperienceDto{Mvp=mvp?1:0}};
+   var result=new MobDto{Id=id,Name=name.GetString(),GatewayId=gateway,Url="https://www.divine-pride.net/database/"+kind.ToLowerInvariant()+"/"+id,Exp=new ExperienceDto{Mvp=mvp?1:0}};
+   if(kind=="Monster"){result.SpawnSchemaVersion=1;result.MapCandidates=ParseMapCandidates(root);}
+   if(kind=="Item"){if(root.TryGetProperty("description",out var description)&&description.ValueKind==JsonValueKind.String)result.Description=description.GetString();if(root.TryGetProperty("iconUrl",out var icon)&&icon.ValueKind==JsonValueKind.String&&Uri.TryCreate(icon.GetString(),UriKind.Absolute,out var uri)&&uri.Scheme=="https"&&uri.Host=="static.divine-pride.net")result.IconUrl=uri.AbsoluteUri;}
    if(root.TryGetProperty("level",out var level)&&level.TryGetInt32(out int lv))result.Level=lv;
    if(version!=Interlocked.Read(ref generation))throw new DivinePrideException("A chave foi alterada durante a consulta. Tente novamente.");
    cached[cacheId]=new Cached{SavedUtc=DateTimeOffset.UtcNow,Monster=result};
@@ -66,6 +75,16 @@ public sealed class DivinePrideApiClient:IDivinePrideApiClient,IDisposable {
   catch(OperationCanceledException){throw new DivinePrideException("A consulta Divine Pride excedeu o tempo limite. Use os dados locais.");}
   catch{throw new DivinePrideException("Não foi possível consultar o Divine Pride. Seus favoritos e timers continuam disponíveis.");}
   finally{if(locked)gate.Release();}
+ }
+ public static List<FarmSpawn> ParseMapCandidates(JsonElement monster){
+  var rows=new List<FarmSpawn>();if(!monster.TryGetProperty("spawns",out var spawns)||spawns.ValueKind!=JsonValueKind.Array)return rows;
+  foreach(var spawn in spawns.EnumerateArray()){
+   if(spawn.ValueKind!=JsonValueKind.Object||!spawn.TryGetProperty("mapName",out var map)||map.ValueKind!=JsonValueKind.String)continue;
+   string code=map.GetString()??"";if(!System.Text.RegularExpressions.Regex.IsMatch(code,"^[a-z0-9_]+$"))continue;
+   string name=spawn.TryGetProperty("mapDisplayName",out var display)&&display.ValueKind==JsonValueKind.String?display.GetString()??code:code;
+   int? count=null;if(spawn.TryGetProperty("quantity",out var quantity)&&quantity.ValueKind==JsonValueKind.Number&&quantity.TryGetInt32(out int amount)){if(amount<=0)continue;count=amount;}
+   rows.Add(new(){Map=code,Name=name,Count=count});
+  }return rows;
  }
  public void Dispose(){http.Dispose();}
 }

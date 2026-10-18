@@ -2,6 +2,8 @@ name: Release Windows
 
 on:
   push:
+    branches:
+      - main
     tags:
       - 'v*'
   workflow_dispatch:
@@ -21,19 +23,34 @@ jobs:
     defaults:
       run:
         shell: pwsh
+    outputs:
+      release_tag: ${{ steps.version.outputs.release_tag }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-      - name: Validate release version
-        if: startsWith(github.ref, 'refs/tags/')
+      - name: Read and validate release version
+        id: version
         env:
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
           [xml]$project = Get-Content src/RagnarokCompanion/RagnarokCompanion.csproj
           $expected = 'v' + $project.Project.PropertyGroup.Version
-          if ($env:RELEASE_TAG -cne $expected) { throw "A tag deve corresponder à versão do projeto: $expected" }
+          if ($env:GITHUB_REF.StartsWith('refs/tags/') -and $env:RELEASE_TAG -cne $expected) { throw "A tag deve corresponder à versão do projeto: $expected" }
+          "release_tag=$expected" >> $env:GITHUB_OUTPUT
+      - name: Download authorized public SQLite (no private source files)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $data = Get-Content build/item-database.json -Raw | ConvertFrom-Json
+          $folder = 'src/RagnarokCompanion/Data'
+          gh release download $data.ReleaseTag --pattern $data.AssetName --dir $folder
+          if ($LASTEXITCODE -ne 0) { throw 'Não foi possível obter o banco público autorizado.' }
+          $download = Join-Path $folder $data.AssetName
+          if ((Get-FileHash -LiteralPath $download -Algorithm SHA256).Hash -ine $data.Sha256) { throw 'SHA256 do banco público divergente; publicação interrompida.' }
+          Move-Item -LiteralPath $download -Destination (Join-Path $folder 'farmland-items.sqlite')
       - name: Build user package with tests and offline WPF smoke
         run: ./build-release.ps1 -SdkPath (Get-Command dotnet).Source
       - name: Upload user package
@@ -49,7 +66,7 @@ jobs:
   release:
     name: Publish GitHub Release
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
@@ -63,7 +80,8 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          RELEASE_TAG: ${{ github.ref_name }}
+          RELEASE_TAG: ${{ needs.build.outputs.release_tag }}
+          RELEASE_COMMIT: ${{ github.sha }}
         shell: bash
         run: |
           set -euo pipefail
@@ -81,4 +99,8 @@ jobs:
 
           O arquivo `.sha256` permite conferir a integridade do download. Os arquivos automáticos **Source code** são destinados a desenvolvedores.
           NOTES
-          gh release create "$RELEASE_TAG" FarmlandCompanion-win-x64.zip FarmlandCompanion-win-x64.sha256 --verify-tag --title "Farmland Companion $RELEASE_TAG" --notes-file release-notes.md --latest
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG já existe. Incremente Version para publicar outra versão."
+            exit 0
+          fi
+          gh release create "$RELEASE_TAG" FarmlandCompanion-win-x64.zip FarmlandCompanion-win-x64.sha256 --target "$RELEASE_COMMIT" --title "Farmland Companion $RELEASE_TAG" --notes-file release-notes.md --latest

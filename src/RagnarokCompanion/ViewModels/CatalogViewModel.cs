@@ -31,6 +31,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
     private readonly MainViewModel owner;
     private readonly ICredentialStorageService credentials;
     private readonly IDivinePrideApiClient api;
+    public IDivinePrideApiClient Api => api;
     private readonly IDivinePrideCatalogProvider provider;
 
     private readonly IMvpCatalogService catalog;

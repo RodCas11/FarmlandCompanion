@@ -7,7 +7,7 @@ $scope = Join-Path $project '.tools/publish-tests'
 $fixture = Join-Path $scope ([Guid]::NewGuid().ToString('N'))
 $null = Assert-BuildPath $fixture $scope
 New-Item -ItemType Directory -Force "$fixture/build","$fixture/docs","$fixture/licenses","$fixture/src/RagnarokCompanion/Data","$fixture/.tools","$fixture/dist","$fixture/artifacts" | Out-Null
-foreach ($relative in @('build-latest.ps1','build/PublishTools.psm1','README.md','docs/RAGNAPLACE_API.md','docs/SPOTLIGHT.md','licenses/rathena-GPL-3.0.txt','licenses/THIRD-PARTY-NOTICES.md','src/RagnarokCompanion/Data/mvp-seed.json')) { Copy-Item -LiteralPath (Join-Path $project $relative) -Destination (Join-Path $fixture $relative) }
+foreach ($relative in @('build-latest.ps1','build/PublishTools.psm1','README.md','docs/RAGNAPLACE_API.md','docs/SPOTLIGHT.md','licenses/rathena-GPL-3.0.txt','licenses/THIRD-PARTY-NOTICES.md','src/RagnarokCompanion/Data/mvp-seed.json','src/RagnarokCompanion/Data/farmland-items.sqlite','src/RagnarokCompanion/Data/item-monster-rules.json')) { Copy-Item -LiteralPath (Join-Path $project $relative) -Destination (Join-Path $fixture $relative) }
 Copy-Item -LiteralPath $Payload -Destination "$fixture/.tools/payload.exe"
 Copy-Item -LiteralPath $Payload -Destination "$fixture/dist/RagnarokCompanion-v2.exe"
 @{ Application='RagnarokCompanion'; Files=@(@{Path='RagnarokCompanion-v2.exe';Sha256=(Get-FileHash -LiteralPath $Payload).Hash}) } | ConvertTo-Json -Depth 5 | Set-Content "$fixture/build/legacy-artifacts.json" -Encoding UTF8

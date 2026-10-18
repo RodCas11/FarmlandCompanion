@@ -26,6 +26,19 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        if(e.Args.Contains("--import-items")||e.Args.Contains("--import-item-spawns")||e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions")) {
+            string? Argument(string prefix)=>e.Args.FirstOrDefault(a=>a.StartsWith(prefix,StringComparison.Ordinal))?.Substring(prefix.Length);
+            string report=Argument("--import-report=")??Path.Combine(Path.GetTempPath(),"farmland-item-import.txt");
+            try {
+                string output=Argument("--database=")??ItemFarmIndex.DatabasePath;
+                string result;
+                if(e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions"))result=ItemFarmDataUpdater.Update(output,Argument("--lua="));
+                else if(e.Args.Contains("--import-items"))result=FarmlandItemImporter.Import(Argument("--source=")??throw new InvalidDataException("Pasta de origem ausente."),output,Argument("--rules="));
+                else { var records=System.Text.Json.JsonSerializer.Deserialize<List<FarmlandItemImporter.PublicSpawn>>(File.ReadAllText(Argument("--spawns=")??throw new InvalidDataException("Arquivo de spawns ausente.")))??throw new InvalidDataException("Spawns inválidos.");FarmlandItemImporter.ImportSpawns(output,records);result="Spawns públicos importados."; }
+                Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(report))!);File.WriteAllText(report,result);Shutdown(0);
+            }catch(Exception ex){Directory.CreateDirectory(Path.GetDirectoryName(Path.GetFullPath(report))!);File.WriteAllText(report,"Importação interrompida; banco anterior preservado. "+(ex is InvalidDataException?ex.Message:ex is YamlDotNet.Core.YamlException yaml?$"YAML inválido na linha {yaml.Start.Line}, coluna {yaml.Start.Column}; tipo {yaml.InnerException?.GetType().Name ?? yaml.GetType().Name}.":ex is Microsoft.Data.Sqlite.SqliteException sqlite?$"SQLite código {sqlite.SqliteErrorCode}.":$"Confira os arquivos. Tipo: {ex.GetType().Name}."));Shutdown(1);}
+            return;
+        }
         if (e.Args.Contains("--check-divine-pride"))
         {
             string? requested = e.Args.FirstOrDefault(a => a.StartsWith("--check-output=", StringComparison.Ordinal));
@@ -84,7 +97,7 @@ public partial class App : Application
             Shutdown(1);
         }
     }
-    private void SmokeTest()
+    private async void SmokeTest()
     {
         string report = Path.Combine(smokeOutput, "smoke-test.txt");
         try
@@ -120,13 +133,20 @@ public partial class App : Application
             vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.First();vm.Spotlight.Confirm();
             vm.Spotlight.SelectedGroup = vm.Spotlight.Groups.Single(g=>g.Name=="Spotlight Lunar");
             SpotlightDiagnostics.Verify(SpotlightDiagnostics.Synthetic());
-            for (int p = 0; p < 6; p++)
+            vm.Items.Query="661";vm.Items.Minimum=0;vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(661);await vm.Items.SelectionTask;
+            if(vm.Items.ItemName!="[Q] Avental Elegante · #661"||!vm.Items.Best!.HasMap)throw new Exception("Tradução ou mapa do item 661 ausente");
+            vm.Items.Query="1061"; vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(1061); await vm.Items.SelectionTask;
+            if(vm.Items.Best==null||vm.Items.Best.Monster.IsSpecial)throw new Exception("Pesquisa do item 1061 sem spawn regular confirmado");
+            for (int p = 0; p < 7; p++)
             {
+                if(p==6){vm.Items.Query="2255";vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(2255);await vm.Items.SelectionTask;}
                 vm.Page = p; windows.Panel.UpdateLayout();
                 Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); windows.Panel.UpdateLayout();
                 if ((p == 0 || p == 5) && !VisualTexts(windows.Panel).Contains(vm.Events.NextName)) throw new Exception("Card de eventos ausente");
                 if (windows.Panel.Icon == null) throw new Exception("Ícone do aplicativo ausente");
                 if (p == 4 && VisualElements<DataGrid>(windows.Panel).Single().Columns.Any(c => c.ActualWidth < 50)) throw new Exception("Colunas Spotlight ilegíveis");
+                if(p==6){if(VisualElements<Views.RagnarokDescriptionView>(windows.Panel).Any()||!VisualElements<Button>(windows.Panel).Any(b=>b.Content?.ToString()=="Ver no Divine Pride ↗")||vm.Items.ItemPublicUrl?.Contains("/database/item/2255#")!=true)throw new Exception("Cabeçalho simplificado do item ausente");}
+                if(p==6){var host=VisualElements<System.Windows.FrameworkElement>(windows.Panel).First(x=>x.Tag?.ToString()=="ItemTooltipHost");var active=System.Windows.Input.Keyboard.FocusedElement;var popup=await Views.ItemTooltip.PreviewAsync(host);Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);if(!popup.IsOpen||popup.Focusable||System.Windows.Input.Keyboard.FocusedElement!=active||Windows.Count!=1)throw new Exception("Tooltip alterou foco/janela");var rich=VisualElements<Views.RagnarokDescriptionView>(popup.Child).Single();if(!rich.RawText.Contains("FOR +1."))throw new Exception("Descrição local 2255 ausente do tooltip");popup.Child.Measure(new Size(350,600));popup.Child.Arrange(new Rect(popup.Child.DesiredSize));var image=new RenderTargetBitmap((int)Math.Ceiling(popup.Child.RenderSize.Width),(int)Math.Ceiling(popup.Child.RenderSize.Height),96,96,PixelFormats.Pbgra32);image.Render(popup.Child);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(image));using(var file=File.Create(Path.Combine(smokeOutput,"item-tooltip-2255.png")))png.Save(file);popup.IsOpen=false;}
                 Capture(windows.Panel, Path.Combine(smokeOutput, $"smoke-page-{p}.png"));
                 if(p==4)SpotlightVisualDiagnostics.Verify(windows.Panel,smokeOutput);
             }
@@ -181,10 +201,10 @@ public partial class App : Application
             if (restarted.MiningStatus != "Cooldown" || restarted.Engine.Mvps.Count != 3) throw new Exception("Persistência de reinício divergiu");
             if (restarted.Catalog.FavoriteEntries.Count != 5) throw new Exception("Favoritos offline não restaurados");
             if (restarted.ActiveCompactTab != Models.CompactTab.Events) throw new Exception("Aba compacta não restaurada");
-            restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
+            restarted.Items.Dispose(); restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
             int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
             if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
-            File.WriteAllText(report, "PASS: WPF startup; six navigation pages; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; seven navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; five exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -200,7 +220,7 @@ public partial class App : Application
         {
             model.ActiveCompactTab=tab;windows.FitCompact();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);windows.FitCompact();
             var buttons=VisualElements<RadioButton>(panel.CompactContent).Where(b=>b.GroupName=="CompactTabs").ToList();
-            if(buttons.Count!=4 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
+            if(buttons.Count!=5 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
             foreach(var button in buttons)
             {
                 var bounds=button.TransformToAncestor(panel.CompactContent).TransformBounds(new Rect(button.RenderSize));
@@ -244,7 +264,7 @@ public partial class App : Application
         if (quitting) return; quitting = true; timer.Stop(); settingsSave.Stop();
         try { windows?.Dispose(); vm?.Save(); }
         catch (Exception ex) { if (code == 0) MessageBox.Show("Não foi possível salvar: " + ex.Message); }
-        notifications?.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
+        notifications?.Dispose(); vm?.Items.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
     }
     protected override void OnExit(ExitEventArgs e) { notifications?.Dispose(); mutex?.Dispose(); base.OnExit(e); }
 }

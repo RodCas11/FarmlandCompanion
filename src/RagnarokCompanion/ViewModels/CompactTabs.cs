@@ -26,6 +26,7 @@ public sealed partial class MainViewModel
             Settings.CompactTab = value;
             Store.Save("settings.json", Settings);
             if (value == CompactTab.Spotlight) _ = Spotlight.LoadAsync();
+            if (value == CompactTab.Items) Items.Restore();
         }
     }
     public ICommand SelectCompactTabCommand { get; private set; } = null!;

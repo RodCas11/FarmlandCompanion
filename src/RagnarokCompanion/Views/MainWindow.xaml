@@ -11,7 +11,7 @@
       <RadioButton Content="MVPs" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=1}" Command="{Binding NavigateCommand}" CommandParameter="1"/>
       <RadioButton Content="Histórico" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=2}" Command="{Binding NavigateCommand}" CommandParameter="2"/>
       <RadioButton Content="Configurações" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=3}" Command="{Binding NavigateCommand}" CommandParameter="3"/>
-      <RadioButton Content="SpotLight" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=4}" Command="{Binding NavigateCommand}" CommandParameter="4"/><RadioButton Content="Eventos" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=5}" Command="{Binding NavigateCommand}" CommandParameter="5"/><Button Content="Modo compacto ↗" Command="{Binding CompactCommand}" Style="{StaticResource Primary}" Padding="8,11" Margin="0,30,0,0"/>
+      <RadioButton Content="SpotLight" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=4}" Command="{Binding NavigateCommand}" CommandParameter="4"/><RadioButton Content="Eventos" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=5}" Command="{Binding NavigateCommand}" CommandParameter="5"/><RadioButton Content="Buscar Itens" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=6}" Command="{Binding NavigateCommand}" CommandParameter="6"/><Button Content="Modo compacto ↗" Command="{Binding CompactCommand}" Style="{StaticResource Primary}" Padding="8,11" Margin="0,30,0,0"/>
      </StackPanel>
     </DockPanel></Border>
     <DockPanel Grid.Column="1" Margin="24,20,18,12">
@@ -21,6 +21,7 @@
       <TabItem><views:CatalogView DataContext="{Binding Catalog}"/></TabItem>
       <TabItem><DockPanel><TextBlock DockPanel.Dock="Top" Text="Histórico" Style="{StaticResource Title}"/><TextBlock DockPanel.Dock="Top" Text="Entradas na mina, mortes registradas e alertas." Style="{StaticResource Muted}"/><ListBox ItemsSource="{Binding History}" ItemTemplate="{StaticResource HistoryCard}"/></DockPanel></TabItem>
       <TabItem><views:SettingsView/></TabItem><TabItem><views:SpotlightView DataContext="{Binding Spotlight}"/></TabItem><TabItem><views:EventsView DataContext="{Binding Events}"/></TabItem>
+      <TabItem><views:ItemFarmView DataContext="{Binding Items}"/></TabItem>
      </TabControl>
     </DockPanel>
    </Grid>
