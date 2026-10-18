@@ -250,3 +250,9 @@ powershell -ExecutionPolicy Bypass -File build/Import-FarmlandItems.ps1 -Descrip
 A tabela `item_description_overrides` tem prioridade sobre o bRO e não altera seu texto original. Use essa opção somente com descrições cuja divulgação foi autorizada pelo ADM. Reinicie o aplicativo após atualizar o banco para renovar o cache. O Lua continua sendo lido somente como dados, e os originais privados não integram Git ou distribuição.
 
 O CI obtém somente o SQLite público autorizado da release de dados indicada em `build/item-database.json` e valida seu SHA256 antes dos testes e da publicação. YAMLs e Lua originais não são enviados ao GitHub. Ao atualizar a base, envie um novo asset público versionado à release de dados e atualize esse manifesto antes do push. A tag da aplicação é criada somente após compilação, testes, smoke WPF e verificação do pacote.
+
+### Identidade visual oficial
+
+A logo horizontal original aparece na barra lateral; a versão FL Companion é usada no cabeçalho compacto e no ícone multirresolução da janela, bandeja e executável. Os arquivos originais estão em `logo/` e podem ser reintegrados com `build/Update-AppBranding.ps1`, que mantém proporção, cores e elementos sem cortes. O tema escuro usa dourado com moderação em navegação, botões principais e seleções; as cores funcionais dos alertas permanecem próprias de cada estado.
+
+O compacto tem quatro abas com ícones e tooltips: Mina, MVPs, Eventos e Itens. SpotLight permanece no painel expandido. Uma seleção antiga do SpotLight compacto retorna à Mina sem alterar timers ou dados. Configurações continua na mesma tela, acessível pela engrenagem fixa no rodapé da barra lateral.

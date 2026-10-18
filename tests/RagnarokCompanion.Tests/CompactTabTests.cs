@@ -19,7 +19,7 @@ public sealed class CompactTabTests
         {
             var engine=vm.Engine;var schedule=vm.Events.Schedule;var now=DateTimeOffset.UtcNow;
             engine.StartMining(now);engine.Mvps.Add(new(){Name="Teste",Map="test",DeathUtc=now,MinMinutes=60,MaxMinutes=90});
-            foreach(var tab in Enum.GetValues<CompactTab>())
+            foreach(var tab in MainViewModel.VisibleCompactTabs)
             {
                 vm.SelectCompactTabCommand.Execute(tab.ToString());Assert.Equal(tab,vm.ActiveCompactTab);Assert.Same(engine,vm.Engine);Assert.Same(schedule,vm.Events.Schedule);Assert.Equal(now,engine.Mining.EnteredUtc);Assert.Equal(now,engine.Mvps[0].DeathUtc);
             }
@@ -43,11 +43,11 @@ public sealed class CompactTabTests
     {
         var vm=Create();try
         {
-            vm.ActiveCompactTab=CompactTab.Spotlight;
+            vm.ActiveCompactTab=CompactTab.Items;
             var now=new DateTimeOffset(2026,10,15,19,55,0,TimeSpan.FromHours(-3));int eventAlerts=0,mineAlerts=0;
             vm.Events.Schedule.Alert+=_=>eventAlerts++;vm.Engine.Alert+=_=>mineAlerts++;
             vm.Engine.StartMining(now.AddMinutes(-31));vm.Engine.Evaluate(now);vm.Events.Schedule.Evaluate(now);vm.Refresh();
-            Assert.Equal(1,eventAlerts);Assert.Equal(1,mineAlerts);Assert.Equal(CompactTab.Spotlight,vm.ActiveCompactTab);
+            Assert.Equal(1,eventAlerts);Assert.Equal(1,mineAlerts);Assert.Equal(CompactTab.Items,vm.ActiveCompactTab);
         }finally{Dispose(vm);}
     }
     [Fact] public void AttentionUsesDatesWithoutChangingTimers()
@@ -63,6 +63,12 @@ public sealed class CompactTabTests
         var repo=new EventRepository(Path.Combine(Path.GetTempPath(),"Farmland-next-events-"+Guid.NewGuid()));var now=new DateTimeOffset(2026,10,15,19,58,0,TimeSpan.FromHours(-3));var vm=new EventViewModel(repo,()=>now);
         Assert.Equal("21:00",vm.NextDudu!.Time);Assert.Equal("20:00",vm.NextKvm!.Time);Assert.Contains("Abertura",vm.NextKvm.Timing);
         repo.Events.Single(e=>e.OfficialId=="dudu").Enabled=false;vm.Refresh();Assert.Null(vm.NextDudu);Assert.NotNull(vm.NextKvm);
+    }
+    [Fact] public void LegacySpotlightCompactSelectionMigratesWithoutChangingTimers()
+    {
+        var vm=Create();var now=DateTimeOffset.UtcNow;vm.Engine.StartMining(now);vm.Settings.CompactTab=CompactTab.Spotlight;vm.Save();var restored=Create(vm.Store.Root);
+        try{Assert.Equal(CompactTab.Mining,restored.ActiveCompactTab);Assert.Equal(now,restored.Engine.Mining.EnteredUtc);Assert.Equal(new[]{CompactTab.Mining,CompactTab.Mvps,CompactTab.Events,CompactTab.Items},MainViewModel.VisibleCompactTabs);restored.NavigateCommand.Execute("4");Assert.Equal(4,restored.Page);}
+        finally{Dispose(restored);Dispose(vm);}
     }
     [Fact] public void UnknownSavedTabFallsBackToMining()
     {

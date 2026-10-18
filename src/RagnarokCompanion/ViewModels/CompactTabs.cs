@@ -14,6 +14,7 @@ public sealed class CompactTabConverter : IValueConverter
 }
 public sealed partial class MainViewModel
 {
+    public static readonly CompactTab[] VisibleCompactTabs = { CompactTab.Mining, CompactTab.Mvps, CompactTab.Events, CompactTab.Items };
     public ObservableCollection<MvpRow> CompactAllRows { get; } = new();
     public bool NoMonitoredMvps => CompactAllRows.Count == 0;
     public double CompactMvpViewport => Settings.CompactCount * 48;
@@ -22,10 +23,11 @@ public sealed partial class MainViewModel
         get => Settings.CompactTab;
         set
         {
+            if(value==CompactTab.Spotlight)value=CompactTab.Mining;
             if (!Enum.IsDefined(value) || Settings.CompactTab == value) return;
             Settings.CompactTab = value;
             Store.Save("settings.json", Settings);
-            if (value == CompactTab.Spotlight) _ = Spotlight.LoadAsync();
+
             if (value == CompactTab.Items) Items.Restore();
         }
     }
@@ -36,6 +38,7 @@ public sealed partial class MainViewModel
     public bool SpotlightAttention => Spotlight.Pending;
     private void InitializeCompactTabs()
     {
+        if(Settings.CompactTab==CompactTab.Spotlight){Settings.CompactTab=CompactTab.Mining;Store.Save("settings.json",Settings);}
         SelectCompactTabCommand = Cmd(p => { if (Enum.TryParse<CompactTab>(p?.ToString(), out var tab)) ActiveCompactTab = tab; });
         Settings.PropertyChanged += (_, e) => { if (e.PropertyName == nameof(Settings.CompactTab)) Changed(nameof(ActiveCompactTab)); };
     }

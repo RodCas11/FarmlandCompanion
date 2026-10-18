@@ -204,7 +204,7 @@ public partial class App : Application
             restarted.Items.Dispose(); restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
             int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
             if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
-            File.WriteAllText(report, "PASS: WPF startup; seven navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; five exclusive tabs; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; seven navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render six pages; compact auto height; four icon-only tabs; official Farmland branding; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -216,18 +216,18 @@ public partial class App : Application
         var deaths=engine.Mvps.Select(m=>m.DeathUtc).ToArray();
         var extra=new Models.Mvp{Name="Teste de rolagem",Map="test",DeathUtc=DateTimeOffset.UtcNow,MinMinutes=180,MaxMinutes=180};
         engine.Mvps.Add(extra);model.Refresh();
-        foreach(var tab in Enum.GetValues<Models.CompactTab>())
+        foreach(var tab in MainViewModel.VisibleCompactTabs)
         {
             model.ActiveCompactTab=tab;windows.FitCompact();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);windows.FitCompact();
             var buttons=VisualElements<RadioButton>(panel.CompactContent).Where(b=>b.GroupName=="CompactTabs").ToList();
-            if(buttons.Count!=5 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
+            if(buttons.Count!=4 || buttons.Count(b=>b.IsChecked==true)!=1)throw new Exception("Barra de abas incompleta");
             foreach(var button in buttons)
             {
                 var bounds=button.TransformToAncestor(panel.CompactContent).TransformBounds(new Rect(button.RenderSize));
                 if(bounds.Left < -1 || bounds.Right > panel.CompactContent.ActualWidth+1 || bounds.Bottom > panel.CompactContent.ActualHeight+1)throw new Exception("Abas cortadas");
             }
             var texts=VisualTexts(panel.CompactContent).ToList();
-            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary)!=(tab==Models.CompactTab.Spotlight) || texts.Contains(model.Events.CompactUpcoming[0].Occurrence.Title)!=(tab==Models.CompactTab.Events) || texts.Contains(model.Catalog.CompactFavorites[0].Name)!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
+            if(texts.Contains(model.MiningStatus)!=(tab==Models.CompactTab.Mining) || texts.Contains(model.Spotlight.Summary) || texts.Contains(model.Events.CompactUpcoming[0].Occurrence.Title)!=(tab==Models.CompactTab.Events) || texts.Contains(model.Catalog.CompactFavorites[0].Name)!=(tab==Models.CompactTab.Mvps))throw new Exception("Conteúdo de módulos misturado");
             if(tab==Models.CompactTab.Mvps)
             {
                 if(model.Catalog.CompactFavorites.Count!=5 || VisualElements<Button>(panel.CompactContent).Any(b=>b.Content?.ToString()=="Morreu"))throw new Exception("Compacto de favoritos contém controles extras");

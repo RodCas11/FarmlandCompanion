@@ -70,7 +70,6 @@ public sealed class WindowManagementService
             changing = false;
         }
         ApplySettings(); Panel.Show(); FitCompact(); EnsureVisible(Panel); Panel.WindowState = WindowState.Normal; Panel.Activate();
-        if (vm.ActiveCompactTab == Models.CompactTab.Spotlight) _ = vm.Spotlight.LoadAsync();
     }
     private static double Finite(double x, double min, double max, double fallback) => double.IsFinite(x) ? Math.Clamp(x, min, max) : fallback;
     public void ApplySettings()
