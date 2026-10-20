@@ -8,17 +8,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using RagnarokCompanion.ViewModels;
+using RagnarokCompanion.Services;
 namespace RagnarokCompanion.Views;
 public static class ItemTooltip {
- public static readonly DependencyProperty ModelProperty=DependencyProperty.RegisterAttached("Model",typeof(ItemFarmViewModel),typeof(ItemTooltip),new PropertyMetadata(null,Changed));
+ public static readonly DependencyProperty ModelProperty=DependencyProperty.RegisterAttached("Model",typeof(IItemTooltipModel),typeof(ItemTooltip),new PropertyMetadata(null,Changed));
  static readonly DependencyProperty StateProperty=DependencyProperty.RegisterAttached("State",typeof(State),typeof(ItemTooltip));
- public static void SetModel(DependencyObject target,ItemFarmViewModel value)=>target.SetValue(ModelProperty,value);
- public static ItemFarmViewModel? GetModel(DependencyObject target)=>(ItemFarmViewModel?)target.GetValue(ModelProperty);
- static void Changed(DependencyObject target,DependencyPropertyChangedEventArgs e){if(target is not FrameworkElement host)return;(host.GetValue(StateProperty) as State)?.Dispose();host.SetValue(StateProperty,e.NewValue is ItemFarmViewModel model?new State(host,model):null);}
+ public static void SetModel(DependencyObject target,IItemTooltipModel value)=>target.SetValue(ModelProperty,value);
+ public static IItemTooltipModel? GetModel(DependencyObject target)=>(IItemTooltipModel?)target.GetValue(ModelProperty);
+ static void Changed(DependencyObject target,DependencyPropertyChangedEventArgs e){if(target is not FrameworkElement host)return;(host.GetValue(StateProperty) as State)?.Dispose();host.SetValue(StateProperty,e.NewValue is IItemTooltipModel model?new State(host,model):null);}
  internal static Task<Popup> PreviewAsync(FrameworkElement host)=>((State)host.GetValue(StateProperty)).OpenAsync();
  sealed class State:IDisposable {
-  readonly FrameworkElement host;readonly ItemFarmViewModel model;readonly DispatcherTimer show=new(){Interval=TimeSpan.FromMilliseconds(400)},hide=new(){Interval=TimeSpan.FromMilliseconds(250)};Popup? popup;Window? owner;int generation;bool subscribed;
-  public State(FrameworkElement host,ItemFarmViewModel model){this.host=host;this.model=model;host.MouseEnter+=Enter;host.MouseLeave+=Leave;host.Loaded+=Load;host.Unloaded+=Unload;host.IsVisibleChanged+=VisibleChanged;if(host.IsLoaded)Load(host,new RoutedEventArgs());show.Tick+=Show;hide.Tick+=Hide;}
+  readonly FrameworkElement host;readonly IItemTooltipModel model;readonly DispatcherTimer show=new(){Interval=TimeSpan.FromMilliseconds(400)},hide=new(){Interval=TimeSpan.FromMilliseconds(250)};Popup? popup;Window? owner;int generation;bool subscribed;
+  public State(FrameworkElement host,IItemTooltipModel model){this.host=host;this.model=model;host.MouseEnter+=Enter;host.MouseLeave+=Leave;host.Loaded+=Load;host.Unloaded+=Unload;host.IsVisibleChanged+=VisibleChanged;if(host.IsLoaded)Load(host,new RoutedEventArgs());show.Tick+=Show;hide.Tick+=Hide;}
   void Enter(object sender,System.Windows.Input.MouseEventArgs e){hide.Stop();if(popup?.IsOpen!=true)show.Start();}
   void Leave(object sender,System.Windows.Input.MouseEventArgs e){show.Stop();hide.Start();}
   async void Show(object? sender,EventArgs e){show.Stop();if(host.IsMouseOver)await OpenAsync();}

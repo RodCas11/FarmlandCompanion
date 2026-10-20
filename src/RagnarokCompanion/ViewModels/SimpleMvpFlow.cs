@@ -126,13 +126,16 @@ public sealed partial class CatalogViewModel
             CompactFavorites[i].Refresh();
         }
         while(CompactFavorites.Count>entries.Count)CompactFavorites.RemoveAt(CompactFavorites.Count-1);
+        foreach(var card in Cards)card.Refresh();
         Changed(nameof(NoCompactFavorites));Changed(nameof(SelectedRespawnSummary));Changed(nameof(SelectedRespawnSource));
     }
     public void ReconcileRespawns(){
         bool changed=false;
-        foreach(var timer in owner.Engine.Mvps.Where(m=>!m.HasRespawn&&m.DeathUtc!=null)){
+        foreach(var timer in owner.Engine.Mvps.Where(m=>m.DeathUtc!=null)){
             var entry=catalog.Entries.FirstOrDefault(e=>e.Key==timer.CatalogKey);if(entry==null)continue;
+            if(timer.HasRespawn&&(entry.CustomMin!=null||timer.Origin.StartsWith("Personalizado",StringComparison.OrdinalIgnoreCase)||respawns.Catalog.Find(entry,true)==null))continue;
             if(respawns.Resolve(entry,false) is not {} found)continue;
+            if(timer.HasRespawn&&timer.MinMinutes==found.Min&&timer.MaxMinutes==found.Max&&timer.Origin==found.Origin)continue;
             timer.MinMinutes=found.Min;timer.MaxMinutes=found.Max;timer.Origin=found.Origin;timer.HasRespawn=true;changed=true;
         }
         if(changed)owner.Store.Save("mvps.json",owner.Engine.Mvps);RefreshFavoriteTimers();

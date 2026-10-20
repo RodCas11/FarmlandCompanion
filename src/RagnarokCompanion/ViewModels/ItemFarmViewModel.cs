@@ -9,7 +9,7 @@ using System.Windows.Input;
 using RagnarokCompanion.Models;
 using RagnarokCompanion.Services;
 namespace RagnarokCompanion.ViewModels;
-public sealed class ItemFarmViewModel:Observable,IDisposable {
+public sealed class ItemFarmViewModel:Observable,IDisposable,IItemTooltipModel {
  readonly PersistenceService store;readonly CatalogViewModel integration;readonly ItemFarmPreferences preferences;readonly Dictionary<int,string> names;
  CancellationTokenSource? searchRequest,mapRequest;int rankVersion;bool disposed;
  string query="",status="Pesquise um nome ou ID para encontrar locais de farm.",itemName="Nenhum item selecionado",icon="";FarmItem? selected;FarmResult? best;bool busy;
@@ -21,7 +21,8 @@ public sealed class ItemFarmViewModel:Observable,IDisposable {
  public FarmItem? SelectedItem {get=>selected;set{if(value==null||selected?.Id==value.Id)return;selected=value;Changed();SelectionTask=SelectAsync(value);}}
  public double Minimum {get=>preferences.Minimum;set{if(!MinimumOptions.Contains(value))return;preferences.Minimum=value;Changed();Save();_=RankAsync();}}
  public string Sort {get=>preferences.Sort;set{preferences.Sort=SortOptions.Contains(value)?value:SortOptions[0];Changed();Save();_=RankAsync();}}
- public bool FarmableOnly {get=>preferences.FarmableOnly;set{preferences.FarmableOnly=value;Changed();Save();_=RankAsync();}}
+ public bool FarmableOnly {get=>preferences.FarmableOnly;set{preferences.FarmableOnly=value;Changed();Changed(nameof(IncludeSpecial));Save();_=RankAsync();}}
+ public bool IncludeSpecial {get=>!FarmableOnly;set=>FarmableOnly=!value;}
  public string ItemName {get=>itemName;private set{itemName=value;Changed();}}
  public string Icon {get=>icon;private set{icon=value;Changed();}}
  public string Status {get=>status;private set{status=value;Changed();}}
@@ -52,11 +53,12 @@ public sealed class ItemFarmViewModel:Observable,IDisposable {
  async Task SelectAsync(FarmItem item){ItemName=item.Label;Icon="https://static.divine-pride.net/images/items/item/"+item.Id+".png";preferences.SelectedId=item.Id;Save();Changed(nameof(HasItem));Changed(nameof(ItemPublicUrl));await RankAsync();}
  public async Task RankAsync(){var item=SelectedItem;if(item==null)return;int version=++rankVersion;mapRequest?.Cancel();var source=new CancellationTokenSource();mapRequest=source;var min=Minimum;var farmable=FarmableOnly;var bestFarm=Sort=="Melhor farm";
   try{var rows=await Task.Run(()=>ItemFarmIndex.Shared.Rank(item.Id,min,farmable,bestFarm),source.Token);if(disposed||version!=rankVersion)return;Present(rows,item.Id,bestFarm,min);Busy=integration.Api.CanQuery;
-   foreach(var row in rows.Where(r=>r.Farmable).Take(5).ToArray()){source.Token.ThrowIfCancellationRequested();var resolved=await ItemFarmMapResolver.ResolveAsync(row,integration.Api,integration.GatewaySlug,source.Token);if(disposed||version!=rankVersion)return;rows[rows.IndexOf(row)]=resolved;}
-   if(bestFarm)rows=rows.OrderByDescending(r=>r.Farmable).ThenByDescending(r=>r.Score??-1).ThenByDescending(r=>r.Chance).ToList();Present(rows,item.Id,bestFarm,min);
+   foreach(var row in rows.Where(r=>r.Farmable).OrderByDescending(r=>r.Chance).Take(5).ToArray()){source.Token.ThrowIfCancellationRequested();var resolved=await ItemFarmMapResolver.ResolveAsync(row,integration.Api,integration.GatewaySlug,source.Token);if(disposed||version!=rankVersion)return;rows[rows.IndexOf(row)]=resolved;}
+   rows=ItemFarmMapResolver.Order(rows,bestFarm);Present(rows,item.Id,bestFarm,min);
   }catch(OperationCanceledException){}catch{if(!disposed)Status="Não foi possível atualizar os mapas; dados locais preservados.";}
   finally{if(ReferenceEquals(mapRequest,source)){mapRequest=null;Busy=false;}source.Dispose();}}
- void Present(List<FarmResult> rows,int item,bool bestFarm,double min){Best=rows.FirstOrDefault(r=>r.Farmable);Others.Clear();foreach(var row in rows.Where(r=>r.Farmable&&!ReferenceEquals(r,Best)).Take(4))Others.Add(row);Excluded.Clear();foreach(var row in rows.Where(r=>!r.Farmable).Take(5))Excluded.Add(row);OfferLower=Best==null&&min>0&&ItemFarmIndex.Shared.Rank(item,0,true,bestFarm).Count>0;Status=Best==null?"Nenhum monstro comum atende ao filtro. Mostre chances menores para incluir drops como 0,01%.":$"{rows.Count(r=>r.Farmable)} monstros comuns. Drops Farmland; a fonte dos mapas aparece em cada resultado.";}
+ public bool HasOthers=>Others.Count>0;
+ void Present(List<FarmResult> rows,int item,bool bestFarm,double min){var visible=ItemFarmMapResolver.Order(rows.Where(r=>r.Farmable||IncludeSpecial),bestFarm);Best=visible.FirstOrDefault(r=>r.Farmable&&r.HasMap);Others.Clear();foreach(var row in visible.Where(r=>!ReferenceEquals(r,Best)).Take(Best==null?5:4))Others.Add(row);Changed(nameof(HasOthers));Excluded.Clear();OfferLower=Best==null&&min>0&&ItemFarmIndex.Shared.Rank(item,0,FarmableOnly,bestFarm).Any(r=>r.Farmable&&r.HasMap);Status=Best!=null?"Recomendação com mapa regular de referência. Drops Farmland; confira a origem do mapa.":OfferLower?"Mostre chances menores para encontrar opções com mapa conhecido.":visible.Count>0?"Sem spawn regular confirmado para recomendar. Confira as outras opções.":"Nenhum monstro atende aos filtros atuais.";}
  async Task MonsterAsync(FarmResult row){try{var result=await integration.Api.MonsterAsync(integration.GatewaySlug,row.Monster.Id);if(!disposed)Status=$"Divine Pride: {result.Name}"+(result.Level is {} level?$" · nível {level}":"")+". Drops usam o banco Farmland; mapas dependem de spawns importados.";}catch(DivinePrideException ex){if(!disposed)Status=ex.Message;}catch{if(!disposed)Status="Detalhes indisponíveis; ranking local preservado.";}}
  public void Restore(){if(SelectedItem==null&&preferences.SelectedId>0){var id=preferences.SelectedId;_=RestoreAsync(id);}}
  async Task RestoreAsync(int id){var item=await Task.Run(()=>ItemFarmIndex.Shared.Find(id));if(!disposed&&SelectedItem==null&&item!=null)SelectedItem=item;}

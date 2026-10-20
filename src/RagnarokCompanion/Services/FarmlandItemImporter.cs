@@ -47,7 +47,7 @@ public static class FarmlandItemImporter {
    }
    // Same-directory atomic replacement. A failure never removes the last usable database.
    var lua=Path.Combine(root,"bRO.lua"); ItemFarmDataUpdater.Update(temporary,File.Exists(lua)?lua:null,File.Exists(destination)?destination:null);
-   var questSource=Path.Combine(root,"message.txt");if(File.Exists(questSource))QuestRepository.Import(questSource,root,temporary);else QuestRepository.Preserve(destination,temporary);
+   var questSource=Path.Combine(root,"quests.txt");if(File.Exists(questSource))QuestRepository.Import(questSource,root,temporary);else QuestRepository.Preserve(destination,temporary);
    File.Move(temporary,destination,true);
    return $"Importação concluída: {items.Count} itens, {monsters.Count} monstros, {dropCount} relações de drop. Nenhum spawn informado.";
   }finally{if(File.Exists(temporary))File.Delete(temporary);}

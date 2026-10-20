@@ -140,7 +140,7 @@ public sealed partial class MainViewModel : Observable
         Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
         Items = new ItemFarmViewModel(store,Catalog);
         Spotlight = new SpotlightViewModel(store);
-        Quests = new QuestViewModel(store,Spotlight,Catalog);
+        Quests = new QuestViewModel(store,Spotlight,Catalog,()=>{Page=7;PanelCommand?.Execute(null);});
         Events = new EventViewModel(new EventRepository(store.IsDefaultLocation ? null : Path.Combine(store.Root, "events")));
         Layout = store.Load<WindowLayout>("window-layout.json");
         InitializeCompactTabs();

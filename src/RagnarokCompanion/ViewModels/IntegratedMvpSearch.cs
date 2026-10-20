@@ -17,7 +17,7 @@ public sealed partial class CatalogViewModel {
  public Task SearchIntegratedAsync(bool debounce=true,bool refresh=false){QueryChanged();return Task.CompletedTask;}
  void SetAuthFailure(DivinePrideException ex){AuthStatus=ex.Message;}
  public async Task SelectOnlineAsync(CatalogEntry entry,bool favorite=false){await LoadSelectedDetailsAsync(entry);if(favorite&&SelectedEntry is {IsSearchCandidate:false} chosen&&chosen.MonsterId==entry.MonsterId)ToggleFavorite(chosen);}
- void OnSearchSelection(CatalogEntry? entry){if(refreshingEntries||entry==null)return;selectionRequest?.Cancel();_=LoadSelectedDetailsAsync(entry);}
+ void OnSearchSelection(CatalogEntry? entry){if(refreshingEntries||entry==null||respawns.Catalog.Find(entry,true)!=null)return;selectionRequest?.Cancel();_=LoadSelectedDetailsAsync(entry);}
  async Task LoadSelectedDetailsAsync(CatalogEntry entry,bool refresh=false){
   if(entry.MonsterId<=0)return;
   selectionRequest?.Cancel();var source=new CancellationTokenSource();selectionRequest=source;OnlineBusy=true;

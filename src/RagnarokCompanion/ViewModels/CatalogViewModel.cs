@@ -126,7 +126,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
             else Status = "Use data/hora local não futura: dd/MM/aaaa HH:mm:ss.";
         });
         FavoriteDeathCommand = Command(() => Register(SelectedFavorite, DateTimeOffset.UtcNow));
-        QuickDeathCommand = new RelayCommand(p => { if (p is CatalogEntry e) { SelectedEntry = e; DeathNowCommand.Execute(null); } });
+        QuickDeathCommand = new RelayCommand(p => { if (p is CatalogEntry e) Register(e,simpleClock()); });
         BrowseCommand = Command(() => { owner.Page = 1; owner.PanelCommand.Execute(null); });
         RefreshManualEntries();RefreshEntries();ReconcileRespawns();
     }
@@ -183,7 +183,7 @@ public sealed partial class CatalogViewModel : Observable, IDisposable
         Changed(nameof(HasFavorites));
         RefreshFavoriteTimers();
         CompactChoices.Clear();foreach(var e in FavoriteEntries)CompactChoices.Add(new(this,e));
-        refreshingEntries=false;
+        refreshingEntries=false;RefreshCards();
     }
     public void Dispose() { selectionRequest?.Cancel(); if (api is IDisposable d) d.Dispose(); }
 }

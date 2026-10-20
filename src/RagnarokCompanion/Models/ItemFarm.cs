@@ -20,6 +20,8 @@ public sealed class FarmResult {
  public double? Score=>BestMap?.Count is int count?Chance*count:null;
  public string ScoreLabel=>Score is double score?$"Indicador: {score:0.##} · não representa itens/hora":"Indicador indisponível";
  public string MapSource=>BestMap==null?"Regularidade não confirmada":BestMap.Evidence.StartsWith("Divine Pride",StringComparison.Ordinal)?BestMap.Evidence.Split('(')[0]:BestMap.Evidence.StartsWith("rAthena",StringComparison.Ordinal)?"Mapa/população: referência Renewal, não confirmado no Farmland":"Mapa/população: Farmland";
+ public string MapSourceShort=>BestMap==null?"Sem spawn regular conhecido":BestMap.Evidence=="Farmland"?"Farmland":BestMap.Evidence.StartsWith("Divine Pride",StringComparison.Ordinal)?BestMap.Evidence.Split('(')[0].Trim()+" · referência":"Referência Renewal";
+ public string PopulationShort=>BestMap?.Count is int count?$"{count} monstros":"";
  public string SourceLabel=>"Drops Farmland · dados públicos autorizados";
  public string Evidence=>BestMap?.Evidence??"Sem arquivos de spawn Farmland: regularidade e população não confirmadas.";
  public string Heading=>Farmable?"Monstro comum · "+(HasMap?"mapa de referência disponível":"spawn não confirmado"):"Variante especial — excluída por padrão";

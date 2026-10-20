@@ -16,6 +16,7 @@ public sealed class MvpRespawnRecord
     public double RespawnVarianceSeconds {get;set;}
     public double RespawnMinSeconds {get;set;}
     public double RespawnMaxSeconds {get;set;}
+    public string VariationMode {get;set;}="Additional";
     public string Source {get;set;}="";
     public string SourceVersion {get;set;}="";
     public string SourceUrl {get;set;}="";
@@ -35,9 +36,10 @@ public sealed class MvpRespawnCatalog
         this.store=store;
         if(records!=null)Records.AddRange(records);
         else{using var stream=typeof(MvpRespawnCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.mvp-respawns.json")!;Records.AddRange(JsonSerializer.Deserialize<RespawnCatalogDocument>(stream)!.Records);}
+        if(records==null){using var official=typeof(MvpRespawnCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.farmland-mvp-respawns.json");if(official!=null){var data=JsonSerializer.Deserialize<RespawnCatalogDocument>(official);if(!Valid(data))throw new InvalidDataException("Catálogo oficial de MVPs inválido.");var ids=data!.Records.Select(r=>r.MonsterId).ToHashSet();Records.RemoveAll(r=>ids.Contains(r.MonsterId));Records.InsertRange(0,data.Records);}}
         if(store!=null){var custom=store.Load<RespawnCatalogDocument>("mvp-respawns-custom.json");if(Valid(custom))Records.InsertRange(0,custom.Records);}
     }
-    public static bool Valid(RespawnCatalogDocument? data)=>data is {Version:1,Records:not null}&&data.Records.Count<=5000&&data.Records.All(r=>r!=null&&r.ScheduleType=="Interval"&&r.MonsterId>0&&!string.IsNullOrWhiteSpace(r.MonsterName)&&!string.IsNullOrWhiteSpace(r.MapCode)&&!string.IsNullOrWhiteSpace(r.Source)&&!string.IsNullOrWhiteSpace(r.SourceVersion)&&r.LastVerifiedAt!=default&&MvpRespawnService.Valid(r.RespawnMinSeconds/60,r.RespawnMaxSeconds/60)&&double.IsFinite(r.RespawnBaseSeconds)&&double.IsFinite(r.RespawnVarianceSeconds)&&r.RespawnBaseSeconds>0&&r.RespawnVarianceSeconds>=0&&Math.Abs(r.RespawnMinSeconds-r.RespawnBaseSeconds)<0.001&&Math.Abs(r.RespawnMaxSeconds-r.RespawnBaseSeconds-r.RespawnVarianceSeconds)<0.001);
+    public static bool Valid(RespawnCatalogDocument? data)=>data is {Version:1,Records:not null}&&data.Records.Count<=5000&&data.Records.All(r=>r!=null&&r.ScheduleType=="Interval"&&r.MonsterId>0&&!string.IsNullOrWhiteSpace(r.MonsterName)&&!string.IsNullOrWhiteSpace(r.MapCode)&&!string.IsNullOrWhiteSpace(r.Source)&&!string.IsNullOrWhiteSpace(r.SourceVersion)&&r.LastVerifiedAt!=default&&MvpRespawnService.Valid(r.RespawnMinSeconds/60,r.RespawnMaxSeconds/60)&&double.IsFinite(r.RespawnBaseSeconds)&&double.IsFinite(r.RespawnVarianceSeconds)&&r.RespawnBaseSeconds>0&&r.RespawnVarianceSeconds>=0&&(r.VariationMode is "Additional" or "Symmetric")&&Math.Abs(r.RespawnMinSeconds-(r.RespawnBaseSeconds-(r.VariationMode=="Symmetric"?r.RespawnVarianceSeconds:0)))<0.001&&Math.Abs(r.RespawnMaxSeconds-r.RespawnBaseSeconds-r.RespawnVarianceSeconds)<0.001);
     public void Import(string path){
         if(new FileInfo(path).Length>5_000_000)throw new InvalidDataException("Catálogo maior que o limite permitido.");
         var data=JsonSerializer.Deserialize<RespawnCatalogDocument>(File.ReadAllText(path));

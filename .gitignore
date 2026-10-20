@@ -31,3 +31,9 @@ src/RagnarokCompanion/Data/item-farm.json
 **/message.txt
 **/farmland.lua
 **/farmlandc.lua
+
+# Private official MVP source
+**/MVP.txt
+
+**/quests.txt
+**/message(1).txt

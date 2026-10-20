@@ -18,6 +18,7 @@ public sealed class SpotlightViewModel : Observable, IDisposable
 {
  readonly PersistenceService store; readonly ISpotlightCatalogService service; readonly Func<DateTimeOffset> clock;
  readonly SpotlightSelection selection; bool loading; SpotlightGroup? selected; string search=""; SpotlightLevelFilter filter;
+ string? lastActiveId;
  public ObservableCollection<SpotlightGroup> Groups { get; }=new();
  public ObservableCollection<SpotlightRow> Rows { get; }=new();
  public ICollectionView Maps { get; }
@@ -80,6 +81,14 @@ public sealed class SpotlightViewModel : Observable, IDisposable
  }
  public void Confirm(){if(selected==null)return;selection.GroupId=selected.Id;selection.SelectedUtc=clock();Save();Tick();}
  void Save()=>store.Save("spotlight-selection.json",selection);
- public void Tick(){Changed(nameof(Countdown));Changed(nameof(Pending));Changed(nameof(Status));Changed(nameof(Confirmation));Changed(nameof(Summary));Changed(nameof(ConfirmedGroup));}
+ public void Tick(){
+  var active=ConfirmedGroup;
+  if(!Pending&&active!=null){
+   bool rotated=lastActiveId!=null?lastActiveId!=active.Id:HasRotation&&selection.SelectedUtc is {} reference&&SpotlightRotationService.Steps(reference,clock())>0;
+   lastActiveId=active.Id;
+   if(rotated&&selected?.Id!=active.Id){selected=active;selection.ViewedGroupId=active.Id;Save();Rebuild();Changed(nameof(SelectedGroup));}
+  }
+  Changed(nameof(Countdown));Changed(nameof(Pending));Changed(nameof(Status));Changed(nameof(Confirmation));Changed(nameof(Summary));Changed(nameof(ConfirmedGroup));
+ }
  public void Dispose(){if(service is IDisposable disposable)disposable.Dispose();}
 }

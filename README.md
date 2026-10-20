@@ -49,14 +49,16 @@ Os tempos iniciais são **30 minutos de mineração** e **60 minutos de cooldown
 
 > O registro é manual: o Companion não entra na mina nem controla o jogo por você.
 
-## 💀 MVPs: pesquisar → favoritar → registrar morte
+## 💀 MVPs: encontre seu alvo nos cards
 
 1. Pesquise o MVP pelo **nome ou ID**.
 2. Marque a **estrela** para adicioná-lo aos favoritos.
-3. Informe o horário da morte em **HH:mm** e clique em **Registrar morte**. Use a opção de dia anterior quando necessário.
+3. Clique em **Morreu agora** para iniciar o timer imediatamente, ou em **Informar horário** para preencher **HH:mm** e **Registrar morte**. Use a opção de dia anterior quando necessário.
 4. Acompanhe o **próximo respawn previsto**, a **contagem regressiva** e a **janela de respawn**, quando houver variação.
 
-O tempo é preenchido automaticamente quando existe uma referência disponível. Dados específicos do Farmland têm prioridade; referências de outras bases são identificadas. Sem um tempo conhecido, o aplicativo não inventa uma previsão. Ajustes manuais ficam nas configurações avançadas.
+Os cards mostram sprite, mapa, status e contagem regressiva, com favoritos primeiro. As imagens consultadas no Divine Pride ficam em cache local; sem imagem disponível, aparece um ícone padrão.
+
+O catálogo oficial fornecido pelo ADM contém **55 pontos de spawn** e tem prioridade sobre referências genéricas. A variação é **adicional**: por exemplo, **1h com variação de 10min** resulta em nascimento entre **60 e 70 minutos após a morte**. Atroce e Dark Lord têm timers separados por mapa. Sem um tempo conhecido, o aplicativo não inventa uma previsão. Ajustes manuais ficam nas configurações avançadas.
 
 **Limpar MVPs** apaga os registros de morte e timers ativos, preservando seus favoritos e histórico. ⭐
 
@@ -104,15 +106,17 @@ A sequência confirmada é **Solar → Lunar → Estelar → Radiante → Celest
 
 ## 📜 Quests: sua lista de compras para farmar
 
-São **99 quests**, divididas em **Topo, Meio, Baixo, Escudos, Capas, Acessórios e Armas**. Para acompanhar a sua:
+São **100 quests normais e 100 raras**, separadas nas abas **Normais | Raras**, com filtros **Topo, Meio, Baixo, Escudos, Capas, Acessórios, Armas e Outros**. Para acompanhar a sua:
 
-1. Abra **📜 Quests**, busque o equipamento e escolha uma categoria se quiser.
+1. Abra **📜 Quests**, escolha **Normais** ou **Raras**, busque o equipamento e filtre a categoria se quiser.
 2. Marque a **estrela** para favoritar.
 3. Confira o custo em **Zeny**, os materiais, as quantidades e os refinos exigidos, como **+7, +9 ou +12**.
 4. Use **Ver mapa ↗** para consultar o local de farm.
-5. Marque os materiais já obtidos. O progresso fica salvo ao fechar o app e também pode ser atualizado na aba **Quests** do compacto.
+5. Consulte os materiais, quantidades e mapas de farm. Suas quests favoritas também aparecem na aba **Quests** do compacto.
 
-> 💡 As caixas de materiais são uma lista de acompanhamento manual; o Companion não lê seu inventário. O Certificado de Caça não aparece nessa lista.
+> 💡 As caixas de materiais são uma lista de acompanhamento manual; o Companion não lê seu inventário. Certificados de Caça também aparecem com suas quantidades. Passe o mouse no equipamento para consultar sua descrição.
+
+Quando um material vem de outra receita, aparece **Obtido através de Quest Normal** e o botão **Ver quest necessária ↗**. A navegação preserva seus favoritos e progresso. Receitas alternativas para o mesmo equipamento são identificadas como opções distintas.
 
 Os materiais mostram monstros comuns, chances de drop e mapas disponíveis. Quando houver uma alternativa no SpotLight atual, ela recebe um destaque ☀. A indicação usa o grupo confirmado ou calculado pela sequência configurada, sem presumir bônus de drop. Itens sem ID no catálogo fornecido e mapas desconhecidos são identificados claramente.
 

@@ -24,7 +24,7 @@ public sealed class MvpCatalogService : IMvpCatalogService
         foreach(var group in new MvpRespawnCatalog(store).Records.GroupBy(r=>r.MonsterId)){
             var identity=Entries.FirstOrDefault(e=>e.MonsterId==group.Key);
             var points=group.GroupBy(r=>(r.MapCode,r.SpawnIdentifier)).Select(g=>g.OrderByDescending(r=>r.IsFarmlandConfirmed).First()).ToList();
-            if(identity!=null&&points.Count==1){identity.Map=points[0].MapCode;identity.SpawnIdentifier=points[0].SpawnIdentifier;continue;}
+            if(identity!=null&&points.Count==1){identity.Map=points[0].MapCode;identity.SpawnIdentifier=points[0].SpawnIdentifier;if(points[0].IsFarmlandConfirmed){identity.Name=points[0].MonsterName;identity.Origin="Farmland confirmado";}continue;}
             if(identity!=null)Entries.Remove(identity);
             foreach(var point in points)Entries.Add(new CatalogEntry{Key=$"spawn:{point.MonsterId}:{point.MapCode}:{point.SpawnIdentifier}",MonsterId=point.MonsterId,Name=identity?.Name??point.MonsterName,Map=point.MapCode,SpawnIdentifier=point.SpawnIdentifier,Origin=point.IsFarmlandConfirmed?"Farmland confirmado":"Referência Renewal — rAthena",SourceUrl=point.SourceUrl});
         }
@@ -33,6 +33,9 @@ public sealed class MvpCatalogService : IMvpCatalogService
         {
             choice.Map ??= "";
             var e = Entries.FirstOrDefault(x => x.Key == choice.Key);
+            if(e!=null&&e.Origin.StartsWith("Farmland",StringComparison.Ordinal)&&!string.IsNullOrEmpty(choice.Map)&&choice.Map!=e.Map){e.Key=$"farmland:{e.MonsterId}:{e.Map}";e=null;}
+            e??=Entries.FirstOrDefault(x=>x.MonsterId==choice.MonsterId&&x.Map==choice.Map&&!x.Retained&&!x.Favorite);
+            if(e!=null&&e.Key!=choice.Key)e.Key=choice.Key;
             if (e == null) Entries.Add(choice); else CopyChoices(choice, e);
         }
     }

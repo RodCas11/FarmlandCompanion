@@ -1,4 +1,4 @@
-param([string]$Quests=(Join-Path $PSScriptRoot '../message.txt'),[string]$SourceDirectory=(Join-Path $PSScriptRoot '..'),[string]$Database=(Join-Path $PSScriptRoot '../src/RagnarokCompanion/Data/farmland-items.sqlite'))
+param([string]$Quests=(Join-Path $PSScriptRoot '../quests.txt'),[string]$SourceDirectory=(Join-Path $PSScriptRoot '..'),[string]$Database=(Join-Path $PSScriptRoot '../src/RagnarokCompanion/Data/farmland-items.sqlite'))
 $ErrorActionPreference='Stop'
 $root=Split-Path $PSScriptRoot
 $sdk=Join-Path $root '.tools/dotnet/dotnet.exe';if(!(Test-Path $sdk)){$sdk='dotnet'}

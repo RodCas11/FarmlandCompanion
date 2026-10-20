@@ -2,13 +2,18 @@
  <UserControl.Resources><Style TargetType="ListBoxItem"><Setter Property="Foreground" Value="#EDF0FA"/><Setter Property="HorizontalContentAlignment" Value="Stretch"/><Setter Property="Padding" Value="7,3"/><Setter Property="Margin" Value="0,2"/><Setter Property="Template"><Setter.Value><ControlTemplate TargetType="ListBoxItem"><Border x:Name="Row" CornerRadius="6" Background="#141928" Padding="{TemplateBinding Padding}"><ContentPresenter/></Border><ControlTemplate.Triggers><Trigger Property="IsSelected" Value="True"><Setter TargetName="Row" Property="Background" Value="#3B301E"/><Setter Property="Foreground" Value="#E9C77A"/></Trigger><Trigger Property="IsMouseOver" Value="True"><Setter TargetName="Row" Property="BorderBrush" Value="#665332"/><Setter TargetName="Row" Property="BorderThickness" Value="1"/></Trigger></ControlTemplate.Triggers></ControlTemplate></Setter.Value></Setter></Style></UserControl.Resources>
  <DockPanel>
   <TextBlock DockPanel.Dock="Top" Text="📜 Quests" Style="{StaticResource Title}"/>
+  <UniformGrid DockPanel.Dock="Top" Columns="2" Width="260" HorizontalAlignment="Left" Margin="0,0,0,8"><RadioButton Content="Normais" GroupName="QuestKind" Style="{StaticResource NavItem}" IsChecked="{Binding KindTab, Mode=OneWay, Converter={StaticResource PageIndex}, ConverterParameter=0}" Command="{Binding SelectKindCommand}" CommandParameter="0"/><RadioButton Content="Raras" GroupName="QuestKind" Style="{StaticResource NavItem}" IsChecked="{Binding KindTab, Mode=OneWay, Converter={StaticResource PageIndex}, ConverterParameter=1}" Command="{Binding SelectKindCommand}" CommandParameter="1"/></UniformGrid>
   <TextBlock DockPanel.Dock="Top" Text="{Binding Status}" Foreground="#9AA6BF" TextWrapping="Wrap" Margin="0,5,0,12"/>
   <Grid><Grid.ColumnDefinitions><ColumnDefinition Width="280"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
    <DockPanel Margin="0,0,14,0">
     <TextBlock DockPanel.Dock="Top" Text="Buscar quest ou equipamento..." Foreground="#9AA6BF"/>
     <TextBox DockPanel.Dock="Top" Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}" Margin="0,5"/>
     <ComboBox DockPanel.Dock="Top" ItemsSource="{Binding Categories}" SelectedItem="{Binding Category}" Margin="0,0,0,8"/>
-    <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"><ListBox.ItemTemplate><DataTemplate><DockPanel Margin="0,5"><CheckBox DockPanel.Dock="Left" Content="★" IsChecked="{Binding Favorite}" ToolTip="Favoritar quest" Margin="0,0,7,0" Foreground="#E9C77A"/><StackPanel><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/><TextBlock Text="{Binding Category}" Foreground="#9AA6BF" FontSize="10"/></StackPanel></DockPanel></DataTemplate></ListBox.ItemTemplate></ListBox>
+    <ListBox ItemsSource="{Binding Results}" SelectedItem="{Binding Selected}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"><ListBox.ItemTemplate><DataTemplate><DockPanel Margin="0,5">
+ <Button DockPanel.Dock="Right" Command="{Binding FavoriteCommand}" ToolTip="Favoritar quest" Background="Transparent" BorderThickness="0" Padding="5,0" Margin="6,0,0,0"><TextBlock Text="{Binding FavoriteMark}" Foreground="#E9C77A" FontSize="27"/></Button>
+ <Image DockPanel.Dock="Left" Source="{Binding Icon}" Width="32" Height="32" Margin="0,0,8,0" views:ItemTooltip.Model="{Binding}"/>
+ <StackPanel views:ItemTooltip.Model="{Binding}" Background="Transparent"><TextBlock Text="{Binding Name}" TextWrapping="Wrap"/><TextBlock Text="{Binding Category}" Foreground="#9AA6BF" FontSize="10"/></StackPanel>
+</DockPanel></DataTemplate></ListBox.ItemTemplate></ListBox>
    </DockPanel>
    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><views:QuestDetailsView/></ScrollViewer>
   </Grid>
