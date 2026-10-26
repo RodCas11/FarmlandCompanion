@@ -9,6 +9,14 @@ namespace RagnarokCompanion.Tests;
 
 public sealed class HalloweenUpdateTests
 {
+    [Fact] public void PermanentUpdateActionChecksFreshReleaseAndReportsWithoutOpeningUnnecessaryFlows()
+    {
+        int checks=0;var notices=new List<string>();var version=GitHubUpdateService.InstalledVersion;
+        using var vm=new UpdateViewModel(_=>{checks++;return Task.FromResult<AvailableRelease?>(new(version,new Uri("https://github.com/RodCas11/FarmlandCompanion/releases/download/v4.18.0/FarmlandCompanion-win-x64.zip"),new Uri("https://github.com/RodCas11/FarmlandCompanion/releases/download/v4.18.0/FarmlandCompanion-win-x64.sha256")));});
+        vm.Notice=notices.Add;vm.SmartCommand.Execute(null);Assert.Equal(1,checks);Assert.False(vm.HasUpdate);Assert.True(vm.IsIdle);Assert.Contains("versão mais recente",Assert.Single(notices));
+        version=new Version(version.Major+1,0,0,0);vm.SmartCommand.Execute(null);Assert.Equal(2,checks);Assert.True(vm.HasUpdate);Assert.True(vm.ShowNotice);Assert.Contains("v"+version.ToString(3),vm.ButtonTooltip);Assert.Single(notices);
+        vm.DismissCommand.Execute(null);Assert.False(vm.ShowNotice);Assert.True(vm.HasUpdate);
+    }
     static string Temp(){string path=Path.Combine(Path.GetTempPath(),"Farmland-update-test-"+Guid.NewGuid().ToString("N"));Directory.CreateDirectory(path);return path;}
     static DateTimeOffset Server(int day,int hour=0,int minute=0,int month=10)=>new(2026,month,day,hour,minute,0,TimeSpan.FromHours(-3));
     [Fact] public void OfficialSeasonSchedulesAndAlertsExpireButPoringRemains()

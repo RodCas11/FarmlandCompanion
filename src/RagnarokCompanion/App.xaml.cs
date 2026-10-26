@@ -89,7 +89,7 @@ public partial class App : Application
             if (vm.Settings.CompactOnStartup) windows.ShowCompact();
             timer.Tick += (_, _) => { try { vm.Tick(); } catch (Exception ex) { vm.Tell("Erro ao atualizar/salvar: " + ex.Message); } };
             vm.Tick(); timer.Start();
-            if(!smoke) { vm.Updates.ShowProgress=()=>{windows.ShowPanel();vm.Page=3;};vm.Updates.SaveBeforeUpdate=vm.Save;vm.Updates.ExitForUpdate=Quit;vm.Updates.Start(); }
+            if(!smoke) { vm.Updates.Notice=vm.Tell;vm.Updates.ShowProgress=()=>{windows.ShowPanel();vm.Page=3;};vm.Updates.SaveBeforeUpdate=vm.Save;vm.Updates.ExitForUpdate=Quit;vm.Updates.Start(); }
             var ready=e.Args.FirstOrDefault(a=>a.StartsWith("--updated-ready=",StringComparison.Ordinal))?.Substring("--updated-ready=".Length);
             if(ready!=null) { var path=Path.GetFullPath(ready);var temp=Path.GetFullPath(Path.GetTempPath());if(path.StartsWith(temp,StringComparison.OrdinalIgnoreCase)&&Path.GetFileName(path)=="startup.ready")File.WriteAllText(path,"ready"); }
             if (smoke) _ = Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(SmokeTest));
@@ -109,6 +109,8 @@ public partial class App : Application
             vm!.Events.Enabled = false;
             vm.SelectedTheme="Tema Halloween";
             if(vm.SeasonDecoration.Length==0)throw new Exception("Tema Halloween não aplicado");
+            if(windows!.Panel.UpdateIcon.Visibility!=Visibility.Visible||windows.Panel.UpdateIcon.Command!=vm.Updates.SmartCommand||windows.Panel.UpdateIcon.Width!=windows.Panel.SettingsIcon.Width)throw new Exception("Atalho de atualização não está visível/alinhado às configurações");
+            vm.Page=0;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"halloween-home.png"));
             vm.Page=5;vm.Events.HalloweenTab=true;windows!.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"halloween-events.png"));
             vm.Page=3;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"halloween-settings.png"));
             vm.Events.HalloweenTab=false;vm.SelectedTheme="Tema Farmland";

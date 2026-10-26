@@ -12,8 +12,8 @@ public static class AppearanceService
     public static void Apply(string theme,DateTimeOffset now)
     {
         if(Application.Current==null)return;bool halloween=IsHalloween(theme,now);if(applied==halloween)return;applied=halloween;
-        var colors=new Dictionary<string,string>{{"0D111C","100D19"},{"141928","1C1329"},{"181D2C","241A32"},{"202739","30203E"},{"2F2B22","66351F"},{"30291B","3F233B"},{"756039","B65D2C"},{"E9C77A","FFB46B"},{"C29A4A","F09545"},{"665332","9A5FC7"},{"40351F","57304F"}};
+        var colors=new Dictionary<string,string>{{"0D111C","0D1018"},{"141928","14131C"},{"181D2C","1C1B25"},{"202739","26212D"},{"2F2B22","4D2F20"},{"30291B","3B291C"},{"756039","C37435"},{"E9C77A","FFB46B"},{"C29A4A","F49435"},{"665332","9B683D"},{"40351F","57304F"}};
         foreach(var pair in colors)Application.Current.Resources["Theme"+pair.Key]=new SolidColorBrush((Color)ColorConverter.ConvertFromString("#"+(halloween?pair.Value:pair.Key)));
-        Application.Current.Resources["Panel"]=Application.Current.Resources["Theme181D2C"];
+        Application.Current.Resources["HalloweenVisibility"]=halloween?Visibility.Visible:Visibility.Collapsed; Application.Current.Resources["ThemeCardBorder"]=new SolidColorBrush((Color)ColorConverter.ConvertFromString(halloween?"#4C3325":"#00181D2C")); Application.Current.Resources["Panel"]=Application.Current.Resources["Theme181D2C"];
     }
 }
