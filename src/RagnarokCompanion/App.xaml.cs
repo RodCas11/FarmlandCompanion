@@ -89,7 +89,7 @@ public partial class App : Application
             if (vm.Settings.CompactOnStartup) windows.ShowCompact();
             timer.Tick += (_, _) => { try { vm.Tick(); } catch (Exception ex) { vm.Tell("Erro ao atualizar/salvar: " + ex.Message); } };
             vm.Tick(); timer.Start();
-            if(!smoke) { vm.Updates.SaveBeforeUpdate=vm.Save;vm.Updates.ExitForUpdate=Quit;vm.Updates.Start(); }
+            if(!smoke) { vm.Updates.ShowProgress=()=>{windows.ShowPanel();vm.Page=3;};vm.Updates.SaveBeforeUpdate=vm.Save;vm.Updates.ExitForUpdate=Quit;vm.Updates.Start(); }
             var ready=e.Args.FirstOrDefault(a=>a.StartsWith("--updated-ready=",StringComparison.Ordinal))?.Substring("--updated-ready=".Length);
             if(ready!=null) { var path=Path.GetFullPath(ready);var temp=Path.GetFullPath(Path.GetTempPath());if(path.StartsWith(temp,StringComparison.OrdinalIgnoreCase)&&Path.GetFileName(path)=="startup.ready")File.WriteAllText(path,"ready"); }
             if (smoke) _ = Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(SmokeTest));

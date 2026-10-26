@@ -15,6 +15,7 @@ public sealed class UpdateViewModel : Observable,IDisposable
     readonly DispatcherTimer timer=new(){Interval=TimeSpan.FromHours(6)};
     AvailableRelease? release;DateTimeOffset dismissedUntil;bool busy;double progress;
     public Action? SaveBeforeUpdate {get;set;}
+    public Action? ShowProgress {get;set;}
     public Action? ExitForUpdate {get;set;}
     public string InstalledVersion=>GitHubUpdateService.InstalledVersion.ToString(3);
     public string AvailableVersion=>release?.Version.ToString(3)??"Não verificada";
@@ -46,6 +47,7 @@ public sealed class UpdateViewModel : Observable,IDisposable
         Busy=true;Progress=0;
         try
         {
+            ShowProgress?.Invoke();
             string target=Path.GetDirectoryName(Environment.ProcessPath!)!;
             // Fail before closing if the installation is read-only. Never request elevation.
             string probe=Path.Combine(target,".update-write-"+Guid.NewGuid().ToString("N"));using(File.Create(probe)){}File.Delete(probe);
