@@ -18,7 +18,7 @@ public sealed class Settings : INotifyPropertyChanged
     private string advanceMinutes = "10,5,1", compactMode = "Ambos";
     private int compactCount = 3;
     private CompactTab compactTab = CompactTab.Mining;
-    private string theme="Tema Farmland"; public string Theme {get=>theme;set=>Set(ref theme,value);}
+    private string theme="Tema Halloween"; public string Theme {get=>theme;set=>Set(ref theme,value);}
     public CompactTab CompactTab { get => compactTab; set => Set(ref compactTab, value); }
     public bool ChooseCompactFavorites { get; set; }
     public List<string> CompactFavoriteKeys { get; set; } = new();
