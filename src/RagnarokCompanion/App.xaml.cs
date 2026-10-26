@@ -89,6 +89,9 @@ public partial class App : Application
             if (vm.Settings.CompactOnStartup) windows.ShowCompact();
             timer.Tick += (_, _) => { try { vm.Tick(); } catch (Exception ex) { vm.Tell("Erro ao atualizar/salvar: " + ex.Message); } };
             vm.Tick(); timer.Start();
+            if(!smoke) { vm.Updates.SaveBeforeUpdate=vm.Save;vm.Updates.ExitForUpdate=Quit;vm.Updates.Start(); }
+            var ready=e.Args.FirstOrDefault(a=>a.StartsWith("--updated-ready=",StringComparison.Ordinal))?.Substring("--updated-ready=".Length);
+            if(ready!=null) { var path=Path.GetFullPath(ready);var temp=Path.GetFullPath(Path.GetTempPath());if(path.StartsWith(temp,StringComparison.OrdinalIgnoreCase)&&Path.GetFileName(path)=="startup.ready")File.WriteAllText(path,"ready"); }
             if (smoke) _ = Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(SmokeTest));
         }
         catch (Exception ex)
@@ -104,6 +107,11 @@ public partial class App : Application
         try
         {
             vm!.Events.Enabled = false;
+            vm.SelectedTheme="Tema Halloween";
+            if(vm.SeasonDecoration.Length==0)throw new Exception("Tema Halloween não aplicado");
+            vm.Page=5;vm.Events.HalloweenTab=true;windows!.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"halloween-events.png"));
+            vm.Page=3;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"halloween-settings.png"));
+            vm.Events.HalloweenTab=false;vm.SelectedTheme="Tema Farmland";
             vm.Settings.CompactOnTimer = false;
             vm.Settings.Sounds = false;
             vm.EditName = "Freeoni"; vm.EditMap = "moc_fild17"; vm.EditMin = 60; vm.EditMax = 90; vm.SaveMvpCommand.Execute(null);
@@ -268,7 +276,7 @@ public partial class App : Application
         if (quitting) return; quitting = true; timer.Stop(); settingsSave.Stop();
         try { windows?.Dispose(); vm?.Save(); }
         catch (Exception ex) { if (code == 0) MessageBox.Show("Não foi possível salvar: " + ex.Message); }
-        notifications?.Dispose(); vm?.Items.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
+        vm?.Updates.Dispose(); notifications?.Dispose(); vm?.Items.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
     }
     protected override void OnExit(ExitEventArgs e) { notifications?.Dispose(); mutex?.Dispose(); base.OnExit(e); }
 }

@@ -22,16 +22,17 @@ public sealed class EventScheduleService
     public TimeZoneInfo Zone => TryZone(repository.Settings.TimeZoneId, out var zone) ? zone : SpotlightRotationService.ServerZone;
     public List<EventOccurrence> Occurrences(DateTimeOffset now, bool todayOnly = false)
     {
-        var zone = Zone; var today = TimeZoneInfo.ConvertTime(now, zone).Date;
+        var zone = Zone;
         var result = new List<EventOccurrence>();
         foreach (var item in repository.Events.Where(e => e.Enabled))
             for (int day = 0; day < (todayOnly ? 1 : 3); day++)
                 foreach (var text in item.Times)
                 {
                     if (!TimeOnly.TryParseExact(text, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var time)) continue;
-                    var wall = DateTime.SpecifyKind(today.AddDays(day).Add(time.ToTimeSpan()), DateTimeKind.Unspecified);
-                    if (zone.IsInvalidTime(wall)) continue;
-                    var offset = zone.IsAmbiguousTime(wall) ? zone.GetAmbiguousTimeOffsets(wall).Max() : zone.GetUtcOffset(wall);
+                    var eventZone = item.Halloween || item.OfficialId=="poring" ? SpotlightRotationService.ServerZone : zone; var eventToday = TimeZoneInfo.ConvertTime(now,eventZone).Date;
+                    var wall = DateTime.SpecifyKind(eventToday.AddDays(day).Add(time.ToTimeSpan()), DateTimeKind.Unspecified);
+                    var date = DateOnly.FromDateTime(wall); if (item.FirstDate is {} first && date < first || item.LastDate is {} last && date > last) continue; if (eventZone.IsInvalidTime(wall)) continue;
+                    var offset = eventZone.IsAmbiguousTime(wall) ? eventZone.GetAmbiguousTimeOffsets(wall).Max() : eventZone.GetUtcOffset(wall);
                     var server = new DateTimeOffset(wall, offset);
                     result.Add(new(item, server.ToUniversalTime(), server, now));
                 }

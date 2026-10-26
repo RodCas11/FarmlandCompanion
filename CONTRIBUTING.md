@@ -200,3 +200,11 @@ A conversão preserva segundos e trata `-` como variação zero. A fonte oficial
 Os cards usam [imagens públicas do Divine Pride](https://www.divine-pride.net/database/monster/1039/baphomet), na rota `https://static.divine-pride.net/images/mobs/png/{id}.png`. As imagens pertencem aos respectivos titulares. Cache em `%LOCALAPPDATA%\FarmlandCompanion\Cache\mvp-sprites\`, sem chave API; limite de duas transferências simultâneas, timeout e ícone de fallback. A validação isolada da interface não baixa imagens da rede.
 
 As receitas são lidas exclusivamente de `quests.txt`; os antigos arquivos de mensagens não são aceitos. `Loja_Quest` define Normais e `Loja_Quest2_*` define Raras. Categorias normais vêm das posições dos equipamentos. Duas receitas diferentes de Mine_Helm são preservadas como alternativas; receitas idênticas são rejeitadas. As relações de dependência usam AegisName. A migração mantém IDs de receitas raras anteriores e posições dos materiais inalterados para preservar favoritos e progresso.
+
+### Atualizador Windows
+
+`src/FarmlandUpdater` gera o helper independente incluído pelo `build-latest.ps1`. A API oficial de releases estáveis fornece os assets existentes ZIP/SHA256; o aplicativo verifica versão, origem HTTPS, limite de tamanho, checksum e lista de arquivos. O helper instalado é copiado para uma pasta temporária e espera o processo principal encerrar; instala somente arquivos da distribuição, mantém backup e exige confirmação de inicialização da nova versão antes de concluir. Falhas restauram os arquivos; diagnósticos e backup ficam na pasta temporária indicada na mensagem. Nenhum conteúdo de APPDATA é copiado para o pacote.
+
+Ao adicionar arquivos de runtime, atualize `UpdatePackage.Files` e `build/PublishTools.psm1` juntos. A extração rejeita caminhos inesperados, duplicados, links e scripts. A versão do executável fica no `.csproj` principal; mantenha a versão do helper alinhada. O workflow existente continua produzindo ZIP e SHA256 e impede uma release duplicada.
+
+Referência: [API oficial de releases do GitHub](https://docs.github.com/en/rest/releases/releases).

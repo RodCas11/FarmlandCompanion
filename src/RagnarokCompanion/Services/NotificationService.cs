@@ -80,7 +80,8 @@ public sealed class NotificationService : IDisposable
             var remaining = expires - DateTimeOffset.UtcNow;
             message = System.Text.RegularExpressions.Regex.Replace(message, @"Faltam \d+:\d+", $"Faltam {(int)remaining.TotalMinutes:00}:{remaining.Seconds:00}");
         }
-        tray.ShowBalloonTip(6000, popup?.Title ?? entry.Title, popup?.Message ?? message, ToolTipIcon.None);
+        string title=popup?.Title ?? entry.Title; if(AppearanceService.IsHalloween(vm.Settings.Theme,DateTimeOffset.UtcNow)&&!title.Contains("🎃"))title="🎃 "+title;
+        tray.ShowBalloonTip(6000, title, popup?.Message ?? message, ToolTipIcon.None);
         DeliveredCount++;
         if (popup?.Sounds ?? vm.Settings.Sounds) SystemSounds.Asterisk.Play();
     }

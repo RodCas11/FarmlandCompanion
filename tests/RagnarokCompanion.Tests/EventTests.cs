@@ -23,7 +23,7 @@ public sealed class EventTests
     static EventRepository Repo(string? root=null)
     {
         var repository=new EventRepository(root??Path.Combine(Path.GetTempPath(), "Farmland-events-tests-" + Guid.NewGuid()));
-        repository.Events.RemoveAll(e=>e.OfficialId=="mare-infernal"); repository.Events.Single(e=>e.OfficialId=="dudu").Times=new(){"00:30","05:30","10:30","15:30","20:30","22:30"}; return repository;
+        repository.Events.RemoveAll(e=>!string.IsNullOrEmpty(e.OfficialId)&&e.OfficialId!="dudu"&&e.OfficialId!="kvm"); repository.Events.Single(e=>e.OfficialId=="dudu").Times=new(){"00:30","05:30","10:30","15:30","20:30","22:30"}; return repository;
     }
     static DateTimeOffset Server(int hour, int minute, int day=15, int second=0) => new(2026,10,day,hour,minute,second,TimeSpan.FromHours(-3));
     [Theory]

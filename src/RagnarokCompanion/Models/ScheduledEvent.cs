@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 namespace RagnarokCompanion.Models;
 
 public sealed class ScheduledEvent
@@ -10,6 +11,10 @@ public sealed class ScheduledEvent
     public string Description { get; set; } = "";
     public string Icon { get; set; } = "🔔";
     public bool IsOpening { get; set; }
+    public bool Halloween { get; set; }
+    public DateOnly? FirstDate { get; set; }
+    public DateOnly? LastDate { get; set; }
+    public string Duration { get; set; } = "";
     public bool Enabled { get; set; } = true;
     public bool AlertsEnabled { get; set; } = true;
     public bool SoundsEnabled { get; set; } = true;
@@ -43,6 +48,7 @@ public sealed record EventOccurrence(ScheduledEvent Event, DateTimeOffset StartU
     public string Title => Event.Icon + " " + Event.Name;
     public string Time => ServerTime.ToString("HH:mm");
     public string Timing => (Event.IsOpening ? "Abertura" : "Início") + " às " + Time;
+    public string Details => string.Join(" • ", new[] { Event.Duration, Event.AlertsEnabled ? "Alertas ativados" : "Alertas desativados" }.Where(s => s.Length > 0));
     public string Countdown => StartUtc <= Now ? "Horário previsto passou" : TimerText(StartUtc - Now);
     public string State => StartUtc <= Now ? "Horário previsto passou" : "Programado";
     public string Origin => string.IsNullOrEmpty(Event.OfficialId) ? "Personalizado" : "Oficial • informado pela administração";

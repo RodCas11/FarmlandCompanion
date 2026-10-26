@@ -93,9 +93,9 @@ jobs:
           1. Baixe **FarmlandCompanion-win-x64.zip** nos arquivos abaixo.
           2. Extraia todo o ZIP e abra **FarmlandCompanion.exe**.
 
-          Windows 11 x64. Não precisa instalar .NET. Mantenha as pastas Data, docs e licenses junto do aplicativo.
+          Windows 11 x64. Não precisa instalar .NET. Mantenha FarmlandUpdater.exe e as pastas Data, docs e licenses junto do aplicativo.
 
-          Para atualizar, use **Sair** na bandeja da versão anterior antes de abrir a nova. Suas configurações e sua chave API continuam na pasta de dados do Windows; não fazem parte deste pacote.
+          A partir desta versão, use **⬆ Atualizar** no aplicativo ou **Configurações → Atualizações** para instalar futuras versões automaticamente. Na primeira instalação, use **Sair** na bandeja da versão anterior antes de abrir a nova. Suas configurações e sua chave API continuam na pasta de dados do Windows; não fazem parte deste pacote.
 
           O arquivo `.sha256` permite conferir a integridade do download. Os arquivos automáticos **Source code** são destinados a desenvolvedores.
           NOTES

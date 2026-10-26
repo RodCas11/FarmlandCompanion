@@ -21,8 +21,8 @@ public static class EventNotificationComposer
         var start=eligible[0].Alert.ExpiresUtc;
         int seconds=(int)Math.Ceiling((start-now).TotalSeconds);
         string remaining=seconds%60==0 ? $"{seconds/60} minutos" : $"{seconds/60} min {seconds%60:00}s";
-        var zone=EventScheduleService.TryZone(repository.Settings.TimeZoneId,out var configured)?configured:SpotlightRotationService.ServerZone;
-        string message=$"{name} {action} em {remaining}! Prepare-se para {(names.Count==1?"o evento":"os eventos")}. Horário: {TimeZoneInfo.ConvertTime(start,zone):HH:mm} (fuso {repository.Settings.TimeZoneId}). Faltam {seconds/60:00}:{seconds%60:00}.";
+        var zone=eligible.Any(p=>p.Event!.Halloween||p.Event.OfficialId=="poring")?SpotlightRotationService.ServerZone:EventScheduleService.TryZone(repository.Settings.TimeZoneId,out var configured)?configured:SpotlightRotationService.ServerZone;
+        string message=$"{name} {action} em {remaining}! Prepare-se para {(names.Count==1?"o evento":"os eventos")}. Horário: {TimeZoneInfo.ConvertTime(start,zone):HH:mm} (fuso {zone.Id}). Faltam {seconds/60:00}:{seconds%60:00}.";
         return new(names.Count==1?eligible[0].Alert.Title:"🔔 Eventos simultâneos",message,repository.Settings.Sounds && eligible.Any(p=>p.Event!.SoundsEnabled));
     }
 }

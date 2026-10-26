@@ -4,7 +4,9 @@ $script:LegacyPackageFiles = @('RagnarokCompanion.exe','README.md','Data/mvp-see
 $script:PreviousPackageFiles = @('FarmlandCompanion.exe','README.md','Data/mvp-seed.json','docs/RAGNAPLACE_API.md','docs/SPOTLIGHT.md','licenses/rathena-GPL-3.0.txt','licenses/THIRD-PARTY-NOTICES.md')
 
 $script:ThirdPackageFiles = $script:PreviousPackageFiles + @('Data/item-farm.json')
-$script:PackageFiles = $script:PreviousPackageFiles + @('Data/farmland-items.sqlite','Data/item-monster-rules.json')
+$script:FourthPackageFiles = $script:PreviousPackageFiles + @('Data/farmland-items.sqlite','Data/item-monster-rules.json')
+
+$script:PackageFiles = $script:FourthPackageFiles + @('FarmlandUpdater.exe')
 
 function Assert-BuildPath([string]$Path, [string]$Scope) {
     $full = [IO.Path]::GetFullPath($Path).TrimEnd('\','/')
@@ -37,7 +39,7 @@ function New-BuildManifest([string]$Root) {
         if (!(Test-Path -LiteralPath $path -PathType Leaf) -or (Get-Item -LiteralPath $path).Length -eq 0) { throw "Artefato obrigatório ausente: $name" }
         @{ Path=$name; Sha256=(Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash }
     }
-    $manifest = @{ Application='FarmlandCompanion'; Format=4; Files=@($records) } | ConvertTo-Json -Depth 6
+    $manifest = @{ Application='FarmlandCompanion'; Format=5; Files=@($records) } | ConvertTo-Json -Depth 6
     [IO.File]::WriteAllText((Join-Path $Root '.build-manifest.json'), $manifest)
 }
 function Test-BuildPackage([string]$Root) {
@@ -48,7 +50,8 @@ function Test-BuildPackage([string]$Root) {
     if ($m.Application -eq 'RagnarokCompanion' -and $m.Format -eq 1) { $expected = $script:LegacyPackageFiles; $exeName = 'RagnarokCompanion.exe' }
     elseif ($m.Application -eq 'FarmlandCompanion' -and $m.Format -eq 2) { $expected = $script:PreviousPackageFiles; $exeName = 'FarmlandCompanion.exe' }
     elseif ($m.Application -eq 'FarmlandCompanion' -and $m.Format -eq 3) { $expected = $script:ThirdPackageFiles; $exeName = 'FarmlandCompanion.exe' }
-    elseif ($m.Application -eq 'FarmlandCompanion' -and $m.Format -eq 4) { $expected = $script:PackageFiles; $exeName = 'FarmlandCompanion.exe' }
+    elseif ($m.Application -eq 'FarmlandCompanion' -and $m.Format -eq 4) { $expected = $script:FourthPackageFiles; $exeName = 'FarmlandCompanion.exe' }
+    elseif ($m.Application -eq 'FarmlandCompanion' -and $m.Format -eq 5) { $expected = $script:PackageFiles; $exeName = 'FarmlandCompanion.exe' }
     else { throw 'Manifesto inválido; distribuição preservada.' }
     if (@($m.Files).Count -ne $expected.Count) { throw 'Manifesto incompleto; distribuição preservada.' }
     foreach ($name in $expected) {

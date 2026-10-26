@@ -40,6 +40,9 @@ try {
     Copy-Item -LiteralPath licenses/rathena-GPL-3.0.txt,licenses/THIRD-PARTY-NOTICES.md -Destination "$package/licenses"
     Copy-Item -LiteralPath src/RagnarokCompanion/Data/mvp-seed.json -Destination "$package/Data/mvp-seed.json"
     Copy-Item -LiteralPath src/RagnarokCompanion/Data/farmland-items.sqlite,src/RagnarokCompanion/Data/item-monster-rules.json -Destination "$package/Data"
+    & $sdkPath publish src/FarmlandUpdater/FarmlandUpdater.csproj -c Release -r win-x64 --self-contained true -p:PublishSingleFile=true -p:DebugType=None -p:DebugSymbols=false -o "$transaction/updater"
+    if ($LASTEXITCODE -ne 0) { throw 'Compilação do atualizador falhou; distribuição anterior preservada.' }
+    Copy-Item -LiteralPath "$transaction/updater/FarmlandUpdater.exe" -Destination "$package/FarmlandUpdater.exe"
     New-BuildManifest $package
     $null = Test-BuildPackage $package
     $reportDir = Join-Path $PSScriptRoot 'artifacts/latest-smoke'

@@ -23,7 +23,7 @@ public sealed class MareInfernalTests
     [Fact] public void TwelveDailyTimesAndMidnightRescheduleKeepSimultaneousEventsSeparate()
     {
         var repo=Repo();var service=new EventScheduleService(repo);var today=service.Occurrences(At(22,30),true);
-        Assert.Equal(20,today.Count);Assert.Equal(Enumerable.Range(0,12).Select(n=>$"{n*2:00}:30"),today.Where(e=>e.Event.OfficialId=="mare-infernal").Select(e=>e.Time));
+        Assert.Equal(24,today.Count);Assert.Equal(Enumerable.Range(0,12).Select(n=>$"{n*2:00}:30"),today.Where(e=>e.Event.OfficialId=="mare-infernal").Select(e=>e.Time));
         var next=service.Upcoming(At(22,30));Assert.Equal(At(0,30,16),next[0].StartUtc);Assert.Equal(next[0].StartUtc,next[1].StartUtc);Assert.Equal(2,next.Take(2).Select(o=>o.Event.Id).Distinct().Count());
     }
     [Fact] public void GroupHasOnePopupAndIndividualHistoryAcrossRestart()
@@ -61,7 +61,7 @@ public sealed class MareInfernalTests
     {
         var repo=Repo();repo.Events.RemoveAll(e=>e.OfficialId=="mare-infernal");var dudu=repo.Events.Single(e=>e.OfficialId=="dudu");dudu.Times=new(){"12:34"};dudu.TimesCustomized=true;dudu.AlertsEnabled=false;
         repo.History.Add(new(){Key="preserved",OccurrenceUtc=At(12,34)});repo.Settings.Sounds=false;repo.Save();
-        var upgrade=new EventRepository(repo.Store.Root);Assert.Equal(3,upgrade.Events.Count);Assert.Single(upgrade.Events,e=>e.OfficialId=="mare-infernal");Assert.Equal("12:34",Assert.Single(upgrade.Events.Single(e=>e.OfficialId=="dudu").Times));Assert.False(upgrade.Settings.Sounds);Assert.Contains(upgrade.History,h=>h.Key=="preserved");
+        var upgrade=new EventRepository(repo.Store.Root);Assert.Equal(7,upgrade.Events.Count);Assert.Single(upgrade.Events,e=>e.OfficialId=="mare-infernal");Assert.Equal("12:34",Assert.Single(upgrade.Events.Single(e=>e.OfficialId=="dudu").Times));Assert.False(upgrade.Settings.Sounds);Assert.Contains(upgrade.History,h=>h.Key=="preserved");
         var vm=new EventViewModel(upgrade,()=>At(19,58));vm.SelectedEvent=upgrade.Events.Single(e=>e.OfficialId=="mare-infernal");vm.EditSounds=false;vm.SaveEventCommand.Execute(null);vm.MareAlerts=false;
         var restart=new EventRepository(repo.Store.Root);var saved=restart.Events.Single(e=>e.OfficialId=="mare-infernal");Assert.False(saved.SoundsEnabled);Assert.False(saved.AlertsEnabled);Assert.Equal(12,saved.Times.Count);
     }

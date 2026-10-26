@@ -17,6 +17,9 @@ public sealed class EventAdvanceOption : Observable
 }
 public sealed class EventViewModel : Observable
 {
+    bool halloweenTab;
+    public bool HalloweenTab { get=>halloweenTab; set { halloweenTab=value;Changed();Changed(nameof(RegularTab));ReloadEntries();SelectedEvent=null;Refresh(); } }
+    public bool RegularTab { get=>!halloweenTab; set { if(value)HalloweenTab=false; } }
     public EventRepository Repository { get; }
     public EventScheduleService Schedule { get; }
     readonly Func<DateTimeOffset> clock;
@@ -34,7 +37,7 @@ public sealed class EventViewModel : Observable
     public string Countdown => Next?.Countdown ?? "—";
     public string FollowingSummary => Following == null ? "" : "Depois: " + Following.Title + " • " + Following.Time;
     public string AlertStatus => !Enabled ? "Alertas desativados" : Next == null ? "Sem eventos futuros" : !Next.Event.AlertsEnabled ? "Alertas desativados para este evento" : EventRepository.Advances(Next.Event.UseGlobalAdvances ? Repository.Settings.AdvanceMinutes : Next.Event.AdvanceMinutes).Count == 0 ? "Nenhuma antecedência selecionada" : "Alertas ativados • enquanto o aplicativo estiver aberto";
-    public string ZoneLabel => "Horários no fuso " + Repository.Settings.TimeZoneId;
+    public string ZoneLabel => "Horários no fuso " + (HalloweenTab?"America/Sao_Paulo":Repository.Settings.TimeZoneId);
     public string ToggleLabel => Enabled ? "Desativar alertas" : "Ativar alertas";
     public bool Enabled { get => Repository.Settings.Enabled; set { Repository.Settings.Enabled=value;SavePreferences();Changed(); } }
     public bool Sounds { get => Repository.Settings.Sounds; set { Repository.Settings.Sounds=value;SavePreferences();Changed(); } }
@@ -44,7 +47,7 @@ public sealed class EventViewModel : Observable
     public bool MareAlerts { get => Repository.Events.First(e=>e.OfficialId=="mare-infernal").AlertsEnabled; set { Repository.Events.First(e=>e.OfficialId=="mare-infernal").AlertsEnabled=value;Repository.SaveEvents();Changed();Refresh(); } }
     public string TimeZoneInput { get; set; }
     public string Message { get; private set; } = "Horários fornecidos pela administração. Não confirmam que o evento está ativo no servidor.";
-    public string[] Icons { get; } = { "🔔", "👻", "⚔", "🔥", "🎉", "★", "⛏" };
+    public string[] Icons { get; } = { "🎃", "🎃 👻", "🎃 ", "🎃 🧟", "🏁", "🔔", "👻", "⚔", "🔥", "🎉", "★", "⛏" };
     ScheduledEvent? selected;
     public ScheduledEvent? SelectedEvent { get => selected; set { selected=value;LoadEditor();Changed(); } }
     public string EditName { get; set; } = "";
@@ -81,7 +84,7 @@ public sealed class EventViewModel : Observable
     ICommand Command(Action action)=>new RelayCommand(_=>{try{action();}catch(Exception){Tell("Não foi possível salvar. Confira o acesso à pasta de dados e tente novamente.");}});
     void Tell(string text){Message=text;Changed(nameof(Message));}
     public void SavePreferences(){Repository.SaveSettings();Refresh();}
-    void ReloadEntries(){Entries.Clear();foreach(var e in Repository.Events.OrderBy(e=>string.IsNullOrEmpty(e.OfficialId)).ThenBy(e=>e.Name))Entries.Add(e);}
+    void ReloadEntries(){Entries.Clear();foreach(var e in Repository.Events.Where(e=>e.Halloween==HalloweenTab).OrderBy(e=>string.IsNullOrEmpty(e.OfficialId)).ThenBy(e=>e.Name))Entries.Add(e);}
     void LoadEditor()
     {
         EditName=selected?.Name??"";EditDescription=selected?.Description??"";EditTimes=string.Join(", ",selected?.Times??new());EditIcon=selected?.Icon??"🔔";EditEnabled=selected?.Enabled??true;EditAlerts=selected?.AlertsEnabled??true;EditOpening=selected?.IsOpening??false;EditGlobalAdvances=selected?.UseGlobalAdvances??true;EditAdvances=string.Join(",",selected?.AdvanceMinutes??new(){5});
@@ -95,7 +98,7 @@ public sealed class EventViewModel : Observable
         if(parts.Any(s=>!int.TryParse(s,out int n)||!EventRepository.AllowedAdvances.Contains(n))){Tell("Antecedências permitidas: 1, 5, 10, 15 e 30 minutos, separadas por vírgulas.");return;}
         var candidate=new ScheduledEvent{Name=EditName.Trim(),Description=EditDescription.Trim(),Times=times,Icon=EditIcon??"🔔"};
         if(!EventRepository.Valid(candidate)||!Icons.Contains(candidate.Icon)){Tell("Informe nome (até 120 caracteres), descrição (até 4000), ícone e horários válidos em HH:mm, separados por vírgulas (até 48).");return;}
-        var item=selected??new ScheduledEvent();
+        var item=selected??new ScheduledEvent { Halloween=HalloweenTab, FirstDate=HalloweenTab?new DateOnly(2026,10,26):null, LastDate=HalloweenTab?new DateOnly(2026,11,2):null };
         if(!item.Times.SequenceEqual(times))item.TimesCustomized=true;
         item.Name=candidate.Name;item.Description=candidate.Description;item.Times=times;item.Icon=candidate.Icon;item.Enabled=EditEnabled;item.AlertsEnabled=EditAlerts;item.IsOpening=EditOpening;item.UseGlobalAdvances=EditGlobalAdvances;item.AdvanceMinutes=parts.Select(int.Parse).Distinct().ToList();
         item.SoundsEnabled=EditSounds;
@@ -105,7 +108,7 @@ public sealed class EventViewModel : Observable
     public void Tick(){Schedule.Evaluate(clock());Refresh();}
     public void Refresh()
     {
-        var now=clock();var upcoming=Schedule.Upcoming(now);Next=upcoming.FirstOrDefault();Following=upcoming.Skip(1).FirstOrDefault();
+        var now=clock();var upcoming=Schedule.Upcoming(now);var visible=upcoming.Where(o=>o.Event.Halloween==HalloweenTab).ToList();Next=visible.FirstOrDefault();Following=visible.Skip(1).FirstOrDefault();
         var compact=upcoming.Take(8).ToList();
         for(int i=0;i<compact.Count;i++)
         {
@@ -119,7 +122,7 @@ public sealed class EventViewModel : Observable
         }
         while(CompactUpcoming.Count>compact.Count)CompactUpcoming.RemoveAt(CompactUpcoming.Count-1);
         NextDudu=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="dudu");NextKvm=upcoming.FirstOrDefault(e=>e.Event.OfficialId=="kvm");Changed(nameof(NextDudu));Changed(nameof(NextKvm));
-        Today.Clear();foreach(var o in Schedule.Occurrences(now,true))Today.Add(o);
+        Today.Clear();foreach(var o in Schedule.Occurrences(now,true).Where(o=>o.Event.Halloween==HalloweenTab))Today.Add(o);
         foreach(var name in new[]{nameof(Next),nameof(Following),nameof(NextName),nameof(NextTiming),nameof(Countdown),nameof(FollowingSummary),nameof(AlertStatus),nameof(ToggleLabel),nameof(ZoneLabel),nameof(NoToday)})Changed(name);
     }
 }

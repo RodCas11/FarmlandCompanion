@@ -126,6 +126,7 @@ public sealed partial class MainViewModel : Observable
     {
         Store = store;
         var settings = store.Load<Settings>("settings.json"); PersistenceService.Validate(settings);
+        AppearanceService.Apply(settings.Theme,DateTimeOffset.UtcNow);
         var mining = store.Load<MiningState>("mining.json");
         if (mining.EnteredUtc != null && (mining.ExitUtc == null || mining.ReadyUtc == null || mining.ExitUtc <= mining.EnteredUtc || mining.ReadyUtc <= mining.ExitUtc))
         { mining = new(); store.Warnings.Add("Estado da mina inválido; ciclo restaurado como disponível."); }
@@ -186,6 +187,7 @@ public sealed partial class MainViewModel : Observable
     }
     public void Tick()
     {
+        AppearanceService.Apply(Settings.Theme,DateTimeOffset.UtcNow);Changed(nameof(SeasonDecoration));
         Events.Tick();
         Spotlight.Tick();
         if (Engine.Evaluate(DateTimeOffset.UtcNow)) Save();

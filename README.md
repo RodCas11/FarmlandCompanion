@@ -197,3 +197,11 @@ O Companion é um auxiliar externo de consulta e timers. Não automatiza o jogo 
 📚 [Referências do SpotLight](docs/SPOTLIGHT.md) · [Créditos e licenças](licenses/THIRD-PARTY-NOTICES.md)
 
 </div>
+
+## 🎃 Halloween e atualizações
+
+Em **Configurações → Aparência**, escolha Farmland, Halloween ou Automático. O automático ativa a edição de Halloween de **26/10 a 02/11/2026**, no horário de São Paulo; o tema manual continua disponível depois.
+
+Em **Eventos**, use **Eventos Regulares | Halloween 🎃**. Niflheim, Caça às Abóboras e Infecção Zumbi têm avisos individuais; a Corrida Poring é permanente. No compacto, todos aparecem juntos em ordem de horário. Os eventos de Halloween deixam de ser agendados em 03/11/2026.
+
+O Companion verifica releases estáveis oficiais ao iniciar e a cada seis horas. Quando surgir **⬆ Atualizar**, confirme para baixar, validar o SHA256, instalar e reiniciar. Também é possível verificar em **Configurações → Atualizações**. Seus dados em `%APPDATA%` são preservados; se a nova versão falhar ao iniciar, o atualizador restaura os arquivos anteriores. Use uma pasta com permissão de escrita, fora do ZIP. A primeira instalação desta versão ainda precisa ser baixada normalmente.
