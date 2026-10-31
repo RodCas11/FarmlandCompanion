@@ -126,5 +126,6 @@
         "Key":  "local:1312",
         "SourceUrl":  "https://github.com/rathena/rathena/blob/master/db/re/mob_db.yml",
         "Origin":  "Informação não verificada"
-    }
+    },
+    {"MonsterId":1373,"Name":"Senhor dos Mortos","Key":"local:1373","Map":"niflheim","Notes":"Lord of the Dead — respawn informado pelo usuário","Origin":"Farmland confirmado"}
 ]

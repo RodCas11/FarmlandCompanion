@@ -13,6 +13,7 @@
      <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled"><StackPanel>
       <RadioButton Content="🏠 Início" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=0}" Command="{Binding NavigateCommand}" CommandParameter="0"/>
       <RadioButton Content="💀 MVPs" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=1}" Command="{Binding NavigateCommand}" CommandParameter="1"/>
+      <RadioButton Content="⌛ Instâncias" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=8}" Command="{Binding NavigateCommand}" CommandParameter="8"/>
       <RadioButton Content="🔔 Eventos" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=5}" Command="{Binding NavigateCommand}" CommandParameter="5"/>
       <RadioButton Content="🔎 Buscar Itens" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=6}" Command="{Binding NavigateCommand}" CommandParameter="6"/>
       <RadioButton Content="📜 Quests" GroupName="Navigation" Style="{StaticResource NavItem}" IsChecked="{Binding Page, Converter={StaticResource PageIndex}, ConverterParameter=7}" Command="{Binding NavigateCommand}" CommandParameter="7"/>
@@ -28,7 +29,7 @@
       <TabItem><views:CatalogView DataContext="{Binding Catalog}"/></TabItem>
       <TabItem><DockPanel><TextBlock DockPanel.Dock="Top" Text="Histórico" Style="{StaticResource Title}"/><TextBlock DockPanel.Dock="Top" Text="Entradas na mina, mortes registradas e alertas." Style="{StaticResource Muted}"/><ListBox ItemsSource="{Binding History}" ItemTemplate="{StaticResource HistoryCard}"/></DockPanel></TabItem>
       <TabItem><views:SettingsView/></TabItem><TabItem><views:SpotlightView DataContext="{Binding Spotlight}"/></TabItem><TabItem><views:EventsView DataContext="{Binding Events}"/></TabItem>
-      <TabItem><views:ItemFarmView DataContext="{Binding Items}"/></TabItem><TabItem><views:QuestsView DataContext="{Binding Quests}"/></TabItem>
+      <TabItem><views:ItemFarmView DataContext="{Binding Items}"/></TabItem><TabItem><views:QuestsView DataContext="{Binding Quests}"/></TabItem><TabItem><views:InstancesView DataContext="{Binding Instances}"/></TabItem>
      </TabControl>
     </DockPanel>
    </Grid>

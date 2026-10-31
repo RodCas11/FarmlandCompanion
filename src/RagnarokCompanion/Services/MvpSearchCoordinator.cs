@@ -6,7 +6,7 @@ using RagnarokCompanion.Models;
 namespace RagnarokCompanion.Services;
 public static class MvpSearchCoordinator {
     public static string Normalize(string text) => new string(text.Normalize(NormalizationForm.FormD).Where(c=>CharUnicodeInfo.GetUnicodeCategory(c)!=UnicodeCategory.NonSpacingMark).ToArray()).ToLowerInvariant();
-    static readonly (string Alias,string Name)[] aliases = { ("freeoni","Phreeoni"),("senhor das trevas","Dark Lord"),("heroi orc","Orc Hero"),("senhor dos orcs","Orc Lord"),("abelha rainha","Mistress") };
+    static readonly (string Alias,string Name)[] aliases = { ("lord of the dead","Senhor dos Mortos"),("lord of death","Senhor dos Mortos"),("freeoni","Phreeoni"),("senhor das trevas","Dark Lord"),("heroi orc","Orc Hero"),("senhor dos orcs","Orc Lord"),("abelha rainha","Mistress") };
     public static string Canonical(string text) { var normalized=Normalize(text.Trim());return aliases.FirstOrDefault(a=>a.Alias==normalized).Name??Normalize(text.Trim()); }
     public static string Alternate(string text) {
         string q=Normalize(text.Trim());

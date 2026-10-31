@@ -49,6 +49,7 @@ public sealed class MvpRow : Observable
 }
 public sealed partial class MainViewModel : Observable
 {
+    public InstanceViewModel Instances {get;}
     public CatalogViewModel Catalog { get; }
     public ItemFarmViewModel Items { get; }
     public QuestViewModel Quests { get; }
@@ -138,6 +139,7 @@ public sealed partial class MainViewModel : Observable
         var history = store.Load<List<HistoryEntry>>("history.json");
         history.RemoveAll(h => h == null || h.Message == null || h.Kind == null);
         Engine = new(settings, mining, mvps, history);
+        Instances = new InstanceViewModel(this,mvpClock);
         Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
         Items = new ItemFarmViewModel(store,Catalog);
         Spotlight = new SpotlightViewModel(store);
@@ -188,6 +190,7 @@ public sealed partial class MainViewModel : Observable
     public void Tick()
     {
         AppearanceService.Apply(Settings.Theme,DateTimeOffset.UtcNow);Changed(nameof(SeasonDecoration));
+        Instances.Tick();
         Events.Tick();
         Spotlight.Tick();
         if (Engine.Evaluate(DateTimeOffset.UtcNow)) Save();

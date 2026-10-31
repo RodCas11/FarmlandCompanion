@@ -7,7 +7,7 @@ using System.Text.Json.Serialization;
 namespace RagnarokCompanion.Models;
 
 public enum MiningPhase { Available, Mining, Cooldown }
-public enum CompactTab { Mining, Mvps, Events, Spotlight, Items, Quests }
+public enum CompactTab { Mining, Mvps, Events, Spotlight, Items, Quests, Instances }
 public sealed class Settings : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -20,6 +20,7 @@ public sealed class Settings : INotifyPropertyChanged
     private CompactTab compactTab = CompactTab.Mining;
     private string theme="Tema Halloween"; public string Theme {get=>theme;set=>Set(ref theme,value);}
     public CompactTab CompactTab { get => compactTab; set => Set(ref compactTab, value); }
+    public bool InstanceSounds {get;set;}=true; public bool InstanceAlerts {get;set;}=true;
     public bool ChooseCompactFavorites { get; set; }
     public List<string> CompactFavoriteKeys { get; set; } = new();
     public bool CompactMvpAbsoluteTime {get;set;}

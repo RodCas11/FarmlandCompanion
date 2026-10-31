@@ -17,7 +17,7 @@ public sealed class NotificationService : IDisposable
     private readonly MainViewModel vm;
     private readonly ToolStripMenuItem mine = new("Mina"), next = new("Próximo MVP");
     private readonly ToolStripMenuItem pin = new("Sempre no topo"), sounds = new("Sons da mina e MVPs");
-    private sealed record Notification(string Title, string Message, DateTimeOffset? Expires, IReadOnlyList<EventAlert>? Events = null);
+    private sealed record Notification(string Title, string Message, DateTimeOffset? Expires, IReadOnlyList<EventAlert>? Events = null, bool? Sounds = null);
     private readonly Queue<Notification> pending = new();
     private readonly Icon appIcon;
     private readonly System.Windows.Threading.DispatcherTimer delivery = new() { Interval = TimeSpan.FromSeconds(7) };
@@ -41,6 +41,7 @@ public sealed class NotificationService : IDisposable
         tray = new NotifyIcon { Text = "Farmland Companion", Icon = appIcon, ContextMenuStrip = menu, Visible = true };
         tray.DoubleClick += (_, _) => panel(); tray.BalloonTipClicked += (_, _) => panel();
         vm.Engine.Alert += Notify;
+        vm.Instances.Alert += NotifyInstance;
         vm.Events.Schedule.AlertBatch += NotifyEvents;
         delivery.Tick += (_, _) => Deliver();
     }
@@ -57,6 +58,7 @@ public sealed class NotificationService : IDisposable
         pending.Enqueue(new("Farmland Companion", entry.Message, null));
         if (!delivery.IsEnabled) { Deliver(); delivery.Start(); }
     }
+    private void NotifyInstance(HistoryEntry entry,bool sounds){pending.Enqueue(new("Instância liberada",entry.Message,null,Sounds:sounds));if(!delivery.IsEnabled){Deliver();delivery.Start();}}
     private void NotifyEvents(IReadOnlyList<EventAlert> alerts)
     {
         if (alerts.Count==0) return;
@@ -83,7 +85,7 @@ public sealed class NotificationService : IDisposable
         string title=popup?.Title ?? entry.Title; if(AppearanceService.IsHalloween(vm.Settings.Theme,DateTimeOffset.UtcNow)&&!title.Contains("🎃"))title="🎃 "+title;
         tray.ShowBalloonTip(6000, title, popup?.Message ?? message, ToolTipIcon.None);
         DeliveredCount++;
-        if (popup?.Sounds ?? vm.Settings.Sounds) SystemSounds.Asterisk.Play();
+        if (popup?.Sounds ?? entry.Sounds ?? vm.Settings.Sounds) SystemSounds.Asterisk.Play();
     }
-    public void Dispose() { if (disposed) return; disposed = true; delivery.Stop(); vm.Engine.Alert -= Notify; vm.Events.Schedule.AlertBatch -= NotifyEvents; tray.Visible = false; tray.Dispose(); appIcon.Dispose(); }
+    public void Dispose() { if (disposed) return; disposed = true; delivery.Stop(); vm.Engine.Alert -= Notify; vm.Instances.Alert -= NotifyInstance; vm.Events.Schedule.AlertBatch -= NotifyEvents; tray.Visible = false; tray.Dispose(); appIcon.Dispose(); }
 }

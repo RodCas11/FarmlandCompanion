@@ -936,6 +936,23 @@
                         "SourceUrl":  "",
                         "IsFarmlandConfirmed":  true,
                         "LastVerifiedAt":  "2026-10-20T00:00:00-03:00"
+                    },
+                    {
+                        "MonsterId":  1373,
+                        "MonsterName":  "Senhor dos Mortos",
+                        "MapCode":  "niflheim",
+                        "SpawnIdentifier":  "farmland-world",
+                        "ScheduleType":  "Interval",
+                        "RespawnBaseSeconds":  3600,
+                        "RespawnVarianceSeconds":  600,
+                        "RespawnMinSeconds":  3600,
+                        "RespawnMaxSeconds":  4200,
+                        "VariationMode":  "Additional",
+                        "Source":  "Farmland — dados fornecidos pelo usuário",
+                        "SourceVersion":  "farmland-mvp-2026-10-30",
+                        "SourceUrl":  "",
+                        "IsFarmlandConfirmed":  true,
+                        "LastVerifiedAt":  "2026-10-30T00:00:00-03:00"
                     }
                 ]
 }

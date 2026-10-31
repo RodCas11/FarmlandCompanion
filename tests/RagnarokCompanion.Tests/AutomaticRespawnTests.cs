@@ -14,7 +14,7 @@ public sealed class AutomaticRespawnTests
     static MainViewModel Vm(PersistenceService? store=null)=>new(store??Store(),Clock,_=>true);
     static void Dispose(MainViewModel vm){vm.Catalog.Dispose();vm.Spotlight.Dispose();}
     [Fact] public void ShippedCatalogHasPinnedProvenanceAndRealIfritSpawn(){
-        var catalog=new MvpRespawnCatalog();var official=catalog.Records.Where(r=>r.IsFarmlandConfirmed).ToArray();Assert.Equal(55,official.Length);Assert.All(official,r=>{Assert.Contains("Farmland",r.Source);Assert.True(r.RespawnMinSeconds>0);Assert.Equal(r.RespawnBaseSeconds,r.RespawnMinSeconds);Assert.Equal(r.RespawnBaseSeconds+r.RespawnVarianceSeconds,r.RespawnMaxSeconds);});
+        var catalog=new MvpRespawnCatalog();var official=catalog.Records.Where(r=>r.IsFarmlandConfirmed).ToArray();Assert.Equal(56,official.Length);Assert.All(official,r=>{Assert.Contains("Farmland",r.Source);Assert.True(r.RespawnMinSeconds>0);Assert.Equal(r.RespawnBaseSeconds,r.RespawnMinSeconds);Assert.Equal(r.RespawnBaseSeconds+r.RespawnVarianceSeconds,r.RespawnMaxSeconds);});
         var ifrit=Assert.Single(catalog.Records,r=>r.MonsterId==1832&&r.MapCode=="thor_v03");Assert.Equal(39600,ifrit.RespawnBaseSeconds);Assert.Equal(600,ifrit.RespawnVarianceSeconds);Assert.Equal(40200,ifrit.RespawnMaxSeconds);
     }
     sealed class ApiHandler:HttpMessageHandler{

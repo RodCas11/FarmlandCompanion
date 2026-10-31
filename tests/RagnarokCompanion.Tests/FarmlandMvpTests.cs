@@ -5,7 +5,7 @@ using Xunit;
 namespace RagnarokCompanion.Tests;
 public sealed class FarmlandMvpTests {
  [Fact] public void OfficialSecondsVariationsAndMapsAreIndependent(){
-  var records=new MvpRespawnCatalog().Records.Where(r=>r.IsFarmlandConfirmed).ToList();Assert.Equal(55,records.Count);var snake=records.Single(r=>r.MonsterName=="Evil Snake Lord");Assert.Equal(5650,snake.RespawnMinSeconds);Assert.Equal(6250,snake.RespawnMaxSeconds);Assert.Equal(7000,records.Single(r=>r.MonsterName=="White Lady").RespawnMinSeconds);Assert.Equal(5460,records.Single(r=>r.MonsterName=="Samurai Specter").RespawnMinSeconds);
+  var records=new MvpRespawnCatalog().Records.Where(r=>r.IsFarmlandConfirmed).ToList();Assert.Equal(56,records.Count);var snake=records.Single(r=>r.MonsterName=="Evil Snake Lord");Assert.Equal(5650,snake.RespawnMinSeconds);Assert.Equal(6250,snake.RespawnMaxSeconds);Assert.Equal(7000,records.Single(r=>r.MonsterName=="White Lady").RespawnMinSeconds);Assert.Equal(5460,records.Single(r=>r.MonsterName=="Samurai Specter").RespawnMinSeconds);
   Assert.All(records.Where(r=>r.MonsterName is "Leak" or "Scaraba Queen" or "Gold Queen Scaraba"),r=>Assert.Equal(r.RespawnMinSeconds,r.RespawnMaxSeconds));Assert.Equal(1800,records.Single(r=>r.MonsterName=="Kraken").RespawnVarianceSeconds);Assert.Equal(4,records.Count(r=>r.MonsterId==1785));Assert.Equal(2,records.Count(r=>r.MonsterId==1272));
  }
  [Fact] public void CardsRegisterOneClickAndManualTimeWithoutChangingFavorites(){
