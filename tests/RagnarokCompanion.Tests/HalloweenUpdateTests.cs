@@ -26,22 +26,22 @@ public sealed class HalloweenUpdateTests
             var rows=service.Occurrences(Server(26),true);Assert.Equal(28,rows.Count(r=>r.Event.Halloween));
             Assert.Equal(24,rows.Count(r=>r.Event.OfficialId=="pumpkins"));Assert.Equal(4,rows.Count(r=>r.Event.OfficialId=="poring"));
             Assert.DoesNotContain(service.Occurrences(Server(25),true),r=>r.Event.Halloween);
-            Assert.Equal(28,service.Occurrences(Server(2,month:11),true).Count(r=>r.Event.Halloween));
-            Assert.DoesNotContain(service.Upcoming(Server(3,month:11)),r=>r.Event.Halloween);
-            Assert.Contains(service.Upcoming(Server(3,month:11)),r=>r.Event.OfficialId=="poring");
+            Assert.Equal(28,service.Occurrences(Server(8,month:11),true).Count(r=>r.Event.Halloween));
+            Assert.DoesNotContain(service.Upcoming(Server(9,month:11)),r=>r.Event.Halloween);
+            Assert.Contains(service.Upcoming(Server(9,month:11)),r=>r.Event.OfficialId=="poring");
             var alerts=new List<RagnarokCompanion.Models.EventAlert>();service.Alert+=alerts.Add;
             service.Evaluate(Server(26,14,55));service.Evaluate(Server(26,14,55));Assert.Single(alerts,a=>a.EventId=="official-niflheim");
             service.Evaluate(Server(26,15));Assert.Contains(alerts,a=>a.EventId=="official-pumpkins");
-            repo.Events.Single(e=>e.OfficialId=="zombies").AlertsEnabled=false;repo.Save();
-            var restored=new EventRepository(root);Assert.False(restored.Events.Single(e=>e.OfficialId=="zombies").AlertsEnabled);
+            repo.Events.Single(e=>e.OfficialId=="zombies").AlertsEnabled=false;foreach(var seasonal in repo.Events.Where(e=>e.Halloween))seasonal.LastDate=new DateOnly(2026,11,2);repo.Save();
+            var restored=new EventRepository(root);Assert.False(restored.Events.Single(e=>e.OfficialId=="zombies").AlertsEnabled);Assert.All(restored.Events.Where(e=>e.Halloween),e=>Assert.Equal(new DateOnly(2026,11,8),e.LastDate));Assert.Equal(28,new EventScheduleService(restored).Occurrences(Server(3,month:11),true).Count(o=>o.Event.Halloween));
             var vm=new EventViewModel(restored,()=>Server(26,14));Assert.All(vm.Today,r=>Assert.False(r.Event.Halloween));vm.HalloweenTab=true;Assert.All(vm.Today,r=>Assert.True(r.Event.Halloween));Assert.Contains(vm.CompactUpcoming,r=>!r.Occurrence.Event.Halloween);Assert.Contains(vm.CompactUpcoming,r=>r.Occurrence.Event.Halloween);
         }finally{Directory.Delete(root,true);}
     }
     [Fact] public void AutomaticThemeUsesSaoPauloInclusiveDatesAndManualChoice()
     {
         Assert.False(AppearanceService.IsHalloween("Automático",Server(25,23,59)));Assert.True(AppearanceService.IsHalloween("Automático",Server(26)));
-        Assert.True(AppearanceService.IsHalloween("Automático",Server(2,23,59,11)));Assert.False(AppearanceService.IsHalloween("Automático",Server(3,month:11)));
-        Assert.True(AppearanceService.IsHalloween("Tema Halloween",Server(3,month:11)));Assert.False(AppearanceService.IsHalloween("Tema Farmland",Server(26)));
+        Assert.True(AppearanceService.IsHalloween("Automático",Server(8,23,59,11)));Assert.False(AppearanceService.IsHalloween("Automático",Server(9,month:11)));
+        Assert.True(AppearanceService.IsHalloween("Tema Halloween",Server(9,month:11)));Assert.False(AppearanceService.IsHalloween("Tema Farmland",Server(26)));
     }
     [Fact] public void ReleasesRequireStableVersionsAndExactOfficialAssetUrls()
     {

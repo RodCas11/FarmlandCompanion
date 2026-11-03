@@ -45,7 +45,7 @@ public sealed class EventRepository
         }
     }
     public static List<ScheduledEvent> Defaults() => RegularDefaults().Concat(HalloweenDefaults()).ToList();
-    static ScheduledEvent Seasonal(string id, string name, string icon, string duration, IEnumerable<string> times) => new() { Id="official-"+id, OfficialId=id, Name=name, Icon="🎃 "+icon, Halloween=true, FirstDate=new(2026,10,26), LastDate=new(2026,11,2), Duration=duration, Times=times.ToList(), UseGlobalAdvances=false, AdvanceMinutes=new(){5} };
+    static ScheduledEvent Seasonal(string id, string name, string icon, string duration, IEnumerable<string> times) => new() { Id="official-"+id, OfficialId=id, Name=name, Icon="🎃 "+icon, Halloween=true, FirstDate=new(2026,10,26), LastDate=new(2026,11,8), Duration=duration, Times=times.ToList(), UseGlobalAdvances=false, AdvanceMinutes=new(){5} };
     static IEnumerable<ScheduledEvent> HalloweenDefaults() => new[] {
         Seasonal("niflheim", "A Maldição de Niflheim", "👻", "Duração: até 30 minutos", new[]{"15:00","21:00"}),
         Seasonal("pumpkins", "Caça às Abóboras Amaldiçoadas", "", "Duração: 20 minutos", Enumerable.Range(0,24).Select(h=>$"{h:00}:05")),

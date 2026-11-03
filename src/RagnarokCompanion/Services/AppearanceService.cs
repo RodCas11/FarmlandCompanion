@@ -7,7 +7,7 @@ public static class AppearanceService
 {
     public static readonly string[] Choices={"Tema Farmland","Tema Halloween","Automático"};
     static bool? applied;
-    public static bool InSeason(DateTimeOffset now) { var date=DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now,SpotlightRotationService.ServerZone).DateTime);return date>=new DateOnly(2026,10,26)&&date<=new DateOnly(2026,11,2); }
+    public static bool InSeason(DateTimeOffset now) { var date=DateOnly.FromDateTime(TimeZoneInfo.ConvertTime(now,SpotlightRotationService.ServerZone).DateTime);return date>=new DateOnly(2026,10,26)&&date<=new DateOnly(2026,11,8); }
     public static bool IsHalloween(string theme,DateTimeOffset now)=>theme=="Tema Halloween"||theme=="Automático"&&InSeason(now);
     public static void Apply(string theme,DateTimeOffset now)
     {

@@ -98,7 +98,7 @@ public sealed class EventViewModel : Observable
         if(parts.Any(s=>!int.TryParse(s,out int n)||!EventRepository.AllowedAdvances.Contains(n))){Tell("Antecedências permitidas: 1, 5, 10, 15 e 30 minutos, separadas por vírgulas.");return;}
         var candidate=new ScheduledEvent{Name=EditName.Trim(),Description=EditDescription.Trim(),Times=times,Icon=EditIcon??"🔔"};
         if(!EventRepository.Valid(candidate)||!Icons.Contains(candidate.Icon)){Tell("Informe nome (até 120 caracteres), descrição (até 4000), ícone e horários válidos em HH:mm, separados por vírgulas (até 48).");return;}
-        var item=selected??new ScheduledEvent { Halloween=HalloweenTab, FirstDate=HalloweenTab?new DateOnly(2026,10,26):null, LastDate=HalloweenTab?new DateOnly(2026,11,2):null };
+        var item=selected??new ScheduledEvent { Halloween=HalloweenTab, FirstDate=HalloweenTab?new DateOnly(2026,10,26):null, LastDate=HalloweenTab?new DateOnly(2026,11,8):null };
         if(!item.Times.SequenceEqual(times))item.TimesCustomized=true;
         item.Name=candidate.Name;item.Description=candidate.Description;item.Times=times;item.Icon=candidate.Icon;item.Enabled=EditEnabled;item.AlertsEnabled=EditAlerts;item.IsOpening=EditOpening;item.UseGlobalAdvances=EditGlobalAdvances;item.AdvanceMinutes=parts.Select(int.Parse).Distinct().ToList();
         item.SoundsEnabled=EditSounds;
