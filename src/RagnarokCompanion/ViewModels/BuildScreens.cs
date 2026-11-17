@@ -43,10 +43,10 @@ public sealed partial class BuildViewModel
     public string OptionProfile {get=>SelectedSlot?.Model.RandomOptionProfile??"Padrão";set{if(SelectedSlot==null||SelectedSlot.Model.RandomOptionProfile==value||!OptionProfiles.Contains(value))return;SelectedSlot.Model.RandomOptionProfile=value;Changed();Edited();RefreshOptionContext();}}
     public string OptionsContext {get;private set;}="Escolha um item para ver as opções compatíveis.";
     public ICommand AddOptionCommand {get;private set;}=null!;
-    List<CommunityBuild> communitySource=new();BuildClass communityClass=BuildCatalog.Classes[0];string communityStage="Early",communityPurpose="PvM",communityQuery="";
+    static readonly BuildClass AllCommunityClasses=new("","Todas","","",""); public BuildClass[] CommunityClasses {get;}=new[]{AllCommunityClasses}.Concat(BuildCatalog.Classes).ToArray(); public string[] CommunityStages {get;}=new[]{"Todas"}.Concat(BuildCatalog.Stages).ToArray(); public string[] CommunityPurposes {get;}=new[]{"Todas"}.Concat(BuildCatalog.Purposes).ToArray(); List<CommunityBuild> communitySource=new();BuildClass communityClass=AllCommunityClasses;string communityStage="Todas",communityPurpose="Todas",communityQuery="";
     public BuildClass CommunityClass {get=>communityClass;set{if(value==null||communityClass==value)return;communityClass=value;Changed();ReadCommunityCache();}}
-    public string CommunityStage {get=>communityStage;set{if(!Stages.Contains(value)||communityStage==value)return;communityStage=value;Changed();ReadCommunityCache();}}
-    public string CommunityPurpose {get=>communityPurpose;set{if(!Purposes.Contains(value)||communityPurpose==value)return;communityPurpose=value;Changed();ReadCommunityCache();}}
+    public string CommunityStage {get=>communityStage;set{if(!CommunityStages.Contains(value)||communityStage==value)return;communityStage=value;Changed();ReadCommunityCache();}}
+    public string CommunityPurpose {get=>communityPurpose;set{if(!CommunityPurposes.Contains(value)||communityPurpose==value)return;communityPurpose=value;Changed();ReadCommunityCache();}}
     public string CommunityQuery {get=>communityQuery;set{communityQuery=value??"";Changed();FilterCommunity();}}
     void InitializeScreens()
     {
@@ -111,7 +111,7 @@ public sealed partial class BuildViewModel
     void FilterCommunity()
     {
         string query=MvpSearchCoordinator.Normalize(CommunityQuery.Trim());Community.Clear();CommunityCards.Clear();SelectedCommunity=null;
-        var localRows=query.Length>0?repository.SearchCommunity(CommunityClass.Id,CommunityStage,CommunityPurpose,CommunityQuery):communitySource;var votes=repository.StarVotes(FirebaseUid);foreach(var cachedRow in (CommunityOrder=="Mais estreladas"?localRows.OrderByDescending(b=>b.StarCount).ThenBy(b=>b.Id):localRows.OrderByDescending(b=>b.Build.UpdatedUtc)).Where(b=>b?.Build!=null&&b.Build.ClassId==CommunityClass.Id&&b.Build.Stage==CommunityStage&&b.Build.Purpose==CommunityPurpose&&
+        var localRows=query.Length>0?repository.SearchCommunity(CommunityClass.Id,CommunityStage,CommunityPurpose,CommunityQuery):communitySource;var votes=repository.StarVotes(FirebaseUid);foreach(var cachedRow in (CommunityOrder=="Mais estreladas"?localRows.OrderByDescending(b=>b.StarCount).ThenBy(b=>b.Id):localRows.OrderByDescending(b=>b.Build.UpdatedUtc)).Where(b=>b?.Build!=null&&(CommunityClass.Id.Length==0||b.Build.ClassId==CommunityClass.Id)&&(CommunityStage=="Todas"||b.Build.Stage==CommunityStage)&&(CommunityPurpose=="Todas"||b.Build.Purpose==CommunityPurpose)&&
             (query.Length==0||MvpSearchCoordinator.Normalize((b.Build.Title??"")+" "+(b.Build.Notes??"")+" "+b.AuthorName).Contains(query)))){var row=cachedRow with{Starred=IsSignedIn&&votes.Contains(cachedRow.Id)};Community.Add(row);CommunityCards.Add(new(row,this));}
         Changed(nameof(NoCommunity));foreach(var saved in SavedCards)saved.RefreshStatus();
     }

@@ -115,7 +115,7 @@ public sealed partial class BuildViewModel:Observable,IDisposable
     void Search()
     {
         Suggestions.Clear();if(Query.Trim().Length==0)return;
-        try{foreach(var item in Items.Search(Query)){var meta=Equipment.Find(item.Id);bool allowed=SearchKind=="Equipamento"?SelectedSlot!=null&&meta!=null&&Equipment.Compatible(meta,SelectedClass,SelectedSlot.Definition):meta?.Type=="Card";if(!CompatibleOnly||allowed)Suggestions.Add(item);}}catch(Exception e){Tell(e.Message);}
+        try{foreach(var item in Items.Search(Query,item=>{if(!BuildEquipmentCatalog.Selectable(item.Id))return false;if(!CompatibleOnly)return true;var meta=Equipment.Find(item.Id);return SearchKind=="Equipamento"?SelectedSlot!=null&&meta!=null&&Equipment.Compatible(meta,SelectedClass,SelectedSlot.Definition):meta?.Type=="Card";}))Suggestions.Add(item);}catch(Exception e){Tell(e.Message);}
     }
     void Assign()
     {

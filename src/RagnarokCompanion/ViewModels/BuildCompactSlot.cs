@@ -22,7 +22,7 @@ public sealed partial class BuildViewModel
  public ObservableCollection<SlotComponentLine> SlotComponents {get;}=new();public ObservableCollection<SlotOptionLine> SlotOptions {get;}=new();
  public ObservableCollection<FarmItem> ComponentResults {get;}=new();string componentQuery="",componentKind="Carta";
  public string[] ComponentKinds=>new[]{"Carta","Encantamento"};public string ComponentKind {get=>componentKind;set{componentKind=value;Changed();}}
- public string ComponentQuery {get=>componentQuery;set{componentQuery=value??"";Changed();ComponentResults.Clear();if(componentQuery.Trim().Length>0)foreach(var item in Items.Search(componentQuery).Where(i=>Equipment.Find(i.Id)?.Type=="Card"))ComponentResults.Add(item);}}
+ public string ComponentQuery {get=>componentQuery;set{componentQuery=value??"";Changed();ComponentResults.Clear();if(componentQuery.Trim().Length>0)foreach(var item in Items.Search(componentQuery,i=>Equipment.Find(i.Id)?.Type=="Card"))ComponentResults.Add(item);}}
  public FarmItem? SelectedComponent {get;set;}
  public ICommand AddSlotComponentCommand=>new RelayCommand(_=>{if(SelectedComponent==null||SelectedSlot==null)return;var list=ComponentKind=="Encantamento"?SelectedSlot.Model.Enchants:SelectedSlot.Model.Cards;if(list.Count>=4){Tell("Limite de quatro componentes por tipo.");return;}list.Add(SelectedComponent.Id);SelectedSlot.ComponentsChanged();Edited();SelectedComponent=null;ComponentQuery="";});
  bool updatingCompact;

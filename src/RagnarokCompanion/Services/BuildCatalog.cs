@@ -50,12 +50,14 @@ public sealed class BuildEquipmentCatalog
     public BuildItemMetadata? Find(int id)=>farmland.GetValueOrDefault(id)??items.GetValueOrDefault(id)??pets.GetValueOrDefault(id);
     static bool Flag(Dictionary<string,bool> map,string key)=>map.GetValueOrDefault(key);
     public static bool At(BuildItemMetadata item,string location)=>Flag(item.Locations,location)||location=="Right_Hand"&&Flag(item.Locations,"Both_Hand")||location is "Left_Accessory" or "Right_Accessory"&&Flag(item.Locations,"Both_Accessory");
+    public static bool Selectable(int id)=>id is <22000 or >22005; // These six legacy boots use Queen Worm Skin; Farmland uses the Nova variants 22006–22011.
     public bool Compatible(BuildItemMetadata item,BuildClass job,BuildSlot slot)
     {
+        if(!Selectable(item.Id))return false;
         if(slot.Group=="Pet")return item.Type.Equals("PetEgg",StringComparison.OrdinalIgnoreCase);
-        bool jobs=item.Jobs.Count==0||Flag(item.Jobs,"All")||Flag(item.Jobs,job.Job);
+        bool jobs=item.Jobs.Count==0||Flag(item.Jobs,"All")||Flag(item.Jobs,job.Job)||(job.Job is "Bard" or "Dancer"&&Flag(item.Jobs,"BardDancer"));
         if(item.Jobs.TryGetValue(job.Job,out bool explicitJob)&&!explicitJob)jobs=false;
-        bool classes=item.Classes.Count==0||Flag(item.Classes,"All")||Flag(item.Classes,job.Upper?"Upper":"Normal");
+        bool classes=item.Classes.Count==0||Flag(item.Classes,"All")||Flag(item.Classes,job.Upper?"Upper":"Normal")||(job.Upper&&(Flag(item.Classes,"All_Upper")||Flag(item.Classes,"All_Third")||Flag(item.Classes,"Third")));
         if(item.Classes.TryGetValue(job.Upper?"Upper":"Normal",out bool explicitClass)&&!explicitClass)classes=false;
         bool gender=item.Gender=="Both"||job.Gender=="Both"||item.Gender==job.Gender;
         return jobs&&classes&&gender&&At(item,slot.Location)&&item.Type is "Armor" or "Weapon" or "ShadowGear";

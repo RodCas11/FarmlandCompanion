@@ -17,11 +17,11 @@ public sealed partial class FirestoreBuildGateway
  }
  public async Task<CatalogPage> FetchPage(string classId,string stage,string purpose,bool stars,string? cursor,CancellationToken ct)
  {
-  var filters=new[]{("classId",classId),("stage",stage),("purpose",purpose)}.Select(f=>new{fieldFilter=new{field=new{fieldPath=f.Item1},op="EQUAL",value=S(f.Item2)}});
+  var filters=new[]{("classId",classId),("stage",stage),("purpose",purpose)}.Where(f=>!string.IsNullOrEmpty(f.Item2)&&f.Item2!="Todas").Select(f=>new{fieldFilter=new{field=new{fieldPath=f.Item1},op="EQUAL",value=S(f.Item2)}}).ToArray();
   object? start=null;if(cursor!=null){using var d=JsonDocument.Parse(cursor);var values=new List<object>();if(stars)values.Add(new{integerValue=d.RootElement.GetProperty("Stars").GetInt32().ToString()});values.Add(new{referenceValue=d.RootElement.GetProperty("Name").GetString()});start=new{values,before=false};}
   var order=new List<object>();if(stars)order.Add(new{field=new{fieldPath="starCount"},direction="DESCENDING"});order.Add(new{field=new{fieldPath="__name__"},direction=stars?"DESCENDING":"ASCENDING"});
   string[] projection={"buildId","title","classId","stage","purpose","authorName","ownerUid","starCount","version","updatedAt","adminNotes"};
-  using var query=await Send(HttpMethod.Post,":runQuery",new{structuredQuery=new{select=new{fields=projection.Select(s=>new{fieldPath=s})},from=new[]{new{collectionId="approvedBuilds"}},where=new{compositeFilter=new{op="AND",filters}},orderBy=order,startAt=start,limit=20}},ct);
+  using var query=await Send(HttpMethod.Post,":runQuery",new{structuredQuery=new{select=new{fields=projection.Select(s=>new{fieldPath=s})},from=new[]{new{collectionId="approvedBuilds"}},where=filters.Length==0?null:(object)new{compositeFilter=new{op="AND",filters}},orderBy=order,startAt=start,limit=20}},ct);
   var docs=query.RootElement.EnumerateArray().Where(r=>r.TryGetProperty("document",out _)).Select(r=>r.GetProperty("document")).ToArray();var rows=docs.Select(d=>ReadPublished(d,false)).ToList();rows=await WithAuthors(rows,ct);rows=await AttachStars(rows,ct);
   string? next=docs.Length==20?JsonSerializer.Serialize(new{Name=docs[^1].GetProperty("name").GetString(),Stars=rows[^1].StarCount}):null;return new(rows,next,next!=null);
  }
