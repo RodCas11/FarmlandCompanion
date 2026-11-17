@@ -1,0 +1,1 @@
+using System.Windows; using System.Windows.Controls; namespace RagnarokCompanion.Views; public partial class BuildReviewDialogView:UserControl {public BuildReviewDialogView(){InitializeComponent();} void ReviewVisibilityChanged(object sender,DependencyPropertyChangedEventArgs e){if(IsVisible)Dispatcher.BeginInvoke(new System.Action(()=>ReviewScroll.Focus()));}}

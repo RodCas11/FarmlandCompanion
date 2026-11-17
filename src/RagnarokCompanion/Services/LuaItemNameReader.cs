@@ -6,15 +6,16 @@ using System.Text.RegularExpressions;
 namespace RagnarokCompanion.Services;
 // A data lexer only: no interpreter, calls, expressions or file includes are evaluated.
 public static class LuaItemNameReader {
- public sealed record Names(string Identified,string Unidentified,string Description="");
+ public sealed record Names(string Identified,string Unidentified,string Description="",int Slots=-1,bool Costume=false);
  public static Dictionary<int,Names> Read(string file){
   var bytes=File.ReadAllBytes(file);string text;
   try{text=new UTF8Encoding(false,true).GetString(bytes);}catch(DecoderFallbackException){Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);text=Encoding.GetEncoding(1252).GetString(bytes);}
-  var result=new Dictionary<int,Names>();int id=0,depth=0;string identified="",unidentified="",description="";
+  var result=new Dictionary<int,Names>();int id=0,depth=0,slots=-1;bool costume=false;string identified="",unidentified="",description="";
   using var tokens=Tokens(text).GetEnumerator();string? Next()=>tokens.MoveNext()?tokens.Current:null;
   for(string? token=Next();token!=null;token=Next()){
-   if(id==0&&token=="["){var number=Next();if(int.TryParse(number,out int candidate)&&candidate>0&&Next()=="]"&&Next()=="="&&Next()=="{"){id=candidate;depth=1;identified=unidentified=description="";}continue;}
-   if(id==0)continue;if(token=="{"){depth++;continue;}if(token=="}"){if(--depth==0){if(!string.IsNullOrWhiteSpace(identified))result[id]=new(identified,unidentified,description);id=0;}continue;}
+   if(id==0&&token=="["){var number=Next();if(int.TryParse(number,out int candidate)&&candidate>0&&Next()=="]"&&Next()=="="&&Next()=="{"){id=candidate;depth=1;identified=unidentified=description="";slots=-1;costume=false;}continue;}
+   if(id==0)continue;if(token=="{"){depth++;continue;}if(token=="}"){if(--depth==0){if(!string.IsNullOrWhiteSpace(identified))result[id]=new(identified,unidentified,description,slots,costume);id=0;}continue;}
+   if(depth==1&&token is "slotCount" or "costume"){string key=token;if(Next()!="=")continue;var value=Next();if(key=="slotCount"&&int.TryParse(value,out int count)&&count is >=0 and <=4)slots=count;else if(key=="costume")costume=value=="true";continue;}
    if(depth==1&&token=="identifiedDescriptionName"){
     if(Next()!="="||Next()!="{")continue;var lines=new List<string>();int nested=1;
     for(var part=Next();part!=null;part=Next()){if(part=="{"){nested++;continue;}if(part=="}"){if(--nested==0)break;continue;}if(nested==1&&part.Length>=2&&(part[0]=='"'||part[0]=='\''))lines.Add(Unescape(part[1..^1]));}

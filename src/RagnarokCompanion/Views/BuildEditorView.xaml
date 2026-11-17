@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="RagnarokCompanion.Views.BuildEditorView" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:views="clr-namespace:RagnarokCompanion.Views">
+  <UserControl.Resources><ResourceDictionary><ResourceDictionary.MergedDictionaries><ResourceDictionary Source="BuildEquipmentStyles.xaml"/></ResourceDictionary.MergedDictionaries></ResourceDictionary></UserControl.Resources>
+  <DockPanel>
+    <StackPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="1.05*" MinWidth="280" />
+          <ColumnDefinition Width="140" />
+          <ColumnDefinition Width="125" />
+        </Grid.ColumnDefinitions>
+        <StackPanel>
+          <TextBlock Text="Classe" FontSize="10" Foreground="#9AA6BF" />
+          <ComboBox ItemsSource="{Binding Classes}" SelectedItem="{Binding SelectedClass}" />
+        </StackPanel>
+        <StackPanel Grid.Column="1">
+          <TextBlock Text="Estágio" FontSize="10" Foreground="#9AA6BF" />
+          <ComboBox ItemsSource="{Binding Stages}" SelectedItem="{Binding Stage}" />
+        </StackPanel>
+        <StackPanel Grid.Column="2">
+          <TextBlock Text="Finalidade" FontSize="10" Foreground="#9AA6BF" />
+          <ComboBox ItemsSource="{Binding Purposes}" SelectedItem="{Binding Purpose}" />
+        </StackPanel>
+      </Grid>
+      <DockPanel>
+        <WrapPanel DockPanel.Dock="Right">
+          <Button Content="Novo" Command="{Binding NewCommand}" Padding="11,7" />
+          <Button Content="Salvar build" Command="{Binding SaveCommand}" Style="{StaticResource Primary}" Padding="11,7" />
+          <Button Content="Publicar / atualizar" Command="{Binding PublishCommand}" Padding="11,7" />
+        </WrapPanel>
+        <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" MaxLength="120" ToolTip="Nome da build" Margin="0,4,12,4" />
+      </DockPanel>
+      <TextBlock Text="{Binding LocalStatus}" Foreground="{DynamicResource ThemeE9C77A}" FontSize="11" Margin="0,8,0,0" TextWrapping="Wrap" />
+    </StackPanel>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+      <StackPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.95*" MinWidth="330" />
+            <ColumnDefinition Width="1.05*" MinWidth="280" />
+          </Grid.ColumnDefinitions>
+          <StackPanel Margin="0,0,14,0">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,6"><RadioButton Content="Equipamentos" Style="{StaticResource NavItem}" Padding="9,6" IsChecked="{Binding IsNormalGroup, Mode=OneWay}" Command="{Binding SwitchEquipmentGroupCommand}" CommandParameter="Normal"/><RadioButton Content="Visuais / Shadows" Style="{StaticResource NavItem}" Padding="9,6" IsChecked="{Binding IsVisualGroup, Mode=OneWay}" Command="{Binding SwitchEquipmentGroupCommand}" CommandParameter="Extras"/></StackPanel>
+            <Border Background="{DynamicResource Theme181D2C}" CornerRadius="12" BorderBrush="{DynamicResource ThemeCardBorder}" BorderThickness="1" Padding="2">
+              <Grid Height="350" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition />
+                  <ColumnDefinition Width="96"/>
+                  <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                  <RowDefinition />
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" VerticalAlignment="Center" IsHitTestVisible="False">
+                  <Image Source="{Binding ClassSprite}" Width="92" Height="152" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
+                  <TextBlock Text="{Binding SelectedClass.Name}" Foreground="{DynamicResource ThemeE9C77A}" FontWeight="SemiBold" FontSize="12" HorizontalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" />
+                  <TextBlock Text="Sprite: iRO Wiki / Gravity" FontSize="8" Foreground="#75809A" HorizontalAlignment="Center" Margin="0,6" />
+                </StackPanel>
+                <ItemsControl Grid.ColumnSpan="3" Grid.RowSpan="5" ItemsSource="{Binding BoardSlots}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <Grid>
+                        <Grid.ColumnDefinitions>
+                          <ColumnDefinition />
+                          <ColumnDefinition Width="96"/>
+                          <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                          <RowDefinition />
+                          <RowDefinition />
+                          <RowDefinition />
+                          <RowDefinition />
+                          <RowDefinition />
+                        </Grid.RowDefinitions>
+                      </Grid>
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemContainerStyle>
+                    <Style TargetType="ContentPresenter">
+                      <Setter Property="Grid.Row" Value="{Binding BoardRow}" />
+                      <Setter Property="Grid.Column" Value="{Binding BoardColumn}" />
+                    </Style>
+                  </ItemsControl.ItemContainerStyle>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <Button IsEnabled="{Binding Available}" Command="{Binding SelectCommand}" Style="{StaticResource SlotButton}" HorizontalContentAlignment="Stretch" views:ItemTooltip.Model="{Binding}">
+                        <StackPanel>
+                          <TextBlock Text="{Binding Name}" FontSize="9" Foreground="#9AA6BF" />
+                          <DockPanel>
+                            <Image Source="{Binding Image}" Width="26" Height="26" Margin="0,0,4,0" />
+                            <StackPanel>
+                              <TextBlock Text="{Binding ItemName}" FontSize="10" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" MaxHeight="28" />
+                              <TextBlock Text="{Binding Summary}" FontSize="8" Foreground="#9AA6BF" />
+                            </StackPanel>
+                          </DockPanel>
+                        </StackPanel>
+                      </Button>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </Grid>
+            </Border>
+          </StackPanel>
+<StackPanel Grid.Column="1"><TextBlock Text="Selecione um slot para editar" FontSize="18" FontWeight="SemiBold" Margin="0,8"/><TextBlock Text="As alterações só são aplicadas ao clicar em Salvar no modal." TextWrapping="Wrap" Foreground="#9AA6BF" FontSize="11" Margin="0,0,0,12"/>
+<Button DataContext="{Binding PetSlot}" Command="{Binding SelectCommand}" Style="{StaticResource SlotButton}" HorizontalContentAlignment="Stretch" views:ItemTooltip.Model="{Binding}"><DockPanel><Image Source="{Binding Image}" Width="32" Height="32" Margin="0,0,10,0"/><StackPanel><TextBlock Text="Ovo de Mascote · opcional" Foreground="#9AA6BF" FontSize="10"/><TextBlock Text="{Binding ItemName}" TextWrapping="Wrap"/></StackPanel></DockPanel></Button>            <TextBlock Text="Atributos" FontWeight="SemiBold" Margin="0,10,0,0" />
+            <ItemsControl ItemsSource="{Binding Stats}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Columns="3" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel>
+                    <TextBlock Text="{Binding Name}" FontSize="10" />
+                    <TextBox Text="{Binding Value, UpdateSourceTrigger=PropertyChanged, ValidatesOnExceptions=True}" MaxLength="3" FontFamily="Consolas" />
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock Text="Valores de planejamento; limites oficiais serão conferidos pelo ADM." FontSize="9" Foreground="#9AA6BF" TextWrapping="Wrap" />
+</StackPanel>
+        </Grid>
+        <Expander Header="Pendências e critérios de conclusão" Margin="0,12">
+          <StackPanel>
+            <TextBlock Text="Early: normais completos. Mid: normais + todos os visuais com Random Options. End: normais grade B/+9, Shadows +10, Random Options em todos os equipamentos e três em cada visual. Cartas e encantamentos extras seguem os critérios do ADM." FontSize="11" Foreground="#9AA6BF" TextWrapping="Wrap" />
+            <ItemsControl ItemsSource="{Binding Issues}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="11" Margin="0,3" />
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Expander>
+        <TextBlock Text="Anotações" FontSize="12" />
+        <TextBox Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}" AcceptsReturn="True" Height="60" MaxLength="8000" TextWrapping="Wrap" />
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

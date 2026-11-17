@@ -1,0 +1,74 @@
+{
+    "indexes":  [
+                    {
+                        "collectionGroup":  "approvedBuilds",
+                        "queryScope":  "COLLECTION",
+                        "fields":  [
+                                       {
+                                           "fieldPath":  "classId",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "stage",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "purpose",
+                                           "order":  "ASCENDING"
+                                       }
+                                   ]
+                    },
+                    {
+                        "collectionGroup":  "buildStars",
+                        "queryScope":  "COLLECTION",
+                        "fields":  [
+                                       {
+                                           "fieldPath":  "ownerUid",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "buildId",
+                                           "order":  "ASCENDING"
+                                       }
+                                   ]
+                    },
+                    {
+                        "collectionGroup":  "approvedBuilds",
+                        "queryScope":  "COLLECTION",
+                        "fields":  [
+                                       {
+                                           "fieldPath":  "classId",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "purpose",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "stage",
+                                           "order":  "ASCENDING"
+                                       },
+                                       {
+                                           "fieldPath":  "starCount",
+                                           "order":  "DESCENDING"
+                                       }
+                                   ]
+                    }
+                ],
+    "fieldOverrides":  [
+                           {
+                               "collectionGroup":  "builds",
+                               "fieldPath":  "payload",
+                               "indexes":  [
+
+                                           ]
+                           },
+                           {
+                               "collectionGroup":  "approvedBuilds",
+                               "fieldPath":  "payload",
+                               "indexes":  [
+
+                                           ]
+                           }
+                       ]
+}

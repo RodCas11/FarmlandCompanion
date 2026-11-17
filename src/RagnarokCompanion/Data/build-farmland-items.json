@@ -1,0 +1,3775 @@
+[
+  {
+    "Id": 19456,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410279,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 400913,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 400914,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410440,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 480595,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 480596,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 19457,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 22208,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310076,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310077,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310078,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310079,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310080,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 310081,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 22209,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 20947,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15391,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15392,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15393,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15394,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15395,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15396,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15397,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15398,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15399,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15400,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15401,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15402,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15171,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 19220,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {
+      "Knight": true,
+      "Crusader": true,
+      "Blacksmith": true,
+      "Alchemist": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410380,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410079,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 31090,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 29706,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29707,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29708,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29709,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29710,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29711,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29712,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29713,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29714,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 29715,
+    "Type": "Card",
+    "SubType": "Enchant",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 20081,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 20082,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Costume_Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 15410,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 20953,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 22215,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 32252,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 601000,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601001,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601002,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601003,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601004,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601005,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601006,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601007,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601008,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601009,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601010,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601011,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601012,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601013,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601014,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601015,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601016,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601017,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601018,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601019,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601020,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601021,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601022,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601023,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601024,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601025,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601026,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601027,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601028,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601029,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601033,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601034,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601035,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601036,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601037,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601038,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601039,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601040,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601041,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601042,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601043,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601044,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601045,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601046,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601047,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601048,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601049,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601050,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601051,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601052,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601053,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601054,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601055,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601056,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601057,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601058,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601059,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601060,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601061,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601062,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601063,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601064,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601065,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601066,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601067,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601068,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601069,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601070,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601071,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601073,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601074,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601075,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601076,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601077,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601078,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601079,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601080,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601081,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601082,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601083,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601084,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601085,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601086,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601087,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601088,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601089,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601090,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601091,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601092,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601093,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601094,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601095,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601096,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601097,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601098,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601099,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601100,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601101,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601102,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601103,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601104,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601105,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601106,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601107,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601108,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601109,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601110,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601111,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601112,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601113,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601114,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601115,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601116,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601117,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601118,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601119,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601120,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601121,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601122,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601123,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601124,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601125,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601126,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601127,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601128,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601129,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601130,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601131,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601132,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601133,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601134,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601135,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601136,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601137,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601138,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601139,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601140,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601141,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601150,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601151,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601152,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601153,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601154,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601155,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601156,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601157,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601158,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601159,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601160,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601161,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601162,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601163,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601164,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601165,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601166,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601167,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 50500,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50501,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50502,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50503,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50504,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50505,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50506,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50507,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50508,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50509,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50510,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50511,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50512,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50513,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50514,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50515,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50516,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50517,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50518,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50519,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50520,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50521,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50522,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50523,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50524,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50525,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50526,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50527,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50528,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50529,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50530,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50531,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50532,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50533,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50534,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50535,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50536,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50544,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50600,
+    "Type": "Weapon",
+    "SubType": "Dagger",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Rogue": true,
+      "SuperNovice": true,
+      "Ninja": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50601,
+    "Type": "Weapon",
+    "SubType": "1hSword",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Crusader": true,
+      "Alchemist": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50602,
+    "Type": "Weapon",
+    "SubType": "2hSword",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Knight": true,
+      "Crusader": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50603,
+    "Type": "Weapon",
+    "SubType": "1hSpear",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Crusader": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50604,
+    "Type": "Weapon",
+    "SubType": "2hSpear",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Knight": true,
+      "Crusader": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50605,
+    "Type": "Weapon",
+    "SubType": "1hAxe",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Blacksmith": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50606,
+    "Type": "Weapon",
+    "SubType": "2hAxe",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Blacksmith": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50607,
+    "Type": "Weapon",
+    "SubType": "Mace",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Blacksmith": true,
+      "Priest": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50608,
+    "Type": "Weapon",
+    "SubType": "Staff",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Sage": true,
+      "SuperNovice": true,
+      "SoulLinker": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50609,
+    "Type": "Weapon",
+    "SubType": "Bow",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Hunter": true,
+      "Bard": true,
+      "Dancer": true,
+      "Rogue": true,
+      "Assassin": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50610,
+    "Type": "Weapon",
+    "SubType": "Knuckle",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Monk": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50611,
+    "Type": "Weapon",
+    "SubType": "Musical",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Bard": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50612,
+    "Type": "Weapon",
+    "SubType": "Whip",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Dancer": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50613,
+    "Type": "Weapon",
+    "SubType": "Book",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Priest": true,
+      "StarGladiator": true,
+      "Monk": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50614,
+    "Type": "Weapon",
+    "SubType": "Katar",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Assassin": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50615,
+    "Type": "Weapon",
+    "SubType": "Revolver",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Gunslinger": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50616,
+    "Type": "Weapon",
+    "SubType": "Rifle",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Gunslinger": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50617,
+    "Type": "Weapon",
+    "SubType": "Gatling",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Gunslinger": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50618,
+    "Type": "Weapon",
+    "SubType": "Shotgun",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Gunslinger": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50619,
+    "Type": "Weapon",
+    "SubType": "Grenade",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Gunslinger": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50620,
+    "Type": "Weapon",
+    "SubType": "Huuma",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Ninja": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50621,
+    "Type": "Weapon",
+    "SubType": "2hStaff",
+    "Slots": 2,
+    "Refineable": false,
+    "Jobs": {
+      "Wizard": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50700,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50701,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50702,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50703,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50704,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50705,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50706,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50707,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50708,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50709,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50710,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50711,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50712,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50713,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50714,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50715,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50716,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50717,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50718,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Shoes": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50719,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50720,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50721,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50722,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50723,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Left_Accessory": true,
+      "Right_Accessory": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50724,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true,
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50725,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 50726,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 420030,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 5972,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410018,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410019,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 410020,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 420153,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 420154,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 420155,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Low": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 20946,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Garment": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 18839,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Mid": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 18841,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 18802,
+    "Type": "Armor",
+    "SubType": "",
+    "Slots": 1,
+    "Refineable": true,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Head_Top": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 13086,
+    "Type": "Weapon",
+    "SubType": "Dagger",
+    "Slots": 0,
+    "Refineable": true,
+    "Jobs": {
+      "Ninja": true
+    },
+    "Classes": {},
+    "Locations": {
+      "Right_Hand": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 50030,
+    "Type": "Card",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {
+      "Armor": true
+    },
+    "Gender": "Both"
+  },
+  {
+    "Id": 601168,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601169,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  },
+  {
+    "Id": 601170,
+    "Type": "PetEgg",
+    "SubType": "",
+    "Slots": 0,
+    "Refineable": false,
+    "Jobs": {},
+    "Classes": {},
+    "Locations": {},
+    "Gender": "Both"
+  }
+]

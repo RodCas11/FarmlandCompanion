@@ -205,3 +205,9 @@ Em **Configurações → Aparência**, escolha Farmland, Halloween ou Automátic
 Em **Eventos**, use **Eventos Regulares | Halloween 🎃**. Niflheim, Caça às Abóboras e Infecção Zumbi têm avisos individuais; a Corrida Poring é permanente. No compacto, todos aparecem juntos em ordem de horário. Os eventos de Halloween deixam de ser agendados em 09/11/2026.
 
 O Companion verifica releases estáveis oficiais ao iniciar e a cada seis horas. Quando surgir **⬆ Atualizar**, confirme para baixar, validar o SHA256, instalar e reiniciar. Também é possível verificar em **Configurações → Atualizações**. Seus dados em `%APPDATA%` são preservados; se a nova versão falhar ao iniciar, o atualizador restaura os arquivos anteriores. Use uma pasta com permissão de escrita, fora do ZIP. A primeira instalação desta versão ainda precisa ser baixada normalmente.
+
+## 🛡️ Builds comunitárias
+
+Monte e salve suas builds na aba **Builds**: selecione classe, Early/Mid/End e finalidade, clique nos slots e pesquise os equipamentos. Há refino, grade, cartas, encantamentos, Random Options e atributos. Os rascunhos são salvos automaticamente em SQLite, separados dos timers.
+
+O desafio considera **18 classes × 3 estágios = 54 combinações**. A finalidade não multiplica o total. A única barra global conta apenas aprovações oficiais completas; salvar ou completar uma build local não aumenta o progresso. A integração Firebase está preparada e permanece offline até o ADM configurar backend e autenticação. Recompensa e código de resgate são exclusivos do servidor/ADM.

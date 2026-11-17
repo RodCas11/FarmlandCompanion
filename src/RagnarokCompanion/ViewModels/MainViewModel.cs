@@ -49,6 +49,7 @@ public sealed class MvpRow : Observable
 }
 public sealed partial class MainViewModel : Observable
 {
+    public BuildViewModel Builds {get;}
     public InstanceViewModel Instances {get;}
     public CatalogViewModel Catalog { get; }
     public ItemFarmViewModel Items { get; }
@@ -140,6 +141,7 @@ public sealed partial class MainViewModel : Observable
         history.RemoveAll(h => h == null || h.Message == null || h.Kind == null);
         Engine = new(settings, mining, mvps, history);
         Instances = new InstanceViewModel(this,mvpClock);
+        Builds = new BuildViewModel(store);
         Catalog = new CatalogViewModel(this,api:mvpApi,credentials:mvpCredentials,clock:mvpClock,confirm:confirmMvp);
         Items = new ItemFarmViewModel(store,Catalog);
         Spotlight = new SpotlightViewModel(store);
@@ -211,7 +213,7 @@ public sealed partial class MainViewModel : Observable
     }
     public void Save()
     {
-        Store.Save("settings.json", Settings); Store.Save("mining.json", Engine.Mining); Store.Save("mvps.json", Engine.Mvps); Store.Save("history.json", Engine.History); Store.Save("window-layout.json", Layout);
+        Builds.Flush();Store.Save("settings.json", Settings); Store.Save("mining.json", Engine.Mining); Store.Save("mvps.json", Engine.Mvps); Store.Save("history.json", Engine.History); Store.Save("window-layout.json", Layout);
     }
     public void SaveLayout() => Store.Save("window-layout.json", Layout);
     public void Refresh()

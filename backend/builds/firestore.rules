@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function signed() { return request.auth != null; }
+  // Provisioned manually in the Firebase console; clients can never grant roles.
+  function admin() { return signed() && exists(/databases/$(database)/documents/admins/$(request.auth.uid)); }
+  function released() { return get(/databases/$(database)/documents/deployment/builds).data.publishingEnabled == true; }
+  function metadata(d) {
+   return d.classId in ['lord','paladin','high-wizard','professor','sniper','minstrel','gypsy','whitesmith','creator','assassin-cross','stalker','high-priest','champion','super-novice','gunslinger','ninja','star-gladiator','soul-linker']
+    && d.stage in ['Early','Mid','End'] && d.purpose in ['PvM','PvP','MVP','Farm','Suporte']
+    && d.title is string && d.title.size() > 0 && d.title.size() <= 120
+    && d.payload is string && d.payload.size() <= 150000 && (!('adminNotes' in d) || (d.adminNotes is string && d.adminNotes.size() <= 2000));
+  }
+  function submission(d) {
+   return d.keys().hasAll(['ownerUid','buildId','classId','stage','purpose','title','payload','status'])
+    && d.keys().hasOnly(['ownerUid','buildId','classId','stage','purpose','title','payload','status','authorName'])
+    && (!('authorName' in d) || (d.authorName is string && d.authorName.size() <= 120)) && d.buildId is string && d.buildId.matches('^[a-f0-9]{32}$') && metadata(d) && d.status == 'pending';
+  }
+  match /communityProfiles/{uid} {
+   allow read: if true;
+   allow create, update: if signed() && uid == request.auth.uid
+    && request.resource.data.keys().hasAll(['displayName','discordNickname']) && request.resource.data.keys().hasOnly(['displayName','discordNickname'])
+    && request.resource.data.displayName is string && request.resource.data.displayName.size() > 0 && request.resource.data.displayName.size() <= 120
+    && !request.resource.data.displayName.matches('.*@.*[.].*')
+    && request.resource.data.discordNickname is string && request.resource.data.discordNickname.size() <= 64;
+   allow delete: if signed() && uid == request.auth.uid;
+  }  match /admins/{uid} { allow get: if signed() && uid == request.auth.uid; allow list, write: if false; }
+  match /deployment/{id} { allow read: if id == 'builds'; allow write: if false; }
+  match /builds/{id} {
+   allow read: if signed() && (resource.data.ownerUid == request.auth.uid || admin());
+   allow create: if signed() && released() && submission(request.resource.data)
+    && request.resource.data.ownerUid == request.auth.uid
+    && id == request.auth.uid + '_' + request.resource.data.buildId;
+   allow update: if signed() && released() && submission(request.resource.data)
+    && resource.data.ownerUid == request.auth.uid && request.resource.data.ownerUid == resource.data.ownerUid
+    && request.resource.data.buildId == resource.data.buildId;
+   allow update: if admin() && request.resource.data.diff(resource.data).affectedKeys().hasOnly(["status","moderationReason","approvedBuildId"]) && request.resource.data.status in ["approved","rejected"] && request.resource.data.moderationReason is string && request.resource.data.moderationReason.size() <= 500;
+   allow create, update: if signed() && released() && request.resource.data.ownerUid == request.auth.uid
+    && id == request.auth.uid + '_' + request.resource.data.buildId && metadata(request.resource.data)
+    && request.resource.data.keys().hasOnly(['ownerUid','buildId','classId','stage','purpose','title','payload','authorName','status','approvedBuildId'])
+    && request.resource.data.status == 'approved'
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.ownerUid == request.auth.uid
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.buildId == request.resource.data.buildId
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.classId == request.resource.data.classId
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.stage == request.resource.data.stage;   allow delete: if signed() && resource.data.ownerUid == request.auth.uid;
+  }
+  // Separate reviewed snapshots: editing a submission cannot mutate an approved build.
+  match /approvedBuilds/{id} {
+   allow read: if true;
+   allow create: if admin() && metadata(request.resource.data)
+    && request.resource.data.keys().hasOnly(['ownerUid','buildId','classId','stage','purpose','title','payload','status','authorName','starCount','version','updatedAt','adminNotes'])
+    && request.resource.data.status == 'approved' && request.resource.data.get('starCount',0) == 0;
+   allow update: if admin() && metadata(request.resource.data)
+    && request.resource.data.keys().hasOnly(['ownerUid','buildId','classId','stage','purpose','title','payload','status','authorName','starCount','version','updatedAt','adminNotes'])
+    && request.resource.data.status == 'approved' && request.resource.data.get('starCount',0) == resource.data.get('starCount',0);
+   allow update: if signed() && released() && resource.data.ownerUid == request.auth.uid
+    && resource.data.status == 'approved' && metadata(request.resource.data)
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['payload','title','purpose','authorName','version','updatedAt'])
+    && request.resource.data.version is int && request.resource.data.version == resource.data.get('version',1) + 1
+    && request.resource.data.updatedAt is string && request.resource.data.updatedAt.size() <= 64;   allow update: if signed() && resource.data.ownerUid != request.auth.uid
+    && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['starCount'])
+    && request.resource.data.starCount is int && request.resource.data.starCount >= 0
+    && ((!exists(/databases/$(database)/documents/buildStars/$(request.auth.uid + '_' + id)) && existsAfter(/databases/$(database)/documents/buildStars/$(request.auth.uid + '_' + id)) && request.resource.data.starCount == resource.data.get('starCount',0) + 1)
+     || (exists(/databases/$(database)/documents/buildStars/$(request.auth.uid + '_' + id)) && !existsAfter(/databases/$(database)/documents/buildStars/$(request.auth.uid + '_' + id)) && request.resource.data.starCount == resource.data.get('starCount',0) - 1));
+   allow delete: if admin();
+  }
+  match /buildStars/{id} {
+   allow get: if signed() && id.matches(request.auth.uid + '_.*');
+   allow list: if signed() && resource.data.ownerUid == request.auth.uid;
+   allow create: if signed() && request.resource.data.keys().hasAll(['ownerUid','buildId']) && request.resource.data.keys().hasOnly(['ownerUid','buildId'])
+    && request.resource.data.ownerUid == request.auth.uid && id == request.auth.uid + '_' + request.resource.data.buildId
+    && get(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.buildId)).data.ownerUid != request.auth.uid
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.buildId)).data.starCount == get(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.buildId)).data.get('starCount',0) + 1;
+   allow delete: if signed() && resource.data.ownerUid == request.auth.uid
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(resource.data.buildId)).data.starCount == get(/databases/$(database)/documents/approvedBuilds/$(resource.data.buildId)).data.get('starCount',0) - 1;
+   allow update: if false;
+  }
+  match /approvedCombinations/{id} {
+   allow read: if true;
+   allow create, update: if admin()
+    && request.resource.data.keys().hasOnly(['classId','stage','approvedBuildId'])
+    && id == request.resource.data.classId + ':' + request.resource.data.stage
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.classId == request.resource.data.classId
+    && getAfter(/databases/$(database)/documents/approvedBuilds/$(request.resource.data.approvedBuildId)).data.stage == request.resource.data.stage;
+   allow delete: if admin();
+  }
+  match /communityProgress/{id} {
+   allow read: if true;
+   allow write: if admin() && id == 'global'
+    && request.resource.data.keys().hasAll(['rewardUnlocked','approvedKeys','count'])
+    && request.resource.data.keys().hasOnly(['rewardUnlocked','approvedKeys','count'])
+    && request.resource.data.rewardUnlocked is bool && request.resource.data.approvedKeys is list
+    && request.resource.data.approvedKeys.size() <= 54 && request.resource.data.approvedKeys.toSet().size() == request.resource.data.approvedKeys.size()
+    && request.resource.data.count is int && request.resource.data.count == request.resource.data.approvedKeys.size();
+  }  match /reviews/{id} {
+   allow read: if true;
+   allow create, update: if false;
+   allow delete: if signed() && (resource.data.ownerUid == request.auth.uid || admin());
+  }
+  match /{document=**} { allow read, write: if false; }
+ }
+}

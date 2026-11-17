@@ -37,3 +37,21 @@ src/RagnarokCompanion/Data/item-farm.json
 
 **/quests.txt
 **/message(1).txt
+
+# Firebase local configuration and emulator caches
+firebase-config.json
+firebase.config.json
+backend/firebase/public/firebase-config.json
+backend/firebase/node_modules/
+**/*-debug.log
+.firebase/
+
+# Administrative credentials and local authentication
+**/*service-account*.json
+**/*serviceAccount*.json
+**/application_default_credentials.json
+**/firebase-session.*
+*.pem
+*.p12
+*.pfx
+*.key

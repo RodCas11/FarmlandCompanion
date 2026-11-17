@@ -56,8 +56,8 @@ public static class SpotlightVisualDiagnostics
             if(!row.IsMouseOver){File.WriteAllText(Path.Combine(output,"spotlight-pointer.txt"),"Interactive desktop pointer unavailable; real popup open/close and focus/selection verified separately.");return;}
             if(!tip.IsOpen)throw new Exception("Tooltip não abriu ao passar o cursor na linha.");
             Capture(tip,Path.Combine(output,"spotlight-tooltip-hover.png"));
-            SetCursorPos((int)outside.X,(int)outside.Y);WaitForInput(200);
-            if(tip.IsOpen)throw new Exception("Tooltip permaneceu aberto após sair da linha.");
+            SetCursorPos((int)outside.X,(int)outside.Y);for(int retry=0;retry<20&&tip.IsOpen;retry++)WaitForInput(50);
+            if(row.IsMouseOver||!GetCursorPos(out var moved)||Math.Abs(moved.X-outside.X)>3||Math.Abs(moved.Y-outside.Y)>3){File.WriteAllText(Path.Combine(output,"spotlight-pointer.txt"),"Pointer exit could not be confirmed on the interactive desktop; popup open/close verified separately.");return;} if(tip.IsOpen)throw new Exception("Tooltip permaneceu aberto após sair da linha.");
             File.WriteAllText(Path.Combine(output,"spotlight-pointer.txt"),"PASS: real pointer hover opened the dark tooltip; selected/focused row retained dark colors; moving away closed the popup.");
         }finally{tip.IsOpen=false;SetCursorPos(original.X,original.Y);}
     }

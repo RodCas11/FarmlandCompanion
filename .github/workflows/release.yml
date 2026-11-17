@@ -30,6 +30,17 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+      - name: Prepare Firebase Web configuration
+        env:
+          FIREBASE_WEB_CONFIG: ${{ secrets.FIREBASE_WEB_CONFIG }}
+        run: |
+          if ([string]::IsNullOrWhiteSpace($env:FIREBASE_WEB_CONFIG)) { throw 'Configure a secret FIREBASE_WEB_CONFIG com JSON puro.' }
+          try { $config = $env:FIREBASE_WEB_CONFIG | ConvertFrom-Json -ErrorAction Stop }
+          catch { throw 'FIREBASE_WEB_CONFIG deve conter JSON válido, sem const ou scripts.' }
+          if ($config.projectId -cne 'farmland-companion' -or $config.authDomain -cne 'farmland-companion.firebaseapp.com' -or $config.apiKey -notmatch '^AIza[\w-]{35}$' -or [string]::IsNullOrWhiteSpace($config.appId)) { throw 'Configuração Web do Firebase incompleta ou projeto incorreto.' }
+          # Only public Web fields may be embedded. Never copy administrative credentials.
+          $web = [ordered]@{ apiKey=$config.apiKey; authDomain=$config.authDomain; projectId=$config.projectId; appId=$config.appId }
+          [IO.File]::WriteAllText((Join-Path $PWD 'firebase-config.json'), ($web | ConvertTo-Json), [Text.UTF8Encoding]::new($false))
       - name: Read and validate release version
         id: version
         env:
@@ -53,6 +64,9 @@ jobs:
           Move-Item -LiteralPath $download -Destination (Join-Path $folder 'farmland-items.sqlite')
       - name: Build user package with tests and offline WPF smoke
         run: ./build-release.ps1 -SdkPath (Get-Command dotnet).Source
+      - name: Remove temporary Firebase configuration
+        if: always()
+        run: Remove-Item -LiteralPath firebase-config.json -Force -ErrorAction SilentlyContinue
       - name: Upload user package
         uses: actions/upload-artifact@v4
         with:

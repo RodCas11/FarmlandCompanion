@@ -26,6 +26,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        if(e.Args.Contains("--import-farmland-builds")){try{string Arg(string p)=>e.Args.Single(a=>a.StartsWith(p,StringComparison.Ordinal))[p.Length..];File.WriteAllText(Arg("--report="),BuildFarmlandImporter.Import(Arg("--lua="),Arg("--database="),Arg("--output=")));Shutdown(0);}catch(Exception ex){File.WriteAllText(Path.Combine(Path.GetTempPath(),"farmland-build-import-error.txt"),ex.ToString());Shutdown(1);}return;} if(e.Args.Contains("--import-build-catalog")) { try { string Arg(string p)=>e.Args.Single(a=>a.StartsWith(p,StringComparison.Ordinal))[p.Length..];BuildEquipmentCatalog.Import(Arg("--equipment="),Arg("--etc="),Arg("--output="));Shutdown(0); }catch{Shutdown(1);}return; }
         if(e.Args.Contains("--import-quests")||e.Args.Contains("--import-items")||e.Args.Contains("--import-item-spawns")||e.Args.Contains("--update-item-data")||e.Args.Contains("--import-item-descriptions")) {
             string? Argument(string prefix)=>e.Args.FirstOrDefault(a=>a.StartsWith(prefix,StringComparison.Ordinal))?.Substring(prefix.Length);
             string report=Argument("--import-report=")??Path.Combine(Path.GetTempPath(),"farmland-item-import.txt");
@@ -149,12 +150,13 @@ public partial class App : Application
             if(vm.Items.ItemName!="[Q] Avental Elegante · #661"||!vm.Items.Best!.HasMap)throw new Exception("Tradução ou mapa do item 661 ausente");
             vm.Items.Query="1061"; vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(1061); await vm.Items.SelectionTask;
             if(vm.Items.Best==null||vm.Items.Best.Monster.IsSpecial)throw new Exception("Pesquisa do item 1061 sem spawn regular confirmado");
-            for (int p = 0; p < 9; p++)
+            for (int p = 0; p < 10; p++)
             {
                 if(p==7){var recipes=QuestRepository.Load();if(recipes.Single(q=>q.Kind=="Normais"&&q.ItemId==2782).Category!="Acessórios")throw new Exception("Anel do Rei Sábio deve ser acessório");var dependency=recipes.Where(q=>q.Kind=="Raras").SelectMany(q=>q.Materials.Where(m=>recipes.Any(n=>n.Kind=="Normais"&&n.AegisName==m.AegisName)).Select(m=>(Quest:q,Material:m))).First();vm.Quests.KindTab=1;vm.Quests.Selected=vm.Quests.Results.Single(q=>q.Model.Id==dependency.Quest.Id);await vm.Quests.SelectionTask;vm.Quests.Materials.Single(m=>m.Model.AegisName==dependency.Material.AegisName).DependencyCommand.Execute(null);await vm.Quests.SelectionTask;if(vm.Quests.Selected?.Model.Kind!="Normais"||vm.Quests.Selected.Model.AegisName!=dependency.Material.AegisName)throw new Exception("Navegação para quest normal falhou");vm.Page=7;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"quests-normal.png"));vm.Quests.KindTab=0;if(vm.Quests.Results.Count!=100)throw new Exception("Esperadas 100 quests normais");vm.Quests.KindTab=1;if(!vm.Quests.Results.Any(q=>q.Model.ItemId==28728&&q.Name=="Adaga das Valquírias"))throw new Exception("Recompensa Valkyrias_Dagger deve ser Adaga das Valquírias #28728");if(vm.Quests.Results.Count!=100)throw new Exception("Esperadas 100 quests raras");var quest=vm.Quests.Results.First(q=>q.Model.ItemId>0);quest.Favorite=true;vm.Quests.Selected=quest;await vm.Quests.SelectionTask;if(vm.Quests.Materials.Count!=quest.Model.Materials.Count)throw new Exception("Materiais de quest ausentes");vm.Quests.Materials[0].Obtained=true;var saved=vm.Store.Load<Models.QuestProgress>("quest-progress.json");if(!saved.Favorites.Contains(quest.Model.Id)||!saved.Obtained.Contains(quest.Model.Id+":0"))throw new Exception("Progresso de quest não persistido");}
                 if(p==6){vm.Items.Query="2255";vm.Items.SelectedItem=ItemFarmIndex.Shared.Find(2255);await vm.Items.SelectionTask;}
                 if(p==8){var instance=vm.Instances.Rows.Single(r=>r.Definition.Id=="poring-village");instance.NowCommand.Execute(null);if(instance.Status!="Em espera"||vm.Instances.Rows.Count!=7)throw new Exception("Instâncias sem timer/catálogo correto");}
-                vm.Page = p; windows.Panel.UpdateLayout(); if(p==8){await System.Threading.Tasks.Task.WhenAll(vm.Instances.Rows.Select(r=>r.EnsureSpriteAsync()));windows.Panel.UpdateLayout();}
+                if(p==9){if(vm.Builds.GlobalLabel!="0/54 — 0%"||vm.Builds.SelectedClass.Name!="Lorde"||vm.Builds.Stage!="Early"||vm.Builds.Purpose!="PvM")throw new Exception("Builds: estado inicial incorreto");vm.Builds.NewCommand.Execute(null);vm.Builds.SelectedSlot=vm.Builds.Slots.Single(r=>r.Definition.Id=="weapon");vm.Builds.SelectedSlot.Assign(ItemFarmIndex.Shared.Find(1101));vm.Builds.Title="Build de teste local";vm.Builds.Flush();using var restored=new BuildViewModel(new PersistenceService(vm.Store.Root));if(!restored.Saved.Any(b=>b.Id==vm.Builds.Document.Id&&b.Equipment.Any(e=>e.Slot=="weapon"&&e.ItemId==1101))||restored.GlobalApproved!=0)throw new Exception("Builds: SQLite ou progresso offline incorreto");}
+                vm.Page = p; windows.Panel.UpdateLayout(); if(p==9){await System.Threading.Tasks.Task.WhenAll(new[]{vm.Builds.ClassSpriteTask}.Concat(vm.Builds.Slots.Select(r=>r.ImageTask)));windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"builds-editor.png"));vm.Builds.Area=1;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"builds-mine.png"));var selectedBuild=vm.Builds.Saved.First(b=>b.Id==vm.Builds.Document.Id);vm.Builds.LoadCommand.Execute(selectedBuild);if(vm.Builds.Area!=0||vm.Builds.Document.Id!=selectedBuild.Id)throw new Exception("Abrir build não retornou ao editor");vm.Builds.Area=2;windows.Panel.UpdateLayout();Capture(windows.Panel,Path.Combine(smokeOutput,"builds-community.png"));vm.Builds.Area=0;windows.Panel.UpdateLayout();} if(p==8){await System.Threading.Tasks.Task.WhenAll(vm.Instances.Rows.Select(r=>r.EnsureSpriteAsync()));windows.Panel.UpdateLayout();}
                 Dispatcher.Invoke(() => { }, DispatcherPriority.ContextIdle); windows.Panel.UpdateLayout();
                 if ((p == 0 || p == 5) && !VisualTexts(windows.Panel).Contains(vm.Events.NextName)) throw new Exception("Card de eventos ausente");
                 if (windows.Panel.Icon == null) throw new Exception("Ícone do aplicativo ausente");
@@ -162,6 +164,7 @@ public partial class App : Application
                 if(p==6){if(VisualElements<Views.RagnarokDescriptionView>(windows.Panel).Any()||!VisualElements<Button>(windows.Panel).Any(b=>b.Content?.ToString()=="Ver no Divine Pride ↗")||vm.Items.ItemPublicUrl?.Contains("/database/item/2255#")!=true)throw new Exception("Cabeçalho simplificado do item ausente");}
                 if(p==6){var host=VisualElements<System.Windows.FrameworkElement>(windows.Panel).First(x=>x.Tag?.ToString()=="ItemTooltipHost");var active=System.Windows.Input.Keyboard.FocusedElement;var popup=await Views.ItemTooltip.PreviewAsync(host);Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);if(!popup.IsOpen||popup.Focusable||System.Windows.Input.Keyboard.FocusedElement!=active||Windows.Count!=1)throw new Exception("Tooltip alterou foco/janela");var rich=VisualElements<Views.RagnarokDescriptionView>(popup.Child).Single();if(!rich.RawText.Contains("FOR +1."))throw new Exception("Descrição local 2255 ausente do tooltip");popup.Child.Measure(new Size(350,600));popup.Child.Arrange(new Rect(popup.Child.DesiredSize));var image=new RenderTargetBitmap((int)Math.Ceiling(popup.Child.RenderSize.Width),(int)Math.Ceiling(popup.Child.RenderSize.Height),96,96,PixelFormats.Pbgra32);image.Render(popup.Child);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(image));using(var file=File.Create(Path.Combine(smokeOutput,"item-tooltip-2255.png")))png.Save(file);popup.IsOpen=false;}
                 if(p==7){var host=VisualElements<FrameworkElement>(windows.Panel).First(x=>Views.ItemTooltip.GetModel(x) is QuestRow);var popup=await Views.ItemTooltip.PreviewAsync(host);if(!popup.IsOpen||Windows.Count!=1)throw new Exception("Tooltip de quest falhou");popup.IsOpen=false;}
+                if(p==9){await ValidateBuildEquipmentTooltip();await ValidateBuildPreview();}
                 Capture(windows.Panel, Path.Combine(smokeOutput, $"smoke-page-{p}.png"));
                 if(p==4)SpotlightVisualDiagnostics.Verify(windows.Panel,smokeOutput);
             }
@@ -219,7 +222,7 @@ public partial class App : Application
             restarted.Items.Dispose(); restarted.Catalog.Dispose(); restarted.Spotlight.Dispose();
             int historyCount=vm.Engine.History.Count;vm.Catalog.ClearTimers();
             if(vm.Engine.Mvps.Any(m=>m.DeathUtc!=null)||vm.Catalog.FavoriteEntries.Count!=5||vm.Engine.History.Count!=historyCount)throw new Exception("Limpar timers apagou favoritos ou histórico");
-            File.WriteAllText(report, "PASS: WPF startup; nine navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render nine pages; compact auto height; six icon-only tabs; 200 quests, favorites and material progress; official Farmland branding; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
+            File.WriteAllText(report, "PASS: WPF startup; ten navigation pages; items 661/1061 Portuguese names and regular maps; item 2255 local hover tooltip, source, colors and preserved focus; simplified header and regional public link; event schedule/dashboard/compact/icon; minimized Dudu/Mare grouped popup queued once; chronological compact events; Spotlight search/filter/sort/offline/rotation; MVP create/kill; name search; map filter; exactly one MainWindow across modes; Topmost; close to tray; mode switching without losing timers; off-screen recovery; render ten pages; compact auto height; six icon-only tabs; 200 quests, favorites and material progress; official Farmland branding; up to five favorite MVPs; HH:mm registration; clear timers preserves favorites/history; persistent tab; timers preserved across tabs; DPI renders 96/120/144/192; full size restoration; local catalog; automatic Ifrit reference 660–670 min; favorites offline; native notification dispatch; JSON save/reload; exit via panel with tray disabled.\nData: " + vm.Store.Root);
             vm.Settings.CloseToTray = false;
             windows.Panel.Close();
         }
@@ -253,6 +256,42 @@ public partial class App : Application
         }
         engine.Mvps.Remove(extra);model.Refresh();model.ActiveCompactTab=Models.CompactTab.Mvps;windows.FitCompact();
     }
+    private async System.Threading.Tasks.Task ValidateBuildEquipmentTooltip()
+    {
+        var row=vm!.Builds.Slots.Single(r=>r.Definition.Id=="weapon");vm.Builds.SelectedSlot=row;row.Refine=9;row.Grade="D";row.CardsText="4004";
+        var enchant=ItemFarmIndex.Shared.Search("Destreza 2").FirstOrDefault()??ItemFarmIndex.Shared.Find(4702)??throw new Exception("Encantamento de validação ausente do catálogo");
+        row.EnchantsText=enchant.Id.ToString();row.RandomOptionsText="ATK +10\nPrecisão +3\nDano Crítico +2%";vm.Builds.Flush();await row.ComponentImageTask;
+        windows!.Panel.UpdateLayout();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);
+        var host=VisualElements<Button>(windows.Panel).First(x=>ReferenceEquals(Views.ItemTooltip.GetModel(x),row));var focused=System.Windows.Input.Keyboard.FocusedElement;
+        var popup=await Views.ItemTooltip.PreviewAsync(host);Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);
+        var texts=VisualTexts(popup.Child).ToList();if(!popup.IsOpen||popup.Focusable||Windows.Count!=1||System.Windows.Input.Keyboard.FocusedElement!=focused||!texts.Contains(row.TooltipData.Title)||!texts.Contains(ItemFarmIndex.Shared.Find(4004)!.Name)||!texts.Contains(enchant.Name)||!texts.Contains("Random Options")||!texts.Contains("Descrição do equipamento")||!texts.Contains("• ATK"))throw new Exception("Tooltip da build não mostrou a configuração real");
+        row.Refine=10;await System.Threading.Tasks.Task.Delay(120);Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);if(!VisualTexts(popup.Child).Contains(row.TooltipData.Title))throw new Exception("Tooltip não atualizou o refino enquanto aberto");
+        popup.Child.Measure(new Size(370,650));popup.Child.Arrange(new Rect(popup.Child.DesiredSize));var image=new RenderTargetBitmap((int)Math.Ceiling(popup.Child.RenderSize.Width),(int)Math.Ceiling(popup.Child.RenderSize.Height),96,96,PixelFormats.Pbgra32);image.Render(popup.Child);var png=new PngBitmapEncoder();png.Frames.Add(BitmapFrame.Create(image));using(var file=File.Create(Path.Combine(smokeOutput,"build-equipment-tooltip.png")))png.Save(file);popup.IsOpen=false;
+    }
+    private async System.Threading.Tasks.Task ValidateBuildPreview()
+    {
+        var build=System.Text.Json.JsonSerializer.Deserialize<Models.PlayerBuild>(System.Text.Json.JsonSerializer.Serialize(vm!.Builds.Document))!;
+        string boardBefore=System.Text.Json.JsonSerializer.Serialize(vm.Builds.Document);
+        foreach(string group in new[]{"Normal","Extras"}){vm.Builds.Group=group;windows!.Panel.UpdateLayout();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);Capture(windows.Panel,Path.Combine(smokeOutput,"build-equipment-"+group+".png"));}
+        vm.Builds.Group="Normal";
+        vm.Builds.BeginSlotEdit(vm.Builds.Slots.Single(s=>s.Definition.Id=="weapon"));
+        vm.Builds.SlotDraft!.SelectedSlot!.Refine=12;
+        windows!.Panel.UpdateLayout();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);Capture(windows.Panel,Path.Combine(smokeOutput,"build-slot-modal.png"));
+        vm.Builds.CancelSlotDraftCommand.Execute(null);
+        if(boardBefore!=System.Text.Json.JsonSerializer.Serialize(vm.Builds.Document))throw new Exception("Alternar equipamentos modificou a build");
+        vm.Builds.ViewBuildCommand.Execute(new Models.CommunityBuild("preview-smoke",build,"approved"));
+        if(!vm.Builds.HasCommunityPreview)throw new Exception("Visualização da comunidade não abriu");
+        await System.Threading.Tasks.Task.WhenAll(vm.Builds.CommunityPreview!.Slots.Select(s=>s.ImageTask));
+        windows!.Panel.UpdateLayout();Dispatcher.Invoke(()=>{},DispatcherPriority.ContextIdle);
+        Capture(windows.Panel,Path.Combine(smokeOutput,"build-community-preview.png"));
+        vm.Builds.CloseBuildPreviewCommand.Execute(null);
+        vm.Builds.SelectedSubmission=new BuildSubmission("preview-smoke","test","test",build,new());
+        var view=new Views.BuildReviewDialogView{DataContext=vm.Builds,Width=1000,Height=650,Background=new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(13,17,28))};
+        view.Measure(new Size(1000,650));view.Arrange(new Rect(0,0,1000,650));view.UpdateLayout();
+        var bitmap=new System.Windows.Media.Imaging.RenderTargetBitmap(1000,650,96,96,System.Windows.Media.PixelFormats.Pbgra32);bitmap.Render(view);
+        var encoder=new System.Windows.Media.Imaging.PngBitmapEncoder();encoder.Frames.Add(System.Windows.Media.Imaging.BitmapFrame.Create(bitmap));using(var stream=File.Create(Path.Combine(smokeOutput,"build-moderation-preview.png")))encoder.Save(stream);
+        vm.Builds.SelectedSubmission=null;
+    }
     private static void Capture(Window window, string file, double dpi=96)
     {
         window.UpdateLayout();
@@ -279,7 +318,7 @@ public partial class App : Application
         if (quitting) return; quitting = true; timer.Stop(); settingsSave.Stop();
         try { windows?.Dispose(); vm?.Save(); }
         catch (Exception ex) { if (code == 0) MessageBox.Show("Não foi possível salvar: " + ex.Message); }
-        vm?.Updates.Dispose(); notifications?.Dispose(); vm?.Items.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
+        vm?.Builds.Dispose();vm?.Updates.Dispose(); notifications?.Dispose(); vm?.Items.Dispose(); vm?.Catalog.Dispose(); vm?.Spotlight.Dispose(); Shutdown(code);
     }
     protected override void OnExit(ExitEventArgs e) { notifications?.Dispose(); mutex?.Dispose(); base.OnExit(e); }
 }
