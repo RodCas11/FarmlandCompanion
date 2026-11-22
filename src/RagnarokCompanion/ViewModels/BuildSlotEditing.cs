@@ -25,7 +25,7 @@ public sealed partial class BuildViewModel
  {
   var draft=SlotDraft;if(draft?.SelectedSlot==null||editingDocument!=Document.Id||editingSlot==null)return;
   var row=draft.SelectedSlot;if(row.InputError.Length>0||row.Refine is <0 or >20){draft.Tell("Confira os IDs e o refino antes de salvar.");return;}
-  var item=row.Model;var metadata=item.ItemId is {} id?Equipment.Find(id):null;
+  var item=row.Model;if(item.Enchants.Any(id=>draft.FindItem(id) is {} enchant&&!EnchantLevelAllowed(enchant.Name))){draft.Tell("Encantamentos permitidos somente até +6.");return;}var metadata=item.ItemId is {} id?Equipment.Find(id):null;
   if(item.ItemId!=null&&((row.Definition.Group=="Pet"&&metadata==null)||metadata!=null&&!Equipment.Compatible(metadata,SelectedClass,row.Definition))){draft.Tell("O item não é compatível com este slot/classe.");return;}
   var copy=JsonSerializer.Deserialize<BuildEquipment>(JsonSerializer.Serialize(item))!;
   if(row.Definition.Group is "Visual" or "Shadow"){copy.Grade="Sem";copy.Cards.Clear();copy.Enchants.Clear();if(row.Definition.Group=="Visual")copy.Refine=0;} int index=Document.Equipment.FindIndex(e=>e.Slot==editingSlot);Document.Equipment[index]=copy;

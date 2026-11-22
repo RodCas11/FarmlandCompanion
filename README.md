@@ -106,7 +106,7 @@ A sequência confirmada é **Solar → Lunar → Estelar → Radiante → Celest
 
 ## 📜 Quests: sua lista de compras para farmar
 
-São **100 quests normais e 100 raras**, separadas nas abas **Normais | Raras**, com filtros **Topo, Meio, Baixo, Escudos, Capas, Acessórios, Armas e Outros**. Para acompanhar a sua:
+São **100 quests normais e 119 raras**, separadas nas abas **Normais | Raras**, com filtros **Topo, Meio, Baixo, Escudos, Capas, Acessórios, Armas, Calçados e Outros**. Para acompanhar a sua:
 
 1. Abra **📜 Quests**, escolha **Normais** ou **Raras**, busque o equipamento e filtre a categoria se quiser.
 2. Marque a **estrela** para favoritar.

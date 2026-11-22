@@ -8,11 +8,11 @@ public static class InstanceCatalog
 {
     const string Source="https://github.com/rathena/rathena/blob/master/npc/";
     public static readonly InstanceDefinition[] Entries={
-        new("horror-factory","Fábrica do Terror",8,10032,"Catherine Jet Johnson",Source+"re/instances/HorrorToyFactory.txt"),
+        new("horror-factory","Fábrica do Terror",4,10032,"Catherine Jet Johnson",Source+"re/instances/HorrorToyFactory.txt"),
         new("ghost-palace","Palácio das Mágoas",8,686,"Guarda Real / Sakray",Source+"re/instances/GhostPalace.txt"),
         new("poring-village","Vila Poring",4,612,"4_F_PINKWOMAN","https://nn.ai4rei.net/dev/npclist/?qq=8&s=twro",true),
-        new("sarah-memory","Memórias de Sarah",8,945,"Aventureiro Leon",Source+"re/instances/SaraMemory.txt"),
-        new("glast-heim","Glast Heim",8,755,"Hugin",Source+"re/instances/OldGlastHeim.txt"),
+        new("sarah-memory","Memórias de Sarah",4,945,"Aventureiro Leon",Source+"re/instances/SaraMemory.txt"),
+        new("glast-heim","Glast Heim",4,755,"Hugin",Source+"re/instances/OldGlastHeim.txt"),
         new("tower-captain","Capitão da Torre",8,709,"Capitão Janssen",Source+"instances/EndlessTower.txt",false,128),
         new("nydhogg-nest","Ninho do Nydhogg",8,111,"Guardião de Yggdrasil",Source+"instances/NydhoggsNest.txt")
     };

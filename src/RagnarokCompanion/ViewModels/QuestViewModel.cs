@@ -35,7 +35,7 @@ public sealed class QuestMaterialRow:Observable,IItemTooltipModel {
 public sealed class QuestViewModel:Observable {
  readonly PersistenceService store;readonly SpotlightViewModel spotlight;readonly CatalogViewModel integration;readonly List<QuestRow> all=new();readonly Dictionary<int,List<FarmResult>> cache=new();
  public QuestProgress Progress {get;}public ObservableCollection<QuestRow> Results {get;}=new();public ObservableCollection<QuestRow> Favorites {get;}=new();public ObservableCollection<QuestMaterialRow> Materials {get;}=new();
- public string[] Categories {get;}={"Todas","Topo","Meio","Baixo","Escudos","Capas","Acessórios","Armas","Outros"};string query="",category="Todas";QuestRow? selected;int generation;string active="";
+ public string[] Categories {get;}={"Todas","Topo","Meio","Baixo","Escudos","Capas","Acessórios","Armas","Calçados","Outros"};string query="",category="Todas";QuestRow? selected;int generation;string active="";
  readonly Action? showQuest;public ItemDescriptionService Descriptions {get;}=new();int kindTab;
  public ICommand SelectKindCommand=>new RelayCommand(p=>{if(int.TryParse(p?.ToString(),out int value)&&value is 0 or 1)KindTab=value;});
  public int KindTab {get=>kindTab;set{if(kindTab==value)return;kindTab=value;Changed();Filter();if(selected?.Model.Kind!=(kindTab==0?"Normais":"Raras")){selected=null;generation++;Materials.Clear();Changed(nameof(Selected));Changed(nameof(CompactSelected));Selected=Results.FirstOrDefault();}}}

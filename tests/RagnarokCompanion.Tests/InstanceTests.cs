@@ -12,7 +12,7 @@ public sealed class InstanceTests
         var store=Store();var service=new InstanceTimerService(store);var now=new DateTimeOffset(2026,10,31,23,32,0,TimeSpan.FromHours(-3));
         Assert.Equal(7,InstanceCatalog.Entries.Length);Assert.Equal(612,InstanceCatalog.Entries.Single(d=>d.Id=="poring-village").NpcSpriteId);var captain=InstanceCatalog.Entries.Single(d=>d.Id=="tower-captain");Assert.Equal(709,captain.NpcSpriteId);Assert.Equal(128,captain.NpcReferenceId);
         foreach(var d in InstanceCatalog.Entries){Assert.Equal("Disponível",service.Status(d,now));service.Finish(d.Id,now,now);Assert.Equal("Em espera",service.Status(d,now));Assert.Equal(now.AddHours(d.CooldownHours),service.AvailableAt(d));}
-        var fired=new List<InstanceReadyAlert>();service.Ready+=fired.Add;service.Evaluate(now.AddHours(4));Assert.Equal("Vila Poring",Assert.Single(fired).Name);
+        var fired=new List<InstanceReadyAlert>();service.Ready+=fired.Add;service.Evaluate(now.AddHours(4));Assert.Equal(4,fired.Count);Assert.All(new[]{"horror-factory","sarah-memory","glast-heim"},id=>Assert.Equal(4,InstanceCatalog.Entries.Single(d=>d.Id==id).CooldownHours));
         var restarted=new InstanceTimerService(store);restarted.Ready+=fired.Add;restarted.Evaluate(now.AddHours(8));restarted.Evaluate(now.AddHours(9));Assert.Equal(7,fired.Count);
         Assert.All(InstanceCatalog.Entries,d=>Assert.Equal("Liberada",restarted.Status(d,now.AddHours(9))));
         var again=new InstanceTimerService(store);again.Ready+=fired.Add;again.Evaluate(now.AddDays(1));Assert.Equal(7,fired.Count);
