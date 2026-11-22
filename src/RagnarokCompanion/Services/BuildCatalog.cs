@@ -40,10 +40,10 @@ public sealed class BuildEquipmentCatalog
         using var stream=typeof(BuildEquipmentCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.build-equipment.json.gz");
         if(stream==null){items=new();return;}using var gz=new GZipStream(stream,CompressionMode.Decompress);items=(JsonSerializer.Deserialize<List<BuildItemMetadata>>(gz)??new()).ToDictionary(i=>i.Id);
     }
-    // Farmland item descriptions explicitly specify Meio, Todas and one socket.
-    static readonly Dictionary<int,BuildItemMetadata> farmland=LoadFarmland(); static Dictionary<int,BuildItemMetadata> LoadFarmland(){using var stream=typeof(BuildEquipmentCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.build-farmland-items.json");return stream==null?LegacyFarmland:(JsonSerializer.Deserialize<List<BuildItemMetadata>>(stream)??new()).ToDictionary(i=>i.Id);} static Dictionary<int,BuildItemMetadata> LegacyFarmland=>new(){
+    // Explicit item facts from supplied Lua; the generated Farmland catalog takes priority.
+    static readonly Dictionary<int,BuildItemMetadata> farmland=LoadFarmland(); static Dictionary<int,BuildItemMetadata> LoadFarmland(){using var stream=typeof(BuildEquipmentCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.build-farmland-items.json");var result=LegacyFarmland;if(stream!=null)foreach(var item in JsonSerializer.Deserialize<List<BuildItemMetadata>>(stream)??new())result[item.Id]=item;return result;} static Dictionary<int,BuildItemMetadata> LegacyFarmland=>new(){
         [19456]=new(){Id=19456,Type="Armor",Slots=1,Locations=new(){{"Head_Mid",true}}},
-        [19457]=new(){Id=19457,Type="Armor",Slots=1,Locations=new(){{"Head_Mid",true}}}
+        [19457]=new(){Id=19457,Type="Armor",Slots=1,Locations=new(){{"Head_Mid",true}}}, [410176]=new(){Id=410176,Type="Armor",Locations=new(){{"Head_Mid",true}}}, [410259]=new(){Id=410259,Type="Armor",Locations=new(){{"Head_Mid",true}}}, [32268]=new(){Id=32268,Type="Armor",Locations=new(){{"Both_Accessory",true}}}, [470051]=new(){Id=470051,Type="Armor",Slots=1,Locations=new(){{"Shoes",true}}}
     };
     static readonly Dictionary<int,BuildItemMetadata> pets=LoadPets();
     static Dictionary<int,BuildItemMetadata> LoadPets(){using var stream=typeof(BuildEquipmentCatalog).Assembly.GetManifestResourceStream("RagnarokCompanion.Data.build-pet-eggs.json");return stream==null?new():(JsonSerializer.Deserialize<List<BuildItemMetadata>>(stream)??new()).ToDictionary(i=>i.Id);}
